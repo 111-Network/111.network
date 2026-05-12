@@ -100,9 +100,7 @@ export function SectionLedger({ section }: { section: TechSection }) {
           transition={{ delay: 0.1 }}
           className="mt-8 max-w-4xl font-mono text-sm leading-relaxed text-muted-foreground md:columns-2 md:gap-12"
         >
-          {section.description} Each block is cryptographically linked to
-          its predecessor, forming an immutable chain. The Merkle root ensures
-          data integrity across all transactions within a single block.
+          {section.description}
         </motion.p>
       </div>
 
@@ -154,7 +152,7 @@ export function SectionLedger({ section }: { section: TechSection }) {
                 <span className="text-foreground">{blocks[selectedBlock].nonce}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Transactions</span>
+                <span className="text-muted-foreground">Messages</span>
                 <span className="text-foreground">{blocks[selectedBlock].tx}</span>
               </div>
             </div>

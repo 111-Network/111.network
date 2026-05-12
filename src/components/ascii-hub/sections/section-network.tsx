@@ -94,9 +94,9 @@ function NetworkMap() {
 
 export function SectionNetwork({ section }: { section: TechSection }) {
   const metrics = [
-    { label: "Nodes Online", value: "7/8", pct: 87 },
-    { label: "Throughput", value: "9.2 Gbps", pct: 92 },
-    { label: "Latency p99", value: "8.4ms", pct: 16 },
+    { label: "Nodes Active", value: "7/8", pct: 87 },
+    { label: "Messages/Hour", value: "1,247", pct: 92 },
+    { label: "Avg Hops", value: "6.2", pct: 16 },
     { label: "Packet Loss", value: "0.001%", pct: 1 },
   ]
 

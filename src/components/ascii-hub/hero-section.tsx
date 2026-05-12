@@ -92,19 +92,19 @@ export function HeroSection() {
         >
           <div className="inline-flex items-center gap-2 border border-border px-3 py-1 font-mono text-xs text-muted-foreground">
             <span className="inline-block h-1.5 w-1.5 bg-foreground" />
-            <span>FRONTEND ENGINEERING SHOWCASE</span>
+            <span>V.0.0.5 Experimental</span>
           </div>
 
           <h1 className="font-pixel-line text-5xl font-bold leading-none tracking-tight text-foreground text-balance md:text-7xl lg:text-9xl">
-            Raw Logic.
+            Free, Secure
             <br />
-            <span className="text-muted-foreground">Refined Form.</span>
+            <span className="text-muted-foreground">Communication for Everyone</span>
           </h1>
 
           <p className="max-w-prose font-mono text-sm leading-relaxed text-muted-foreground md:text-base">
-            An exclusive showcase of high-performance frontend engineering
-            and character-based art. Eight specialized modules exploring
-            the intersection of code and aesthetics.
+            A global message network that runs on people, not servers.
+            Works with phones, radios, satellites — anything that can carry
+            a message. No company. No government. Just you and the world.
           </p>
         </motion.div>
 
@@ -118,7 +118,7 @@ export function HeroSection() {
             href="#kernel-systems"
             className="group flex items-center gap-2 border border-foreground bg-foreground px-6 py-3 font-mono text-sm text-background transition-all duration-200 hover:bg-transparent hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
           >
-            Explore the Modules
+            Explore the Network
             <span className="transition-transform duration-200 group-hover:translate-x-1">
               {"->"}
             </span>
@@ -129,7 +129,7 @@ export function HeroSection() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 border border-border px-6 py-3 font-mono text-sm text-muted-foreground transition-all duration-200 hover:border-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
           >
-            Clone the Repo
+            View on GitHub
           </a>
         </motion.div>
 
@@ -147,15 +147,14 @@ export function HeroSection() {
             <div className="h-2 w-2 bg-muted-foreground/50" />
             <div className="h-2 w-2 bg-muted-foreground/30" />
             <span className="ml-2 font-mono text-[10px] text-muted-foreground">
-              monochrome-hub ~ v1.0.0
+              111-network ~ v0.0.5
             </span>
           </div>
           <pre className="overflow-hidden font-mono text-[10px] leading-relaxed text-foreground/80 md:text-xs">
-{`> initializing ascii_renderer...
-> loading 8 technical modules...
-> font: GeistPixel loaded [OK]
-> palette: #000 #FFF [MONOCHROME]
-> animation_engine: 60fps target
+{`> initializing mesh_protocol...
+> discovering nearby nodes...
+> transport: radio, phone, email, satellite [OK]
+> encryption: end-to-end [ENABLED]
 > status: OPERATIONAL
 > _`}
             <span className="animate-blink">{"█"}</span>

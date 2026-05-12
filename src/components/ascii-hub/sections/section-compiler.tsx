@@ -15,8 +15,8 @@ const shadow = "rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 
 
 const stages = [
   {
-    name: "SOURCE",
-    label: "Source Code",
+    name: "PLAIN",
+    label: "Your Message",
     code: `fn fibonacci(n: u32) -> u32 {
   match n {
     0 => 0,
@@ -27,8 +27,8 @@ const stages = [
 }`,
   },
   {
-    name: "TOKENS",
-    label: "Lexer Output",
+    name: "ENCRYPT",
+    label: "Encrypted Packet",
     code: `[FN] [IDENT:"fibonacci"] [LPAREN]
 [IDENT:"n"] [COLON] [TYPE:"u32"]
 [RPAREN] [ARROW] [TYPE:"u32"]
@@ -39,8 +39,8 @@ const stages = [
 [UNDERSCORE] [FAT_ARROW] ...`,
   },
   {
-    name: "AST",
-    label: "Abstract Syntax Tree",
+    name: "ROUTE",
+    label: "Route Selection",
     code: `Program
 └─ FnDecl "fibonacci"
    ├─ Param: n (u32)
@@ -53,8 +53,8 @@ const stages = [
          └─ Call(fibonacci, Sub(n, 2))`,
   },
   {
-    name: "IR",
-    label: "Intermediate Repr.",
+    name: "DELIVER",
+    label: "Delivery Path",
     code: `define i32 @fibonacci(i32 %n) {
 entry:
   %cmp0 = icmp eq i32 %n, 0
@@ -76,8 +76,8 @@ rec:
 }`,
   },
   {
-    name: "ASM",
-    label: "Machine Code",
+    name: "READ",
+    label: "Decrypted Read",
     code: `fibonacci:
   push   rbp
   mov    rbp, rsp
@@ -193,7 +193,7 @@ export function SectionCompiler({ section }: { section: TechSection }) {
           <div className="flex flex-col">
             <div className="flex items-center gap-2 border-b border-border px-4 py-2">
               <div className="h-1.5 w-1.5 bg-foreground" />
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Pipeline Info</span>
+              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Encryption Pipeline</span>
             </div>
 
             {/* Pipeline progress */}
@@ -210,8 +210,8 @@ export function SectionCompiler({ section }: { section: TechSection }) {
                 ))}
               </div>
               <div className="mt-2 flex justify-between font-mono text-[10px] text-muted-foreground">
-                <span>Source</span>
-                <span>Binary</span>
+                <span>Plain</span>
+                <span>Secure</span>
               </div>
             </div>
 

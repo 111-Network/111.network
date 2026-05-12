@@ -58,7 +58,7 @@ export function Navigation() {
           aria-label="Scroll to top"
         >
           <span className="text-muted-foreground">{">"}</span>
-          <span className="font-pixel tracking-wider">MONO_HUB</span>
+          <span className="font-pixel tracking-wider">111.network</span>
         </button>
 
         {/* Desktop Nav */}

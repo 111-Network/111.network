@@ -19,7 +19,7 @@ interface ThreadLane {
   segments: { start: number; end: number; type: "work" | "wait" | "blocked" }[]
 }
 
-const threadNames = ["main", "worker-1", "worker-2", "io-pool", "gc", "scheduler"]
+const threadNames = ["anonymous", "email-linked", "phone-linked", "device-paired", "bridge-user", "verified"]
 
 type SegType = "work" | "wait" | "blocked"
 
@@ -71,10 +71,10 @@ function TimelineView() {
             transition={{ repeat: Infinity, duration: 1 }}
           />
           <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            Thread Profiler
+            Privacy Status
           </span>
         </div>
-        <span className="font-mono text-[10px] text-muted-foreground">0ms — 100ms</span>
+        <span className="font-mono text-[10px] text-muted-foreground">Anonymous — Verified</span>
       </div>
 
       {/* Time scale */}
@@ -129,9 +129,9 @@ function TimelineView() {
       {/* Legend */}
       <div className="flex gap-6 border-t border-border px-4 py-2">
         {[
-          { label: "Working", cls: "bg-foreground" },
-          { label: "Waiting", cls: "bg-foreground/20" },
-          { label: "Blocked", cls: "bg-muted-foreground/40" },
+          { label: "Active", cls: "bg-foreground" },
+          { label: "Dormant", cls: "bg-foreground/20" },
+          { label: "Disabled", cls: "bg-muted-foreground/40" },
         ].map((l) => (
           <div key={l.label} className="flex items-center gap-1.5">
             <div className={`h-2 w-4 ${l.cls}`} />
@@ -164,7 +164,7 @@ function ChannelMonitor() {
       <div className="mb-3 flex items-center gap-2">
         <div className="h-1.5 w-1.5 bg-foreground" />
         <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          Channel Buffer
+          Identity Modes
         </span>
       </div>
       <div className="flex items-center gap-4">
@@ -178,7 +178,7 @@ function ChannelMonitor() {
           ))}
         </div>
         <div className="flex flex-col gap-1 font-mono text-xs">
-          <span className="text-foreground font-bold">{Math.floor(bufferFill)}/128</span>
+          <span className="text-foreground font-bold">{Math.floor(bufferFill)}/Unlimited</span>
           <span className="text-[10px] text-muted-foreground">capacity</span>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Twitter, Linkedin, ArrowUp } from "lucide-react"
+import { Github, ArrowUp } from "lucide-react"
 
 const ASCII_LOGO = `
  ███╗   ███╗██╗  ██╗
@@ -13,8 +13,6 @@ const ASCII_LOGO = `
 
 const socialLinks = [
   { name: "GitHub", icon: Github, href: "https://github.com" },
-  { name: "Twitter", icon: Twitter, href: "https://twitter.com" },
-  { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com" },
 ]
 
 export function Footer() {
@@ -41,8 +39,7 @@ export function Footer() {
               {ASCII_LOGO}
             </pre>
             <p className="mt-4 max-w-xs font-mono text-xs leading-relaxed text-muted-foreground">
-              A minimalist technical showcase built with precision.
-              Pure monochrome. Pure code.
+              Free, Secure Communication for Everyone
             </p>
           </motion.div>
 
@@ -85,10 +82,10 @@ export function Footer() {
           >
             <div>
               <span className="mb-4 block font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                Tech Stack
+                Built With
               </span>
               <div className="flex flex-wrap gap-2">
-                {["Next.js", "React", "Tailwind", "Framer Motion", "Vercel"].map(
+                {["Next.js", "React", "TypeScript", "Tailwind", "Open Source"].map(
                   (tech) => (
                     <span
                       key={tech}
@@ -115,10 +112,10 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
           <span className="font-mono text-[10px] text-muted-foreground">
-            {"// "} Monochrome ASCII Hub &mdash; {new Date().getFullYear()}
+            {"// "} 111 Network &mdash; {new Date().getFullYear()}
           </span>
           <span className="font-mono text-[10px] text-muted-foreground">
-            Built with precision. Rendered in monochrome.
+            Built by people, not providers.
           </span>
         </div>
       </div>

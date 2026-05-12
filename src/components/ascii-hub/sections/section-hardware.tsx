@@ -17,40 +17,40 @@ const shadow = "rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 
 const layers = [
   {
     level: "L4",
-    name: "APPLICATION",
-    desc: "User-facing software, APIs, and runtime environments. The visible surface of the computing stack.",
+    name: "USER NETWORKS",
+    desc: "Other mesh networks (Meshtastic, etc.)",
     detail: "HTTP servers, CLI tools, GUI apps, WASM modules",
     color: "bg-foreground",
     textColor: "text-background",
   },
   {
     level: "L3",
-    name: "OS / RUNTIME",
-    desc: "Operating system services, syscalls, and language runtimes managing execution flow.",
+    name: "BRIDGE SHIM",
+    desc: "Minimal translation layer",
     detail: "Process scheduling, memory management, file systems",
     color: "bg-foreground/80",
     textColor: "text-background",
   },
   {
     level: "L2",
-    name: "HAL INTERFACE",
-    desc: "The contract layer translating software intentions into hardware-specific commands.",
+    name: "MESSAGE GATEWAY",
+    desc: "Message format converter",
     detail: "MMIO registers, DMA controllers, interrupt handlers",
     color: "bg-foreground/60",
     textColor: "text-background",
   },
   {
     level: "L1",
-    name: "DRIVERS",
-    desc: "Device-specific modules communicating directly with individual hardware peripherals.",
+    name: "PROTOCOL ADAPTER",
+    desc: "Protocol compatibility layer",
     detail: "GPU drivers, NIC firmware, storage controllers",
     color: "bg-foreground/40",
     textColor: "text-foreground",
   },
   {
     level: "L0",
-    name: "SILICON",
-    desc: "Raw transistors, logic gates, and physical circuits. Where computation meets physics.",
+    name: "111 CORE",
+    desc: "111 Network core protocol",
     detail: "FinFET transistors, copper interconnects, photolithography",
     color: "bg-foreground/20",
     textColor: "text-foreground",
@@ -117,7 +117,7 @@ function LayerStack() {
 
 function RegisterView() {
   const registers = [
-    { name: "RAX", value: "0x00007FFE4B3C2A10" },
+    { name: "meshtastic-bridge", value: "ACTIVE" },
     { name: "RBX", value: "0x0000000000000001" },
     { name: "RCX", value: "0x00007FFE4B3C2A08" },
     { name: "RDX", value: "0x0000000000000000" },
@@ -132,7 +132,7 @@ function RegisterView() {
       <div className="flex items-center gap-2 border-b border-border px-4 py-2">
         <div className="h-1.5 w-1.5 bg-foreground" />
         <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          CPU Registers
+          Active Bridges
         </span>
       </div>
       <div className="grid grid-cols-2 gap-0">

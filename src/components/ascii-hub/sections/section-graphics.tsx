@@ -120,11 +120,11 @@ function Oscilloscope() {
 }
 
 const pipelineStages = [
-  { name: "Input Assembly", icon: "IA", desc: "Vertex data" },
-  { name: "Vertex Shader", icon: "VS", desc: "Transform" },
-  { name: "Rasterizer", icon: "RS", desc: "Triangles → frags" },
-  { name: "Fragment Shader", icon: "FS", desc: "Per-pixel color" },
-  { name: "Output Merger", icon: "OM", desc: "Depth test + blend" },
+  { name: "Store Message", icon: "SM", desc: "Store locally" },
+  { name: "Find Next Hop", icon: "NH", desc: "Find neighbor" },
+  { name: "Buffer & Wait", icon: "BW", desc: "Wait for path" },
+  { name: "Forward When Able", icon: "FW", desc: "Relay forward" },
+  { name: "Deliver to Recipient", icon: "DR", desc: "Hand off" },
 ]
 
 export function SectionGraphics({ section }: { section: TechSection }) {
@@ -159,7 +159,7 @@ export function SectionGraphics({ section }: { section: TechSection }) {
         >
           <div className="mb-2 flex items-center gap-2">
             <span className="h-2 w-2 animate-pulse bg-foreground" />
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">SIGNAL — GPU WAVEFORM</span>
+            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">SIGNAL — MESH ACTIVITY</span>
           </div>
           <Oscilloscope />
         </motion.div>

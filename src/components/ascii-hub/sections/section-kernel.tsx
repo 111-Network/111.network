@@ -17,16 +17,14 @@ function BootSequence() {
   const isInView = useInView(ref, { once: true })
   const [lines, setLines] = useState<string[]>([])
   const bootLines = [
-    "[  0.000000] Linux version 6.1.0-monochrome (gcc 13.2.0)",
-    "[  0.000012] Command line: BOOT_IMAGE=/vmlinuz root=/dev/sda1",
-    "[  0.000034] x86/cpu: AMD Ryzen 9 7950X detected",
-    "[  0.000089] Memory: 16384000K/16777216K available",
-    "[  0.001204] ACPI: Core revision 20221020",
-    "[  0.002100] PCI: Using configuration type 1",
-    "[  0.003400] Scheduler: CFS initialized (16 CPUs)",
-    "[  0.004200] NET: Registered PF_INET protocol family",
-    "[  0.005100] VFS: Mounted root filesystem (ext4)",
-    "[  OK  ] System ready.",
+    "[  0.000] 111 Protocol v0.0.5 initializing...",
+    "[  0.012] Transport adapters: radio, phone, email, satellite",
+    "[  0.034] Mesh routing table seeded",
+    "[  0.089] Store-and-forward buffer: 16384 slots",
+    "[  0.204] Encryption keys generated",
+    "[  0.340] Peer discovery broadcast sent",
+    "[  0.420] NET: 3 neighbors found",
+    "[  0.510] Status: MESH ONLINE",
   ]
 
   useEffect(() => {
@@ -106,10 +104,10 @@ export function SectionKernel({ section }: { section: TechSection }) {
               <div className="h-2.5 w-2.5 border border-background/30 bg-background/30" />
             </div>
             <span className="font-mono text-xs text-background">
-              kernel@monochrome:~
+              protocol@111-network:~
             </span>
           </div>
-          <span className="font-mono text-[10px] text-background/50">bash 5.2.15</span>
+          <span className="font-mono text-[10px] text-background/50">mesh v0.0.5</span>
         </div>
 
         {/* Terminal body with two columns */}
@@ -118,7 +116,7 @@ export function SectionKernel({ section }: { section: TechSection }) {
           <div className="border-b border-border lg:col-span-3 lg:border-b-0 lg:border-r">
             <div className="border-b border-border px-4 py-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                Boot Sequence
+                Network Bootstrap
               </span>
             </div>
             <BootSequence />
@@ -128,7 +126,7 @@ export function SectionKernel({ section }: { section: TechSection }) {
           <div className="flex flex-col lg:col-span-2">
             <div className="border-b border-border px-4 py-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                System Overview
+                Protocol Overview
               </span>
             </div>
 
@@ -169,7 +167,7 @@ export function SectionKernel({ section }: { section: TechSection }) {
           <div className="flex items-center gap-2 border-b border-border px-4 py-2">
             <div className="h-1.5 w-1.5 bg-foreground" />
             <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              Architecture Schematic
+              Network Stack
             </span>
           </div>
           <pre className="overflow-x-auto p-6 font-mono text-xs leading-relaxed text-muted-foreground">

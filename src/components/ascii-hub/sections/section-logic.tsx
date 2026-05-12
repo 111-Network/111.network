@@ -15,29 +15,29 @@ const shadow = "rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 
 */
 
 function InteractiveTruthTable() {
-  const [inputs, setInputs] = useState({ A: 0, B: 0, C: 0, D: 0 })
+  const [inputs, setInputs] = useState({ Radio: 0, Phone: 0, Email: 0, Satellite: 0 })
 
-  const toggle = (key: "A" | "B" | "C" | "D") => {
+  const toggle = (key: "Radio" | "Phone" | "Email" | "Satellite") => {
     setInputs((prev) => ({ ...prev, [key]: prev[key] === 0 ? 1 : 0 }))
   }
 
-  // Q = (A AND B) OR (C AND D)
-  const Q = (inputs.A && inputs.B) || (inputs.C && inputs.D) ? 1 : 0
-  const AB = inputs.A && inputs.B ? 1 : 0
-  const CD = inputs.C && inputs.D ? 1 : 0
+  // route = any_available(transport[])
+  const Q = (inputs.Radio && inputs.Phone) || (inputs.Email && inputs.Satellite) ? 1 : 0
+  const AB = inputs.Radio && inputs.Phone ? 1 : 0
+  const CD = inputs.Email && inputs.Satellite ? 1 : 0
 
   return (
     <div className="border border-border p-6" style={{ boxShadow: shadow }}>
       <div className="mb-4 flex items-center gap-2">
         <div className="h-1.5 w-1.5 bg-foreground" />
         <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          Interactive Logic Gate
+          Transport Selector
         </span>
       </div>
 
       {/* Input toggles */}
       <div className="grid grid-cols-4 gap-3">
-        {(["A", "B", "C", "D"] as const).map((key) => (
+        {(["Radio", "Phone", "Email", "Satellite"] as const).map((key) => (
           <button
             key={key}
             onClick={() => toggle(key)}
@@ -81,7 +81,7 @@ function InteractiveTruthTable() {
       </div>
 
       <div className="mt-4 text-center font-mono text-[10px] text-muted-foreground">
-        Q = (A AND B) OR (C AND D) — Click inputs to toggle
+        route = any_available(transport[]) — Click inputs to toggle
       </div>
     </div>
   )
@@ -111,7 +111,7 @@ function AnimatedWaveform() {
       <div className="mb-3 flex items-center gap-2">
         <div className="h-1.5 w-1.5 bg-foreground" />
         <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          Clock Signal
+          Signal Strength
         </span>
       </div>
       <div className="flex h-12 items-end gap-px">
@@ -197,7 +197,7 @@ export function SectionLogic({ section }: { section: TechSection }) {
           >
             <div className="flex items-center gap-2 border-b border-border px-4 py-2">
               <div className="h-1.5 w-1.5 bg-foreground" />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Data Sheet</span>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Transport Specs</span>
             </div>
             <div className="grid grid-cols-2 gap-0">
               {section.specs.map((spec, i) => (

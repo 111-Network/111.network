@@ -13,10 +13,10 @@ export const techSections: TechSection[] = [
   {
     id: "kernel-systems",
     number: "01",
-    title: "Kernel & Systems",
-    subtitle: "Low-level architecture",
+    title: "The Protocol",
+    subtitle: "Core mesh architecture",
     description:
-      "Exploring the foundational layer where hardware meets software. Kernel modules, system calls, and memory management form the backbone of every computing experience.",
+      "The foundational layer where messages meet the mesh. Routing tables, store-and-forward buffers, and transport adapters form the backbone of every connection.",
     ascii: `
     ┌─────────────────────────┐
     │  KERNEL SPACE            │
@@ -32,10 +32,10 @@ export const techSections: TechSection[] = [
     │  └───────────────────┘  │
     └─────────────────────────┘`,
     specs: [
-      { label: "Architecture", value: "x86_64 / ARM64" },
-      { label: "Scheduler", value: "CFS (Completely Fair)" },
-      { label: "Memory Model", value: "Virtual Paging" },
-      { label: "IPC", value: "Pipes, Sockets, Shared Mem" },
+      { label: "Routing", value: "Store & Forward" },
+      { label: "Encryption", value: "End-to-End" },
+      { label: "Transport", value: "Multi-Channel" },
+      { label: "Range", value: "Device-to-Device" },
     ],
     commands: [
       "$ uname -a",
@@ -49,10 +49,10 @@ export const techSections: TechSection[] = [
   {
     id: "network-topologies",
     number: "02",
-    title: "Network Topologies",
-    subtitle: "Distributed connectivity",
+    title: "The Mesh",
+    subtitle: "Peer-to-peer connectivity",
     description:
-      "Mapping the invisible infrastructure that connects billions of nodes. From mesh networks to star topologies, understanding how data traverses the physical and logical layers.",
+      "Mapping the invisible web of people and devices that carry messages across the world. From phone to phone, radio to radio — every node strengthens the whole.",
     ascii: `
        [A]───────[B]
        /│\\         │\\
@@ -64,10 +64,10 @@ export const techSections: TechSection[] = [
         │           │
        [I]───────[J]`,
     specs: [
-      { label: "Protocol", value: "TCP/IP Stack" },
+      { label: "Protocol", value: "111 Mesh v0.0.5" },
       { label: "Topology", value: "Hybrid Mesh" },
-      { label: "Latency", value: "< 10ms p99" },
-      { label: "Bandwidth", value: "10 Gbps" },
+      { label: "Latency", value: "Variable (hops)" },
+      { label: "Redundancy", value: "Path Diversity" },
     ],
     commands: [
       "$ traceroute node-alpha.mesh",
@@ -82,9 +82,9 @@ export const techSections: TechSection[] = [
     id: "distributed-ledger",
     number: "03",
     title: "Distributed Ledger",
-    subtitle: "Consensus architecture",
+    subtitle: "Network state layer",
     description:
-      "Decentralized systems where trust is computed, not assumed. Examining consensus mechanisms, Merkle trees, and the cryptographic primitives that secure distributed state.",
+      "The 111 Network uses a distributed ledger to anchor public messages, verify identity claims, and eventually secure the full message database. Trust is computed, not assumed. Every public shout is a signed entry. Every node validates.",
     ascii: `
     Block #1021        Block #1022
     ┌──────────┐      ┌──────────┐
@@ -116,10 +116,10 @@ export const techSections: TechSection[] = [
   {
     id: "compiler-design",
     number: "04",
-    title: "Compiler Design",
-    subtitle: "Language transformation",
+    title: "Private Messages",
+    subtitle: "End-to-end encryption",
     description:
-      "The art of translating human intent into machine execution. Lexical analysis, parsing, AST transformation, and code generation form the pipeline that bridges abstraction and silicon.",
+      "Message people directly. Only you and the other person can read what's sent. No one else. Messages hop between nearby devices until they find a way to the intended user. The more users, the faster and wider the range.",
     ascii: `
     Source Code
         │
@@ -137,10 +137,10 @@ export const techSections: TechSection[] = [
     │ CODE GEN     │ ──> IR / Binary
     └──────────────┘`,
     specs: [
-      { label: "Frontend", value: "Recursive Descent" },
-      { label: "IR", value: "SSA Form" },
-      { label: "Optimization", value: "LLVM Pass Pipeline" },
-      { label: "Target", value: "x86_64 / WASM" },
+      { label: "Encryption", value: "E2E (NaCl)" },
+      { label: "Delivery", value: "Best Effort" },
+      { label: "Max Size", value: "64 KB" },
+      { label: "Expiry", value: "30 days" },
     ],
     commands: [
       "$ compile --emit-ast main.src",
@@ -154,10 +154,10 @@ export const techSections: TechSection[] = [
   {
     id: "graphics-pipelines",
     number: "05",
-    title: "Graphics Pipelines",
-    subtitle: "Rendering architecture",
+    title: "Offline Mode",
+    subtitle: "No internet required",
     description:
-      "From vertices to pixels, the graphics pipeline transforms mathematical abstractions into visual reality. Shaders, rasterization, and GPU compute redefine what screens can display.",
+      "No bars? No Wi-Fi? No problem. Messages travel through phones, laptops, plug-in devices, even homemade tools. If someone nearby is connected, they help move messages for others too.",
     ascii: `
     Vertices ──> Vertex Shader
                      │
@@ -176,10 +176,10 @@ export const techSections: TechSection[] = [
               │  └──┴──┴──┘ │
               └─────────────┘`,
     specs: [
-      { label: "API", value: "Vulkan / WebGPU" },
-      { label: "Shading", value: "PBR (Cook-Torrance)" },
-      { label: "Resolution", value: "4K @ 120Hz" },
-      { label: "Draw Calls", value: "< 1000 / frame" },
+      { label: "Storage", value: "Local Buffer" },
+      { label: "Range", value: "100m - 10km" },
+      { label: "Power", value: "Low Energy" },
+      { label: "Fallback", value: "Any Transport" },
     ],
     commands: [
       "$ gpu-info --capabilities",
@@ -193,10 +193,10 @@ export const techSections: TechSection[] = [
   {
     id: "logic-synthesis",
     number: "06",
-    title: "Logic Synthesis",
-    subtitle: "Digital design",
+    title: "Multi-Transport",
+    subtitle: "Any way it can",
     description:
-      "Where Boolean algebra meets silicon. Logic gates, flip-flops, and RTL design form the bridge between abstract computation theory and physical circuit implementation.",
+      "Messages are packed so they can travel via radios, phones, email, satellite tools. Smart routing picks the best path available. If one channel is down, the message finds another.",
     ascii: `
         A ──┐
             ├──[AND]──┐
@@ -213,10 +213,10 @@ export const techSections: TechSection[] = [
     0 0 1 1 │ 1
     1 1 1 1 │ 1`,
     specs: [
-      { label: "HDL", value: "SystemVerilog" },
-      { label: "Process", value: "5nm FinFET" },
-      { label: "Clock", value: "3.2 GHz" },
-      { label: "Gates", value: "~10B transistors" },
+      { label: "Channels", value: "Radio / Phone / Email / Satellite" },
+      { label: "Fallback", value: "Auto-Switch" },
+      { label: "Packet Size", value: "256 B - 64 KB" },
+      { label: "Encoding", value: "Binary / Text" },
     ],
     commands: [
       "$ synth --target fpga design.sv",
@@ -230,10 +230,10 @@ export const techSections: TechSection[] = [
   {
     id: "concurrency-models",
     number: "07",
-    title: "Concurrency Models",
-    subtitle: "Parallel execution",
+    title: "Identity & Privacy",
+    subtitle: "You stay in control",
     description:
-      "Managing simultaneous execution paths without chaos. Actor models, CSP channels, and lock-free data structures enable programs to harness multi-core architectures safely.",
+      "You don't need to sign up. Just open the app and go. Want to find friends later? Add an email or phone number anytime to reconnect. You stay in control of your identity and privacy.",
     ascii: `
     Thread 1 ──┐         ┌── Thread 4
                │         │
@@ -248,10 +248,10 @@ export const techSections: TechSection[] = [
               │  Cap: 128  │
               └───────────┘`,
     specs: [
-      { label: "Model", value: "CSP + Actor Hybrid" },
-      { label: "Threads", value: "M:N Green Threads" },
-      { label: "Channels", value: "Bounded MPMC" },
-      { label: "Scheduler", value: "Work-Stealing" },
+      { label: "Signup", value: "None Required" },
+      { label: "Identity", value: "Self-Sovereign" },
+      { label: "Recovery", value: "Email / Phone" },
+      { label: "Data", value: "Zero Knowledge" },
     ],
     commands: [
       "$ runtime --stats",
@@ -265,10 +265,10 @@ export const techSections: TechSection[] = [
   {
     id: "hardware-abstraction",
     number: "08",
-    title: "Hardware Abstraction",
-    subtitle: "Interface layers",
+    title: "Network Bridges",
+    subtitle: "Connect the networks",
     description:
-      "The invisible translators between software intent and hardware capability. HALs, device drivers, and firmware form the contract that makes portable computing possible.",
+      "Already on another trusted network? A small bridge lets you carry and receive 111 messages without leaving it. Two-way by design. Thin by design. Built into every device.",
     ascii: `
     ┌─────────────────────────┐
     │     APPLICATION          │
@@ -285,10 +285,10 @@ export const techSections: TechSection[] = [
     │        [HW]              │
     └─────────────────────────┘`,
     specs: [
-      { label: "Interface", value: "MMIO / PIO" },
-      { label: "Bus", value: "PCIe Gen5 x16" },
-      { label: "DMA", value: "IOMMU Protected" },
-      { label: "Firmware", value: "UEFI 2.10" },
+      { label: "Direction", value: "Two-Way" },
+      { label: "Overhead", value: "Minimal" },
+      { label: "Compatibility", value: "Meshtastic / etc." },
+      { label: "Integration", value: "Built-In" },
     ],
     commands: [
       "$ lspci -v | head -4",

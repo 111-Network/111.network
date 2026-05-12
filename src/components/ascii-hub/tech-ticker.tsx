@@ -3,22 +3,21 @@
 import { motion } from "framer-motion"
 
 const TECH_ITEMS = [
-  "Next.js 16",
-  "React 19",
-  "TypeScript",
-  "Tailwind CSS 4",
-  "Framer Motion",
-  "Geist Font",
-  "Vercel",
-  "Node.js",
-  "WebAssembly",
-  "Rust",
-  "Go",
-  "Linux Kernel",
-  "Docker",
-  "Kubernetes",
-  "gRPC",
-  "PostgreSQL",
+  "Mesh Network",
+  "P2P",
+  "End-to-End Encryption",
+  "Store & Forward",
+  "Offline First",
+  "Radio",
+  "Satellite",
+  "Open Source",
+  "Cross-Platform",
+  "No Internet Required",
+  "Anonymous",
+  "Decentralized",
+  "Community Built",
+  "Global Reach",
+  "Resilient",
 ]
 
 export function TechTicker() {
