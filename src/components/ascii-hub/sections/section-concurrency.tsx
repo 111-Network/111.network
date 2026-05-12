@@ -7,25 +7,25 @@ import type { TechSection } from "@/lib/sections-data"
 const shadow = "rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px"
 
 /*
-  SECTION 07: CONCURRENCY MODELS
+  SECTION 07: IDENTITY & PRIVACY
   Style: System activity monitor. Animated horizontal lanes
-  representing threads over time, like a profiler timeline view.
+  representing identity modes over time, like a profiler timeline view.
   Real-time feeling with animated progress bars and status updates.
 */
 
-interface ThreadLane {
+interface IdentityLane {
   id: string
   label: string
   segments: { start: number; end: number; type: "work" | "wait" | "blocked" }[]
 }
 
-const threadNames = ["anonymous", "email-linked", "phone-linked", "device-paired", "bridge-user", "verified"]
+const identityModes = ["anonymous", "email-linked", "phone-linked", "device-paired", "bridge-user", "verified"]
 
 type SegType = "work" | "wait" | "blocked"
 
-function generateLanes(): ThreadLane[] {
-  return threadNames.map((label, i) => {
-    const segments: ThreadLane["segments"] = []
+function generateLanes(): IdentityLane[] {
+  return identityModes.map((label, i) => {
+    const segments: IdentityLane["segments"] = []
     let cursor = Math.floor(Math.random() * 10)
     const types: SegType[] = ["work", "wait", "blocked"]
     while (cursor < 100) {
@@ -42,7 +42,7 @@ function generateLanes(): ThreadLane[] {
 function TimelineView() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true })
-  const [lanes, setLanes] = useState<ThreadLane[]>([])
+  const [lanes, setLanes] = useState<IdentityLane[]>([])
   const [tick, setTick] = useState(0)
   const [mounted, setMounted] = useState(false)
 
@@ -81,8 +81,8 @@ function TimelineView() {
       <div className="flex border-b border-border px-4 py-1">
         <div className="w-20 flex-shrink-0" />
         <div className="flex flex-1 justify-between font-mono text-[9px] text-muted-foreground/50">
-          {[0, 20, 40, 60, 80, 100].map((t) => (
-            <span key={t}>{t}ms</span>
+          {["Anonymous", "Basic", "Linked", "Verified", "Trusted", "Core"].map((label) => (
+            <span key={label}>{label}</span>
           ))}
         </div>
       </div>

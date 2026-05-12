@@ -7,7 +7,7 @@ import type { TechSection } from "@/lib/sections-data"
 const shadow = "rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px"
 
 /*
-  SECTION 08: HARDWARE ABSTRACTION
+  SECTION 08: NETWORK BRIDGES
   Style: Exploded view / layer cake. Each layer is a full-width band
   that you can hover to expand. Very different from the rest:
   big bold type, stacking layers that feel physical/tangible.
@@ -19,7 +19,7 @@ const layers = [
     level: "L4",
     name: "USER NETWORKS",
     desc: "Other mesh networks (Meshtastic, etc.)",
-    detail: "HTTP servers, CLI tools, GUI apps, WASM modules",
+    detail: "Meshtastic, Reticulum, HAM radio, custom mesh apps",
     color: "bg-foreground",
     textColor: "text-background",
   },
@@ -27,7 +27,7 @@ const layers = [
     level: "L3",
     name: "BRIDGE SHIM",
     desc: "Minimal translation layer",
-    detail: "Process scheduling, memory management, file systems",
+    detail: "Minimal translation, message format normalization",
     color: "bg-foreground/80",
     textColor: "text-background",
   },
@@ -35,7 +35,7 @@ const layers = [
     level: "L2",
     name: "MESSAGE GATEWAY",
     desc: "Message format converter",
-    detail: "MMIO registers, DMA controllers, interrupt handlers",
+    detail: "Packet routing, store-and-forward, hop counting",
     color: "bg-foreground/60",
     textColor: "text-background",
   },
@@ -43,7 +43,7 @@ const layers = [
     level: "L1",
     name: "PROTOCOL ADAPTER",
     desc: "Protocol compatibility layer",
-    detail: "GPU drivers, NIC firmware, storage controllers",
+    detail: "Transport mapping, radio/phone/email/satellite",
     color: "bg-foreground/40",
     textColor: "text-foreground",
   },
@@ -51,7 +51,7 @@ const layers = [
     level: "L0",
     name: "111 CORE",
     desc: "111 Network core protocol",
-    detail: "FinFET transistors, copper interconnects, photolithography",
+    detail: "Mesh protocol, encryption, peer discovery, ledger",
     color: "bg-foreground/20",
     textColor: "text-foreground",
   },
@@ -115,16 +115,16 @@ function LayerStack() {
   )
 }
 
-function RegisterView() {
-  const registers = [
-    { name: "meshtastic-bridge", value: "ACTIVE" },
-    { name: "RBX", value: "0x0000000000000001" },
-    { name: "RCX", value: "0x00007FFE4B3C2A08" },
-    { name: "RDX", value: "0x0000000000000000" },
-    { name: "RSP", value: "0x00007FFE4B3C29E0" },
-    { name: "RBP", value: "0x00007FFE4B3C2A00" },
-    { name: "RIP", value: "0x00005555555551A9" },
-    { name: "RFLAGS", value: "0x0000000000000246" },
+function BridgeStatusView() {
+  const bridges = [
+    { name: "node-1", value: "0xA3F...2B" },
+    { name: "node-2", value: "0xB7D...F1" },
+    { name: "relay-1", value: "0xC12...8A" },
+    { name: "bridge", value: "0xD9E...3C" },
+    { name: "hub-1", value: "0xE4A...7D" },
+    { name: "peer-1", value: "0xF5B...9E" },
+    { name: "uplink", value: "0xG6C...0F" },
+    { name: "node-3", value: "0xH7D...1A" },
   ]
 
   return (
@@ -136,19 +136,19 @@ function RegisterView() {
         </span>
       </div>
       <div className="grid grid-cols-2 gap-0">
-        {registers.map((reg, i) => (
+        {bridges.map((bridge, i) => (
           <motion.div
-            key={reg.name}
+            key={bridge.name}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 + i * 0.05 }}
             className={`flex items-center gap-3 px-4 py-2 font-mono text-xs ${
-              i < registers.length - 2 ? "border-b border-border" : ""
+              i < bridges.length - 2 ? "border-b border-border" : ""
             } ${i % 2 === 0 ? "border-r border-border" : ""}`}
           >
-            <span className="w-12 font-bold text-foreground">{reg.name}</span>
-            <span className="text-[10px] text-muted-foreground">{reg.value}</span>
+            <span className="w-12 font-bold text-foreground">{bridge.name}</span>
+            <span className="text-[10px] text-muted-foreground">{bridge.value}</span>
           </motion.div>
         ))}
       </div>
@@ -197,7 +197,7 @@ export function SectionHardware({ section }: { section: TechSection }) {
             viewport={{ once: true }}
             transition={{ delay: 0.25 }}
           >
-            <RegisterView />
+            <BridgeStatusView />
           </motion.div>
 
           <motion.div

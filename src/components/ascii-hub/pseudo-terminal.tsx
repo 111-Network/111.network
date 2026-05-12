@@ -15,7 +15,7 @@ const COMMANDS: Record<string, string[]> = {
     "  status     - Show mesh status",
     "  clear      - Clear terminal",
     "  ascii      - Show ASCII art",
-    "  v0         - ...",
+    "  version    - Show version info",
   ],
   sections: [
     "01  The Protocol",
@@ -69,29 +69,17 @@ const COMMANDS: Record<string, string[]> = {
     "  ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝",
     "",
   ],
-  v0: [
-    "",
-    "  ██╗    ██╗      ██████╗ ██╗   ██╗███████╗    ██╗   ██╗ ██████╗ ",
-    "  ██║    ██║     ██╔═══██╗██║   ██║██╔════╝    ██║   ██║██╔═══██╗",
-    "  ██║    ██║     ██║   ██║██║   ██║█████╗      ██║   ██║██║   ██║",
-    "  ██║    ██║     ██║   ██║╚██╗ ██╔╝██╔══╝      ╚██╗ ██╔╝██║   ██║",
-    "  ██████╗███████╗╚██████╔╝ ╚████╔╝ ███████╗     ╚████╔╝ ╚██████╔╝",
-    "  ╚═════╝╚══════╝ ╚═════╝   ╚═══╝  ╚══════╝      ╚═══╝   ╚═════╝ ",
-    "",
-    "  ██╗  ██╗    ██████╗     ██╗  ██╗██████╗ ",
-    "  ██║  ██║   ██╔═████╗    ╚██╗██╔╝╚════██╗",
-    "  ██║  ██║   ██║██╔██║     ╚███╔╝   ███╔═╝",
-    "  ╚██╗██╔╝   ████╔╝██║     ██╔██╗  ██╔══╝ ",
-    "   ╚███╔╝    ╚██████╔╝    ██╔╝ ██╗ ███████╗",
-    "    ╚══╝      ╚═════╝     ╚═╝  ╚═╝ ╚══════╝",
-    "",
-    "  <3  <3  <3  <3  <3  <3  <3  <3  <3  <3",
-    "",
+  version: [
+    "111 Network",
+    "Version: 0.0.5 Experimental",
+    "Protocol: 111 Mesh",
+    "Encryption: End-to-End",
+    "Status: OPERATIONAL",
   ],
 }
 
 interface TerminalLine {
-  type: "input" | "output" | "v0"
+  type: "input" | "output"
   content: string
 }
 
@@ -124,13 +112,13 @@ export function PseudoTerminal() {
       return
     }
 
-    if (trimmed === "v0") {
+    if (trimmed === "version") {
       setLines([...baseLines, { type: "output", content: "" }])
       setInput("")
-      const v0Lines = COMMANDS["v0"]
-      v0Lines.forEach((line, i) => {
+      const versionLines = COMMANDS["version"]
+      versionLines.forEach((line, i) => {
         setTimeout(() => {
-          setLines((prev) => [...prev, { type: "v0", content: line }])
+          setLines((prev) => [...prev, { type: "output", content: line }])
         }, i * 80)
       })
       return
@@ -211,8 +199,6 @@ export function PseudoTerminal() {
               className={`font-mono text-xs leading-relaxed ${
                 line.type === "input"
                   ? "text-foreground"
-                  : line.type === "v0"
-                  ? "text-foreground brightness-125"
                   : "text-muted-foreground"
               }`}
             >

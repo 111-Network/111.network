@@ -7,7 +7,7 @@ import type { TechSection } from "@/lib/sections-data"
 const shadow = "rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px"
 
 /*
-  SECTION 04: COMPILER DESIGN
+  SECTION 04: PRIVATE MESSAGES
   Style: Code editor / IDE aesthetic. Split pane with source code on the left
   and a live "transformation" view on the right. Each pipeline stage is a
   horizontal "tab" you can click. Syntax-highlighted monospace everywhere.
@@ -17,89 +17,68 @@ const stages = [
   {
     name: "PLAIN",
     label: "Your Message",
-    code: `fn fibonacci(n: u32) -> u32 {
-  match n {
-    0 => 0,
-    1 => 1,
-    _ => fibonacci(n - 1)
-         + fibonacci(n - 2),
-  }
-}`,
+    code: `Hey! Are you at the
+community center today?
+Want to sync messages.
+
+-- sent via 111 Mesh`,
   },
   {
     name: "ENCRYPT",
     label: "Encrypted Packet",
-    code: `[FN] [IDENT:"fibonacci"] [LPAREN]
-[IDENT:"n"] [COLON] [TYPE:"u32"]
-[RPAREN] [ARROW] [TYPE:"u32"]
-[LBRACE] [MATCH] [IDENT:"n"]
-[LBRACE] [LIT:0] [FAT_ARROW]
-[LIT:0] [COMMA] [LIT:1]
-[FAT_ARROW] [LIT:1] [COMMA]
-[UNDERSCORE] [FAT_ARROW] ...`,
+    code: `[HEADER]
+  from: id:7f3a...e1
+  to:   id:9b2c...d4
+  type: DM
+  size: 42 bytes
+
+[PAYLOAD]
+  0x7A 0x3F 0xE1 0xB2 ...
+  0xC8 0x91 0x4D 0x6A ...
+  (NaCl box encryption)
+
+[SIGNATURE]
+  sig: 0xA4F...2E (valid)`,
   },
   {
     name: "ROUTE",
     label: "Route Selection",
-    code: `Program
-└─ FnDecl "fibonacci"
-   ├─ Param: n (u32)
-   ├─ ReturnType: u32
-   └─ Body: MatchExpr
-      ├─ Arm: 0 => Lit(0)
-      ├─ Arm: 1 => Lit(1)
-      └─ Arm: _ => BinOp(+)
-         ├─ Call(fibonacci, Sub(n, 1))
-         └─ Call(fibonacci, Sub(n, 2))`,
+    code: `Route Analysis
+├─ You (id:7f3a...e1)
+│  └─ range: 150m bluetooth
+├─ Hop 1: id:a1b2...c3
+│  └─ relay: phone + mesh radio
+├─ Hop 2: id:d4e5...f6
+│  └─ relay: wifi + satellite uplink
+└─ Target: id:9b2c...d4
+   └─ status: reachable (3 hops)
+
+Path: secure, encrypted at every hop`,
   },
   {
     name: "DELIVER",
     label: "Delivery Path",
-    code: `define i32 @fibonacci(i32 %n) {
-entry:
-  %cmp0 = icmp eq i32 %n, 0
-  br i1 %cmp0, label %ret0, %chk1
-ret0:
-  ret i32 0
-chk1:
-  %cmp1 = icmp eq i32 %n, 1
-  br i1 %cmp1, label %ret1, %rec
-ret1:
-  ret i32 1
-rec:
-  %sub1 = sub i32 %n, 1
-  %call1 = call i32 @fibonacci(%sub1)
-  %sub2 = sub i32 %n, 2
-  %call2 = call i32 @fibonacci(%sub2)
-  %sum = add i32 %call1, %call2
-  ret i32 %sum
-}`,
+    code: `[07:42:13] Message queued at origin
+[07:42:14] Encrypted with recipient pubkey
+[07:42:15] Broadcast to nearby nodes
+[07:42:18] Relayed via id:a1b2...c3
+[07:42:22] Uplink to satellite node
+[07:42:31] Downlinked to mesh segment
+[07:42:35] Arrived at recipient region
+[07:42:36] Delivered to id:9b2c...d4
+[07:42:36] Recipient decrypted & read`,
   },
   {
     name: "READ",
     label: "Decrypted Read",
-    code: `fibonacci:
-  push   rbp
-  mov    rbp, rsp
-  push   rbx
-  push   r12
-  mov    ebx, edi
-  cmp    ebx, 1
-  jbe    .base_case
-  lea    edi, [rbx - 1]
-  call   fibonacci
-  mov    r12d, eax
-  lea    edi, [rbx - 2]
-  call   fibonacci
-  add    eax, r12d
-  jmp    .done
-.base_case:
-  mov    eax, ebx
-.done:
-  pop    r12
-  pop    rbx
-  pop    rbp
-  ret`,
+    code: `Hey! Are you at the
+community center today?
+Want to sync messages.
+
+-- sent via 111 Mesh
+-- received: 07:42:36
+-- hops: 3
+-- encryption: verified`,
   },
 ]
 
