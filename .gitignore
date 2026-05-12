@@ -41,5 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 # legacy / reference folders
-_template/
 _outdated-web/
+
+# agent instructions
+AGENTS.md
+CLAUDE.md

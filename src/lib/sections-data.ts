@@ -86,18 +86,18 @@ export const techSections: TechSection[] = [
     description:
       "The 111 Network uses a distributed ledger to anchor public messages, verify identity claims, and eventually secure the full message database. Trust is computed, not assumed. Every public shout is a signed entry. Every node validates.",
     ascii: `
-    Block #1021        Block #1022
-    ┌──────────┐      ┌──────────┐
-    │ Hash: 0xA│─────>│ Hash: 0xB│
-    │ Prev: 0x9│      │ Prev: 0xA│
-    │ Nonce: 42│      │ Nonce: 87│
-    │ Tx: 12   │      │ Tx: 8    │
-    └──────────┘      └──────────┘
-         │                  │
-    ┌────┴────┐        ┌────┴────┐
-    │ Merkle  │        │ Merkle  │
-    │  Root   │        │  Root   │
-    └─────────┘        └─────────┘`,
+    shout #1021          shout #1022
+    ┌────────────┐       ┌────────────┐
+    │ sig:   0xA │──────▶│ sig:   0xB │
+    │ prev:  0x9 │       │ prev:  0xA │
+    │ from:  id7 │       │ from:  id3 │
+    │ time:  t   │       │ time:  t'  │
+    └────────────┘       └────────────┘
+          │                    │
+    ┌─────┴──────┐       ┌─────┴──────┐
+    │  network   │       │  network   │
+    │   anchor   │       │   anchor   │
+    └────────────┘       └────────────┘`,
     specs: [
       { label: "Consensus", value: "Proof of Stake" },
       { label: "Block Time", value: "~12 seconds" },
@@ -121,21 +121,17 @@ export const techSections: TechSection[] = [
     description:
       "Message people directly. Only you and the other person can read what's sent. No one else. Messages hop between nearby devices until they find a way to the intended user. The more users, the faster and wider the range.",
     ascii: `
-    Source Code
-        │
-    ┌───▼───┐
-    │ LEXER │ ──> Tokens
-    └───┬───┘
-    ┌───▼────┐
-    │ PARSER │ ──> AST
-    └───┬────┘
-    ┌───▼──────────┐
-    │ SEMANTIC     │
-    │ ANALYSIS     │ ──> Typed AST
-    └───┬──────────┘
-    ┌───▼──────────┐
-    │ CODE GEN     │ ──> IR / Binary
-    └──────────────┘`,
+    Alice                             Bob
+      │                                ▲
+      ▼                                │
+    [plaintext]                  [plaintext]
+      │                                ▲
+      ▼                                │
+    [encrypt: pub_bob]    [decrypt: priv_bob]
+      │                                ▲
+      ▼                                │
+    [cipher] ──▶ mesh hops ──▶ [cipher]
+              (unreadable to relays)`,
     specs: [
       { label: "Encryption", value: "E2E (NaCl)" },
       { label: "Delivery", value: "Best Effort" },
@@ -159,22 +155,19 @@ export const techSections: TechSection[] = [
     description:
       "No bars? No Wi-Fi? No problem. Messages travel through phones, laptops, plug-in devices, even homemade tools. If someone nearby is connected, they help move messages for others too.",
     ascii: `
-    Vertices ──> Vertex Shader
-                     │
-              Primitive Assembly
-                     │
-               Rasterization
-                     │
-              Fragment Shader
-                     │
-              ┌──────┴──────┐
-              │  Framebuffer │
-              │  ┌──┬──┬──┐ │
-              │  │░░│▓▓│██│ │
-              │  ├──┼──┼──┤ │
-              │  │▓▓│░░│▓▓│ │
-              │  └──┴──┴──┘ │
-              └─────────────┘`,
+    ╳ wi-fi      ╳ cell tower
+        └────┬────┘
+             │  (no signal)
+             ▼
+       [your phone]
+             │
+             │  bluetooth / radio / lora
+             ▼
+    [nearby phone] ── [laptop] ── [radio]
+                                     │
+                                     │  (any uplink, anywhere)
+                                     ▼
+                                [recipient]`,
     specs: [
       { label: "Storage", value: "Local Buffer" },
       { label: "Range", value: "100m - 10km" },
@@ -198,20 +191,18 @@ export const techSections: TechSection[] = [
     description:
       "Messages are packed so they can travel via radios, phones, email, satellite tools. Smart routing picks the best path available. If one channel is down, the message finds another.",
     ascii: `
-        A ──┐
-            ├──[AND]──┐
-        B ──┘         │
-                      ├──[OR]── Q
-        C ──┐         │
-            ├──[AND]──┘
-        D ──┘
+    ┌─ radio ─────┐
+    │             │
+    ├─ bluetooth ─┤
+    │             │
+    ├─ phone ─────┼──▶ message
+    │             │
+    ├─ email ─────┤
+    │             │
+    └─ satellite ─┘
 
-    Truth Table:
-    A B C D │ Q
-    0 0 0 0 │ 0
-    1 1 0 0 │ 1
-    0 0 1 1 │ 1
-    1 1 1 1 │ 1`,
+    auto-switch: pick the best path,
+                 fall back when one drops`,
     specs: [
       { label: "Channels", value: "Radio / Phone / Email / Satellite" },
       { label: "Fallback", value: "Auto-Switch" },
@@ -235,18 +226,22 @@ export const techSections: TechSection[] = [
     description:
       "You don't need to sign up. Just open the app and go. Want to find friends later? Add an email or phone number anytime to reconnect. You stay in control of your identity and privacy.",
     ascii: `
-    Thread 1 ──┐         ┌── Thread 4
-               │         │
-    Thread 2 ──┼──[CH]──┼── Thread 5
-               │    │    │
-    Thread 3 ──┘    │    └── Thread 6
-                    │
-              ┌─────┴─────┐
-              │  Channel   │
-              │  Buffer    │
-              │  [|||||||] │
-              │  Cap: 128  │
-              └───────────┘`,
+    [open the app]
+          │
+          ▼
+    [keypair created locally]
+          │
+          ▼
+    [you are: id 7f3a...e1]
+          │
+    ┌─────┴─────────────────────┐
+    │ optional, anytime:         │
+    │   + email   (recovery)     │
+    │   + phone   (contacts)     │
+    └───────────────────────────┘
+          │
+          ▼
+    [data: zero-knowledge]`,
     specs: [
       { label: "Signup", value: "None Required" },
       { label: "Identity", value: "Self-Sovereign" },
@@ -270,20 +265,19 @@ export const techSections: TechSection[] = [
     description:
       "Already on another trusted network? A small bridge lets you carry and receive 111 messages without leaving it. Two-way by design. Thin by design. Built into every device.",
     ascii: `
-    ┌─────────────────────────┐
-    │     APPLICATION          │
-    ├─────────────────────────┤
-    │     OS / RUNTIME         │
-    ├─────────────────────────┤
-    │     HAL INTERFACE        │
-    │  ┌─────┐ ┌─────┐       │
-    │  │ GPU │ │ NIC │ ...   │
-    │  └──┬──┘ └──┬──┘       │
-    ├─────┼───────┼───────────┤
-    │     │  SILICON │         │
-    │     └────┬────┘         │
-    │        [HW]              │
-    └─────────────────────────┘`,
+    ┌──────────────────────────┐
+    │       111 Network         │
+    └────────────┬─────────────┘
+                 │
+           ┌─────┴──────┐
+           │   bridge   │
+           │  (two-way) │
+           └─────┬──────┘
+                 │
+    ┌────────────┴─────────────┐
+    │  Meshtastic │  LoRa       │
+    │  Reticulum  │  HAM radio  │
+    └──────────────────────────┘`,
     specs: [
       { label: "Direction", value: "Two-Way" },
       { label: "Overhead", value: "Minimal" },

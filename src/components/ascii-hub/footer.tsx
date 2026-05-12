@@ -2,17 +2,18 @@
 
 import { motion } from "framer-motion"
 import { Github, ArrowUp } from "lucide-react"
+import { GITHUB_URL } from "@/lib/site"
 
 const ASCII_LOGO = `
- ███╗   ███╗██╗  ██╗
- ████╗ ████║██║  ██║
- ██╔████╔██║███████║
- ██║╚██╔╝██║██╔══██║
- ██║ ╚═╝ ██║██║  ██║
- ╚═╝     ╚═╝╚═╝  ╚═╝`
+ ██╗   ██╗   ██╗
+███║  ███║  ███║
+╚██║  ╚██║  ╚██║
+ ██║   ██║   ██║
+ ██║   ██║   ██║
+ ╚═╝   ╚═╝   ╚═╝`
 
 const socialLinks = [
-  { name: "GitHub", icon: Github, href: "https://github.com" },
+  { name: "GitHub", icon: Github, href: GITHUB_URL },
 ]
 
 export function Footer() {
@@ -33,7 +34,7 @@ export function Footer() {
           >
             <pre
               className="font-mono text-[8px] leading-[10px] text-foreground/40 md:text-[10px] md:leading-[12px]"
-              aria-label="Monochrome Hub ASCII logo"
+              aria-label="111 Network ASCII logo"
               role="img"
             >
               {ASCII_LOGO}

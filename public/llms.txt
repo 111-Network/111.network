@@ -1,0 +1,30 @@
+# 111 Network
+
+> Free, Secure Communication for Everyone. A global mesh messaging network that runs on people, not servers — works with phones, radios, satellites, anything that can carry a message. No company. No government.
+
+## About
+
+111 Network is a peer-to-peer mesh messaging protocol that prioritizes resilience over reach. The network is composed of eight subsystems:
+
+- 01 The Protocol — message envelope, routing, signatures
+- 02 The Mesh — peer-to-peer transport topology
+- 03 Distributed Ledger — tamper-evident message log
+- 04 Private Messages — end-to-end encrypted DMs
+- 05 Offline Mode — store-and-forward when disconnected
+- 06 Multi-Transport — radio, phone, email, satellite
+- 07 Identity & Privacy — pseudonymous, key-based identity
+- 08 Network Bridges — gateways to other protocols
+
+Current release: v0.0.5 Experimental.
+
+## Resources
+
+- [Homepage](https://111.network/)
+- [GitHub](https://github.com/111-Network/111.network)
+- [Sitemap](https://111.network/sitemap.xml)
+
+## Brand
+
+- Tagline: Free, Secure Communication for Everyone
+- Principle: Built by people, not providers
+- Aesthetic: monochrome, pixel typography, terminal voice

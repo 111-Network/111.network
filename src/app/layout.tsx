@@ -2,6 +2,13 @@ import type { Metadata, Viewport } from "next"
 import { Geist_Mono, Silkscreen } from "next/font/google"
 import { GeistPixelLine } from "geist/font/pixel"
 import { Analytics } from "@vercel/analytics/next"
+import { JsonLd } from "@/components/seo/json-ld"
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TAGLINE,
+  SITE_URL,
+} from "@/lib/site"
 import "./globals.css"
 
 const geistMono = Geist_Mono({
@@ -18,40 +25,68 @@ const silkscreen = Silkscreen({
 const geistPixelLine = GeistPixelLine
 
 export const metadata: Metadata = {
-  title: "Monochrome ASCII Hub | Raw Logic. Refined Form.",
-  description:
-    "A minimalist, front-end only technical showcase utilizing a black and white aesthetic, pixel typography, and ASCII-based animations across eight distinct tech-focused sections.",
-  generator: "v0.app",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    template: `%s · ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "technology",
   keywords: [
-    "ASCII art",
-    "monochrome",
-    "frontend",
-    "engineering",
-    "showcase",
-    "developer",
-    "portfolio",
+    "mesh network",
+    "peer-to-peer messaging",
+    "decentralized communication",
+    "end-to-end encryption",
+    "offline messaging",
+    "radio mesh",
+    "satellite messaging",
+    "111 network",
+    "private messaging",
+    "distributed ledger",
+    "open source communication",
   ],
+  alternates: { canonical: "/" },
   icons: {
     icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
     ],
-    apple: "/apple-icon.png",
   },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    url: "/",
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  formatDetection: { telephone: false, email: false, address: false },
 }
 
 export const viewport: Viewport = {
   themeColor: "#000000",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
 }
@@ -67,6 +102,7 @@ export default function RootLayout({
         className={`${geistMono.variable} ${silkscreen.variable} font-mono antialiased`}
       >
         {children}
+        <JsonLd />
         <Analytics />
       </body>
     </html>

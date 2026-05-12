@@ -12,7 +12,4 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 **Folders:**
 - root — fresh Next.js, target of the rebuild.
-- `_template/` — standalone Next.js reference to copy patterns from.
 - `_outdated-web/` — legacy Turborepo monorepo (apps/packages, Supabase). Being retired; read-only reference.
-
-**Step 1 (current):** port the useful components and the single page from `_outdated-web/` into the root.
