@@ -66,7 +66,7 @@ function BootSequence() {
   )
 }
 
-export function SectionKernel({ section }: { section: TechSection }) {
+export function SectionProtocol({ section }: { section: TechSection }) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-20 lg:px-8 lg:py-32">
       {/* Section label with ghost number */}

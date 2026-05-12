@@ -82,7 +82,7 @@ Want to sync messages.
   },
 ]
 
-export function SectionCompiler({ section }: { section: TechSection }) {
+export function SectionMessages({ section }: { section: TechSection }) {
   const [activeStage, setActiveStage] = useState(0)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true })

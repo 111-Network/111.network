@@ -129,7 +129,7 @@ function AnimatedWaveform() {
   )
 }
 
-export function SectionLogic({ section }: { section: TechSection }) {
+export function SectionTransport({ section }: { section: TechSection }) {
   return (
     <div className="relative mx-auto max-w-7xl px-4 py-20 lg:px-8 lg:py-32">
       {/* Blueprint grid background */}

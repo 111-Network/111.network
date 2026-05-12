@@ -127,7 +127,7 @@ const pipelineStages = [
   { name: "Deliver to Recipient", icon: "DR", desc: "Hand off" },
 ]
 
-export function SectionGraphics({ section }: { section: TechSection }) {
+export function SectionOffline({ section }: { section: TechSection }) {
   return (
     <div className="py-20 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">

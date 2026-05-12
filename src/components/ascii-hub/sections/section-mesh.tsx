@@ -92,7 +92,7 @@ function NetworkMap() {
   )
 }
 
-export function SectionNetwork({ section }: { section: TechSection }) {
+export function SectionMesh({ section }: { section: TechSection }) {
   const metrics = [
     { label: "Nodes Active", value: "7/8", pct: 87 },
     { label: "Messages/Hour", value: "1,247", pct: 92 },

@@ -156,7 +156,7 @@ function BridgeStatusView() {
   )
 }
 
-export function SectionHardware({ section }: { section: TechSection }) {
+export function SectionBridges({ section }: { section: TechSection }) {
   return (
     <div className="py-20 lg:py-32">
       {/* Header: big number */}

@@ -11,7 +11,7 @@ export interface TechSection {
 
 export const techSections: TechSection[] = [
   {
-    id: "kernel-systems",
+    id: "the-protocol",
     number: "01",
     title: "The Protocol",
     subtitle: "Core mesh architecture",
@@ -47,7 +47,7 @@ export const techSections: TechSection[] = [
     ],
   },
   {
-    id: "network-topologies",
+    id: "the-mesh",
     number: "02",
     title: "The Mesh",
     subtitle: "Peer-to-peer connectivity",
@@ -114,7 +114,7 @@ export const techSections: TechSection[] = [
     ],
   },
   {
-    id: "compiler-design",
+    id: "private-messages",
     number: "04",
     title: "Private Messages",
     subtitle: "End-to-end encryption",
@@ -148,7 +148,7 @@ export const techSections: TechSection[] = [
     ],
   },
   {
-    id: "graphics-pipelines",
+    id: "offline-mode",
     number: "05",
     title: "Offline Mode",
     subtitle: "No internet required",
@@ -184,7 +184,7 @@ export const techSections: TechSection[] = [
     ],
   },
   {
-    id: "logic-synthesis",
+    id: "multi-transport",
     number: "06",
     title: "Multi-Transport",
     subtitle: "Any way it can",
@@ -219,7 +219,7 @@ export const techSections: TechSection[] = [
     ],
   },
   {
-    id: "concurrency-models",
+    id: "identity-privacy",
     number: "07",
     title: "Identity & Privacy",
     subtitle: "You stay in control",
@@ -258,7 +258,7 @@ export const techSections: TechSection[] = [
     ],
   },
   {
-    id: "hardware-abstraction",
+    id: "network-bridges",
     number: "08",
     title: "Network Bridges",
     subtitle: "Connect the networks",

@@ -1,14 +1,14 @@
 "use client"
 
 import type { TechSection } from "@/lib/sections-data"
-import { SectionKernel } from "./sections/section-kernel"
-import { SectionNetwork } from "./sections/section-network"
+import { SectionProtocol } from "./sections/section-protocol"
+import { SectionMesh } from "./sections/section-mesh"
 import { SectionLedger } from "./sections/section-ledger"
-import { SectionCompiler } from "./sections/section-compiler"
-import { SectionGraphics } from "./sections/section-graphics"
-import { SectionLogic } from "./sections/section-logic"
-import { SectionConcurrency } from "./sections/section-concurrency"
-import { SectionHardware } from "./sections/section-hardware"
+import { SectionMessages } from "./sections/section-messages"
+import { SectionOffline } from "./sections/section-offline"
+import { SectionTransport } from "./sections/section-transport"
+import { SectionIdentity } from "./sections/section-identity"
+import { SectionBridges } from "./sections/section-bridges"
 
 interface DomainSectionProps {
   section: TechSection
@@ -16,18 +16,18 @@ interface DomainSectionProps {
 }
 
 const sectionMap: Record<string, React.FC<{ section: TechSection }>> = {
-  "kernel-systems": SectionKernel,
-  "network-topologies": SectionNetwork,
+  "the-protocol": SectionProtocol,
+  "the-mesh": SectionMesh,
   "distributed-ledger": SectionLedger,
-  "compiler-design": SectionCompiler,
-  "graphics-pipelines": SectionGraphics,
-  "logic-synthesis": SectionLogic,
-  "concurrency-models": SectionConcurrency,
-  "hardware-abstraction": SectionHardware,
+  "private-messages": SectionMessages,
+  "offline-mode": SectionOffline,
+  "multi-transport": SectionTransport,
+  "identity-privacy": SectionIdentity,
+  "network-bridges": SectionBridges,
 }
 
 export function DomainSection({ section }: DomainSectionProps) {
-  const SectionComponent = sectionMap[section.id] ?? SectionKernel
+  const SectionComponent = sectionMap[section.id] ?? SectionProtocol
 
   return (
     <section id={section.id} className="relative border-b border-border">
