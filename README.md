@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+# 🌐 111 Network
 
-First, run the development server:
+## Free, Secure Communication for Everyone
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[![License](https://img.shields.io/badge/license-Open%20Source-blue.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/status-In%20Development-yellow.svg)](https://github.com/111-Network/111.network-website)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+</div>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## The Mission
 
-## Learn More
+We believe **everyone deserves a way to speak, share, and connect**, no matter where they are, what they have, or whether the internet is working.
 
-To learn more about Next.js, take a look at the following resources:
+This project is building a **global message network** that doesn't rely on companies, governments, or infrastructure. It runs on **people, not servers**. It works with phones, small devices, radios, and anything else that can carry a message.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 💬 How It Works
 
-## Deploy on Vercel
+### 1. A Daily Shout to the World
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Each person can send **Limited public messages per day**.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+You choose what to say and roughly where you are (exact or general). That message shows up on a **world map** for everyone to see.
+
+It's like a pin on a global bulletin board — **your voice, shared freely**.
+
+---
+
+### 2. Private, Secure Conversations
+
+You can also message people **directly**.
+
+- Only you and the other person can read what's sent. **No one else!**
+- Messages take a smart route, hopping between nearby phones or small devices until they find a way to the intended user.
+- Messages arrive eventually. **The more users in the network, the faster and wider the range!**
+
+---
+
+### 3. Works Without the Internet
+
+**No bars? No Wi-Fi? No problem.**
+
+- Messages can travel through phones, laptops, plug-in devices, even homemade tools.
+- If someone nearby is connected to the internet, they help move messages for others too.
+- Delivery might take minutes or hours, even days — but they keep traveling until they reach their owner or the world map.
+
+---
+
+### 4. Use It Anonymously — Or with Your Name
+
+- You don't need to sign up. **Just open the app and go.**
+- Want to find your friends later? You can add an email or phone number anytime to reconnect.
+- **You stay in control** of your identity and privacy.
+
+---
+
+### 5. Sends Messages Any Way It Can
+
+This network is **smart and flexible**.
+
+Messages are packed so they can travel via:
+- 📻 Radios
+- 📱 Phones
+- 📧 Email
+- 🛰️ Satellite tools
+
+---
+
+### 6. Optional Little Devices
+
+To grow the network, people can use **tiny gadgets**:
+- A plug that goes into a phone
+- A solar-powered box on a roof
+- Anyone can make a device!
+
+These boost signal range, connect distant areas, or keep messages flowing during a blackout.
+
+They're **optional, cheap, and help everyone**.
+
+---
+
+### 7. Bridges to Other Free, Secure Networks
+
+There are already great free, secure communication projects out there — but most of them can't talk to each other.
+
+111 connects them, **one bridge at a time**.
+
+- **Already on another trusted network?** A small bridge lets you carry and receive 111 messages without leaving it.
+- **Two-way by design.** A message that mentions 111 can hop from any bridged network into the others — and 111 messages can travel outward the same way.
+- **Thin by design.** Each bridge is the smallest possible shim — minimum code, minimum change to the original project.
+- **Built into the devices.** The optional 111 gadgets ship with bridges to trusted networks built in, so every device strengthens those networks too — even standalone.
+
+---
+
+## 🌍 Anyone Can Join!
+
+A global message system:
+- ✅ Built by **people, not providers**
+- ✅ Keeps going when the internet doesn't
+- ✅ **Private, secure, and open to all**
+
+**No matter who you are or where you are — you have a voice. This network makes sure it's heard.**
+
+---
+
+<div align="center">
+
+### Get Involved
+
+[Contribute](CONTRIBUTING.md) • [Documentation](docs/) • [Code of Conduct](CODE_OF_CONDUCT.md)
+
+---
+
+<sub>**Note for Developers & Contributors:** This README is the public-facing manifesto for GitHub visitors. For development documentation, setup guides, and technical details, please see the [`docs/`](docs/) directory. We aim to keep this README clean and stable for public viewing — please avoid frequent commits to this file.</sub>
+
+</div>
