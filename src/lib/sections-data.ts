@@ -18,19 +18,38 @@ export const techSections: TechSection[] = [
     description:
       "The foundational layer where messages meet the mesh. Routing tables, store-and-forward buffers, and transport adapters form the backbone of every connection.",
     ascii: `
-    ┌─────────────────────────┐
-    │  KERNEL SPACE            │
-    │  ┌───────┐ ┌───────┐   │
-    │  │ SCHED │ │  MEM  │   │
-    │  └───┬───┘ └───┬───┘   │
-    │      │         │        │
-    │  ┌───┴─────────┴───┐   │
-    │  │   SYSTEM CALLS   │   │
-    │  └─────────────────┘   │
-    │  ┌───────────────────┐  │
-    │  │   USER SPACE       │  │
-    │  └───────────────────┘  │
-    └─────────────────────────┘`,
+              ┌─────────────┐
+              │    YOU      │
+              │  (sending)  │
+              └──────┬──────┘
+                     │
+                     ▼
+         ┌───────────────────────┐
+         │     111 PROTOCOL      │
+         │                       │
+         │   ┌─────┐  ┌─────┐    │
+         │   │route│──│store│    │
+         │   │table│  │& fwd│    │
+         │   └──┬──┘  └──┬──┘    │
+         │      └────┬───┘       │
+         │  ┌────────┴────────┐  │
+         │  │ encrypt (E2E)   │  │
+         │  └────────┬────────┘  │
+         │  ┌────────┴────────┐  │
+         │  │multi-transport  │  │
+         │  │radio│phone│email│  │
+         │  └─────┴─────┴─────┘  │
+         └───────────────────────┘
+                     │
+                     ▼
+         ┌───────────────────────┐
+         │       THE MESH        │
+         │   ┌─┐  ┌─┐  ┌─┐       │
+         │   │A│──│B│──│C│       │
+         │   └─┘  └─┘  └─┘       │
+         │   people → people     │
+         │        → target       │
+         └───────────────────────┘`,
     specs: [
       { label: "Routing", value: "Store & Forward" },
       { label: "Encryption", value: "End-to-End" },
@@ -38,12 +57,14 @@ export const techSections: TechSection[] = [
       { label: "Range", value: "Device-to-Device" },
     ],
     commands: [
-      "$ uname -a",
-      "Linux monochrome 6.1.0 #1 SMP x86_64",
-      "$ cat /proc/meminfo | head -3",
-      "MemTotal:   16384000 kB",
-      "MemFree:     8192000 kB",
-      "MemAvailable: 12288000 kB",
+      "$ 111 protocol --status",
+      "Protocol: 111 Mesh v0.0.5",
+      "Status: MESH ONLINE",
+      "Neighbors: 3 active",
+      "$ 111 route --table",
+      "Table: 7 entries | Updated: 2s ago",
+      "$ 111 transport --list",
+      "radio | phone | email | satellite",
     ],
   },
   {
