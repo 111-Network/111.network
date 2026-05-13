@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Geist_Mono, Silkscreen } from "next/font/google"
 import { GeistPixelLine } from "geist/font/pixel"
 import { Analytics } from "@vercel/analytics/next"
+import { CookieBanner } from "@/components/cookie-banner"
 import { JsonLd } from "@/components/seo/json-ld"
 import {
   SITE_DESCRIPTION,
@@ -102,6 +103,7 @@ export default function RootLayout({
         className={`${geistMono.variable} ${silkscreen.variable} font-mono antialiased`}
       >
         {children}
+        <CookieBanner />
         <JsonLd />
         <Analytics />
       </body>

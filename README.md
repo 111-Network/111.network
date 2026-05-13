@@ -15,7 +15,7 @@
 
 We believe **everyone deserves a way to speak, share, and connect**, no matter where they are, what they have, or whether the internet is working.
 
-This project is building a **global message network** that doesn't rely on companies, governments, or infrastructure. It runs on **people, not servers**. It works with phones, small devices, radios, and anything else that can carry a message.
+This project is building a **global mesh network** that bridges existing ones. It doesn't rely on companies, governments, or infrastructure. It runs on **people, not servers**. It works with phones, small devices, radios, and anything else that can carry a message.
 
 ---
 

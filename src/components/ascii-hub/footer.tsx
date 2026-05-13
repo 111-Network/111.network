@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, ArrowUp } from "lucide-react"
+import { Github, ArrowUp, FileText } from "lucide-react"
 import { GITHUB_URL } from "@/lib/site"
 
 const ASCII_LOGO = `
@@ -70,6 +70,16 @@ export function Footer() {
                   </span>
                 </a>
               ))}
+              <a
+                href="/terms"
+                className="group flex items-center gap-3 py-2 font-mono text-sm text-muted-foreground transition-all duration-200 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
+              >
+                <FileText size={14} />
+                <span>Terms of Service</span>
+                <span className="ml-auto opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                  {"->"}
+                </span>
+              </a>
             </div>
           </motion.div>
 
