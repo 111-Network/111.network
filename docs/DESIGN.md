@@ -16,7 +16,7 @@
 
 ## 2. Color Palette
 
-The palette is strictly **pure black and white** with a single grayscale ladder. No accent colors exist outside the destructive red.
+The palette is strictly **pure black and white** with a single grayscale ladder. No accent colors exist outside the destructive red — with exactly one scoped exception: the three **status-dot** colors below (decision D15, 2026-10-13), which may appear only on status dots.
 
 | Token | Hex | Usage |
 |-------|-----|-------|
@@ -32,6 +32,18 @@ The palette is strictly **pure black and white** with a single grayscale ladder.
 | `input` | `#262626` | Form input borders |
 | `ring` | `#ffffff` | Focus rings |
 | `destructive` | `#ff3333` | Errors, alerts (rare) |
+| `status-live` | `#22c55e` | **Status dots only** — a service/node is live and healthy |
+| `status-unset` | `#a0a0a0` | **Status dots only** — not installed / not configured (= `muted-foreground`) |
+| `status-error` | `#ff3333` | **Status dots only** — errored / unreachable (= `destructive`) |
+
+### Status Dots (scoped exception)
+
+The dashboard (`os/interface/`) signals service and node state with a `h-2 w-2` square dot in one of three colors: `status-live` (green), `status-unset` (grey), `status-error` (red). Rules:
+
+- The color appears **only on the dot** — never on text, backgrounds, borders, icons, or charts.
+- The dot is always paired with a text label (`LIVE` / `NOT SET` / `ERROR`); state is never conveyed by color alone.
+- Transitional states (starting, syncing) use the **grey** dot + `animate-blink`, never a fourth color.
+- Nothing else in the system gains an accent color because of this exception.
 
 ### Color Usage Patterns
 
