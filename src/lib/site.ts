@@ -101,5 +101,5 @@ export const ASCII_LOGO = [
 
 /** Route of the interactive dashboard demo. */
 export const DEMO_PATH = "/demo"
-/** False until /demo ships (P5 flips it); gates every link to the demo. */
-export const DEMO_READY: boolean = false
+/** True since P5 (2026-10-17): /demo is live; gates every link to the demo. */
+export const DEMO_READY: boolean = true

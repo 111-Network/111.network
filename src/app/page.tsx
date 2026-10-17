@@ -15,8 +15,8 @@ import { Layer7 } from "@/components/sections/layer-7"
 import { Layer8 } from "@/components/sections/layer-8"
 import { Layer9 } from "@/components/sections/layer-9"
 
-// Written once in P0 (plan §8). Sections and frame pieces change inside their
-// own files; nobody edits this page until the end.
+// Written once in P0 (plan §8); P5 moved the demo CTA band below the terminal.
+// Sections and frame pieces change inside their own files.
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -35,8 +35,9 @@ export default function Home() {
         <Layer7 />
         <Layer8 />
         <Layer9 />
-        <DemoCtaBand />
         <Terminal />
+        {/* The closing demo CTA sits at the very end of the page (owner, 2026-10-17). */}
+        <DemoCtaBand />
       </main>
 
       <Footer />
