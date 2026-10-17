@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/.vitest/
 /test-results/
 /playwright-report/
 /blob-report/
