@@ -30,6 +30,8 @@ export interface LayerSectionProps {
   className?: string
   /** Classes for the inner max-w-7xl container. */
   containerClassName?: string
+  /** Render the "see it in the dashboard" footer link. Default true; L4 has its own bold CTA. */
+  footer?: boolean
 }
 
 /**
@@ -46,6 +48,7 @@ export function LayerSection({
   children,
   className,
   containerClassName,
+  footer = true,
 }: LayerSectionProps) {
   const layer = getLayer(n)
   return (
@@ -63,7 +66,7 @@ export function LayerSection({
           <LayerHeader n={n} variant={variant} aside={aside} right={headerRight} className={headerClassName} />
         )}
         {children}
-        <LayerFooter n={n} />
+        {footer ? <LayerFooter n={n} /> : null}
       </div>
     </section>
   )
