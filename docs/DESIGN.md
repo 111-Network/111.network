@@ -63,8 +63,8 @@ The dashboard (`os/interface/`) signals service and node state with a `h-2 w-2` 
 
 | Role | Font | Fallback | Usage |
 |------|------|----------|-------|
-| Display / Headings | **Geist Pixel Line** | — | Hero titles, section H2s, ghost numbers. Loaded via `geist/font/pixel`. |
-| Body / UI | **Geist Mono** | `Geist Mono Fallback`, `monospace` | All body text, labels, buttons, terminal output, metadata. |
+| Display / Headings | **Geist Pixel Line** | system monospace | Hero titles, section H2s, ghost numbers. Only the Line face, loaded with `next/font/local` from `src/app/fonts/` (not `geist/font/pixel`, which preloads all five faces). |
+| Body / UI | **Geist Mono** (variable) | system monospace | All body text, labels, buttons, terminal output, metadata. Loaded via `geist/font/mono`. |
 | Pixel Accent | **Silkscreen** | `Geist Mono`, `monospace` | Nav logo (`MONO_HUB`), pixel badges. Weight 400/700. |
 
 > **Important**: The root layout applies `font-mono` to the body. All text defaults to Geist Mono unless explicitly overridden with `font-pixel-line`.
@@ -85,6 +85,21 @@ The dashboard (`os/interface/`) signals service and node state with a `h-2 w-2` 
 | Footer legal | `text-[10px]` | — | — | `font-mono` |
 | ASCII art | `text-[9px]` → `md:text-[11px]` | — | `leading-[12px]` / `leading-[14px]` | `font-mono` |
 | ASCII logo | `text-[8px]` → `md:text-[10px]` | — | `leading-[10px]` / `leading-[12px]` | `font-mono` |
+
+### Glyphs
+
+The body font must draw every character on a monospace line; a missing glyph is taken from a fallback font with a different advance width and breaks the ASCII grid. `pnpm test` (`scripts/check-glyphs.mjs`) fails on any code point outside the Geist Mono cmap in a `src` string.
+
+| Safe (in Geist Mono) | Not in the font: do not use |
+|---|---|
+| Printable ASCII, Latin-1 (`·` `×` `©` …), `–` `—` `‘` `’` `“` `”` `•` `…` | `■` `□` `▪` `▫` `▸` `◂` `◐` `◑` |
+| Arrows `←` `↑` `→` `↓` `↔` `↕` `↖` `↗` `↘` `↙` | `✓` `✗` `★` `☐` `☑` and other dingbats / emoji |
+| Box drawing U+2500–257F (`─` `│` `┌` `═` `║` `╔` …) | |
+| Blocks U+2580–259F (`█` `▀` `▄` `▌` `▐` `░` `▒` `▓`) | |
+| `▲` `△` `▶` `▷` `▼` `▽` `◀` `◁` `◊` `○` `◌` `●` | |
+
+- **Indicators are CSS shapes, not glyphs:** delivery pips, evidence grades, node markers, layer-strip cells and status dots are `<span>` squares (`h-2 w-2 bg-foreground` filled, `border border-foreground` hollow, `border border-dashed` candidate).
+- In text, use `█`/`░` where a sketch says `■`/`□`, `▶` where it says `▸`, and words ("runs", "partly") where the README table uses `✓`/`◐`.
 
 ### Text Rendering
 
@@ -374,6 +389,8 @@ JS-side: `prefers-reduced-motion` disables the ASCII background animation and sc
 ## 8. Accessibility
 
 - **Focus states**: `focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none` on all interactive elements.
+- **Focus on inverted or active controls**: a white ring on a white fill (a checked chip, an inverted button, an open drawer) is invisible, so add an offset gap: `focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none`. Inside an inverted band, swap the colours (`ring-background` + `ring-offset-foreground`). `ChipGroup` already does this.
+- **Programmatic focus** (`scrollToAnchor` moving focus to a section) draws no outline (`:where([tabindex="-1"]):focus`).
 - **ARIA labels**: All icon-only buttons and ASCII art have `aria-label` / `role="img"`.
 - **Selection**: Inverted selection (`bg: #ffffff`, `color: #000000`).
 - **Scrollbar**: Custom thin scrollbar (4px) with `#333333` thumb on `#000000` track.

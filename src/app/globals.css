@@ -28,8 +28,9 @@
 
 @theme inline {
   --font-sans: 'Geist', 'Geist Fallback', system-ui, sans-serif;
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
-  --font-pixel: 'Silkscreen', 'Geist Mono', monospace;
+  /* Full-glyph Geist Mono from `geist/font/mono` (variable set on <html> in layout.tsx). */
+  --font-mono: var(--font-geist-mono, ui-monospace), monospace;
+  --font-pixel: 'Silkscreen', var(--font-geist-mono, ui-monospace), monospace;
   --font-pixel-line: var(--font-geist-pixel-line);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -56,12 +57,81 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* Tokens added in P0 (plan §7). Plain @theme, so they also exist as CSS variables. */
+@theme {
+  /* Status dots ONLY (DESIGN.md D15): never on text, borders, fills or charts. */
+  --color-status-live: #22c55e;
+  --color-status-unset: #a0a0a0;
+  --color-status-error: #ff3333;
+
+  /* The one layered panel shadow (DESIGN.md §5): `shadow-panel`. */
+  --shadow-panel:
+    rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px,
+    rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px,
+    rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+
+  /* Fixed-nav height: `h-nav`, `top-nav`, `scroll-mt-nav`, `pt-nav`. */
+  --spacing-nav: 4rem;
+
+  /* One-shot 300 ms shake (L2 tamper). Re-trigger by remounting (change the element's key). */
+  --animate-glitch-once: glitch 300ms linear 1;
+  /* W9 badge: holds idle 2 s, inverted 2 s, forever. Put it on a `border` element. */
+  --animate-invert: invert 4s steps(1, end) infinite;
+  /* One heartbeat ring (L7): scale + fade, once. Re-trigger by remounting. */
+  --animate-ping-once: ping-once 1s cubic-bezier(0, 0, 0.2, 1) 1 forwards;
+  /* Ticker: content duplicated twice, moves -50%. Speed via --marquee-duration. */
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+
+  @keyframes invert {
+    0%,
+    100% {
+      border-color: var(--border);
+      background-color: transparent;
+      color: var(--muted-foreground);
+    }
+    50% {
+      border-color: var(--foreground);
+      background-color: var(--foreground);
+      color: var(--background);
+    }
+  }
+
+  @keyframes ping-once {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* Pause any CSS animation (e.g. the marquee while offscreen or the tab is hidden). */
+@utility animate-paused {
+  animation-play-state: paused;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* Programmatic focus targets (scrollToAnchor moves focus to a section) draw no outline. */
+  :where([tabindex="-1"]):focus {
+    outline: none;
   }
 }
 
@@ -94,8 +164,27 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-blink,
-  .animate-scanline {
+  .animate-scanline,
+  .animate-glitch-once,
+  .animate-marquee {
     animation: none;
+  }
+  .animate-ping-once {
+    animation: none;
+    opacity: 0;
+  }
+  /* W9 badge: static and inverted under reduced motion. */
+  .animate-invert {
+    animation: none;
+    border-color: var(--foreground);
+    background-color: var(--foreground);
+    color: var(--background);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
 

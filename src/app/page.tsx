@@ -1,30 +1,42 @@
-import { Navigation } from "@/components/ascii-hub/navigation"
-import { HeroSection } from "@/components/ascii-hub/hero-section"
-import { DomainSection } from "@/components/ascii-hub/domain-section"
-import { TechTicker } from "@/components/ascii-hub/tech-ticker"
-import { PseudoTerminal } from "@/components/ascii-hub/pseudo-terminal"
-import { Footer } from "@/components/ascii-hub/footer"
-import { techSections } from "@/lib/sections-data"
+import { DemoCtaBand } from "@/components/frame/demo-cta-band"
+import { Footer } from "@/components/frame/footer"
+import { Hero } from "@/components/frame/hero"
+import { Navigation } from "@/components/frame/navigation"
+import { Terminal } from "@/components/frame/terminal"
+import { Ticker } from "@/components/frame/ticker"
+import { Layer0 } from "@/components/sections/layer-0"
+import { Layer1 } from "@/components/sections/layer-1"
+import { Layer2 } from "@/components/sections/layer-2"
+import { Layer3 } from "@/components/sections/layer-3"
+import { Layer4 } from "@/components/sections/layer-4"
+import { Layer5 } from "@/components/sections/layer-5"
+import { Layer6 } from "@/components/sections/layer-6"
+import { Layer7 } from "@/components/sections/layer-7"
+import { Layer8 } from "@/components/sections/layer-8"
+import { Layer9 } from "@/components/sections/layer-9"
 
+// Written once in P0 (plan §8). Sections and frame pieces change inside their
+// own files; nobody edits this page until the end.
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
 
-      <main>
-        <HeroSection />
-
-        <TechTicker />
-
-        {techSections.map((section, index) => (
-          <DomainSection
-            key={section.id}
-            section={section}
-            index={index}
-          />
-        ))}
-
-        <PseudoTerminal />
+      <main id="main">
+        <Hero />
+        <Ticker />
+        <Layer0 />
+        <Layer1 />
+        <Layer2 />
+        <Layer3 />
+        <Layer4 />
+        <Layer5 />
+        <Layer6 />
+        <Layer7 />
+        <Layer8 />
+        <Layer9 />
+        <DemoCtaBand />
+        <Terminal />
       </main>
 
       <Footer />

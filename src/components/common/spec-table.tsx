@@ -2,17 +2,22 @@
 
 import { motion } from "framer-motion"
 
+/** Props of SpecTable. */
 interface SpecTableProps {
-  specs: { label: string; value: string }[]
+  /** Label/value rows (layers.ts `specs` fit directly). */
+  specs: readonly { label: string; value: string }[]
+  /** Header caption. Default "Specifications". */
+  title?: string
 }
 
-export function SpecTable({ specs }: SpecTableProps) {
+/** Bordered label/value table with a small header (DESIGN.md "Spec Table"). */
+export function SpecTable({ specs, title = "Specifications" }: SpecTableProps) {
   return (
     <div className="border border-border">
       <div className="flex items-center gap-2 border-b border-border px-4 py-2">
         <div className="h-1.5 w-1.5 bg-foreground" />
         <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-          Specifications
+          {title}
         </span>
       </div>
       <div className="divide-y divide-border">

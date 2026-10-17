@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next"
-import { Geist_Mono, Silkscreen } from "next/font/google"
-import { GeistPixelLine } from "geist/font/pixel"
+import { Silkscreen } from "next/font/google"
+import localFont from "next/font/local"
+import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
+import { MotionRoot } from "@/components/common/motion-root"
 import { CookieBanner } from "@/components/cookie-banner"
 import { JsonLd } from "@/components/seo/json-ld"
 import {
@@ -12,10 +14,10 @@ import {
 } from "@/lib/site"
 import "./globals.css"
 
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
+// Geist Mono variable face (box drawing U+2500–257F and blocks U+2580–259F,
+// but NOT ■ □ ▪ ▸ ◐ ✓: see DESIGN.md "Glyphs"); sets --font-geist-mono, which
+// globals.css maps to --font-mono / `font-mono`.
+const geistMono = GeistMono
 
 const silkscreen = Silkscreen({
   weight: ["400", "700"],
@@ -23,7 +25,27 @@ const silkscreen = Silkscreen({
   variable: "--font-pixel",
 })
 
-const geistPixelLine = GeistPixelLine
+// Only the Line face of Geist Pixel. `geist/font/pixel` declares all five
+// faces, so importing it preloaded ~111 kB of unused fonts on every page.
+// Same options as the package's GeistPixelLine; the font file is a copy from
+// node_modules/geist (OFL, license next to it).
+const geistPixelLine = localFont({
+  src: "./fonts/GeistPixel-Line.woff2",
+  variable: "--font-geist-pixel-line",
+  weight: "500",
+  fallback: [
+    "ui-monospace",
+    "SFMono-Regular",
+    "Roboto Mono",
+    "Menlo",
+    "Monaco",
+    "Liberation Mono",
+    "DejaVu Sans Mono",
+    "Courier New",
+    "monospace",
+  ],
+  adjustFontFallback: false,
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -98,12 +120,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`dark ${geistPixelLine.variable}`}>
-      <body
-        className={`${geistMono.variable} ${silkscreen.variable} font-mono antialiased`}
-      >
-        {children}
-        <CookieBanner />
+    <html
+      lang="en"
+      className={`dark ${geistMono.variable} ${geistPixelLine.variable}`}
+      data-scroll-behavior="smooth"
+    >
+      <body className={`${silkscreen.variable} font-mono antialiased`}>
+        <MotionRoot>
+          {children}
+          <CookieBanner />
+        </MotionRoot>
         <JsonLd />
         <Analytics />
       </body>

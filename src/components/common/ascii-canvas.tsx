@@ -3,12 +3,18 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 
+/** Props of AsciiCanvas. */
 interface AsciiCanvasProps {
+  /** The drawing, printed in a <pre>. */
   art: string
+  /** Accessible description of the drawing (role="img"). */
   label: string
+  /** Header caption. Default "ASCII Schematic". */
+  caption?: string
 }
 
-export function AsciiCanvas({ art, label }: AsciiCanvasProps) {
+/** A bordered ASCII drawing with a caption; brightens on hover. */
+export function AsciiCanvas({ art, label, caption = "ASCII Schematic" }: AsciiCanvasProps) {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
@@ -23,7 +29,7 @@ export function AsciiCanvas({ art, label }: AsciiCanvasProps) {
       <div className="mb-2 flex items-center gap-2">
         <div className="h-1.5 w-1.5 bg-foreground" />
         <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-          ASCII Schematic
+          {caption}
         </span>
       </div>
       <pre
