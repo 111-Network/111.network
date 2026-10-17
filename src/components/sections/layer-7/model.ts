@@ -88,9 +88,9 @@ export const RELAY_LINE = "Relays only repeat. They cannot be gateways."
 /**
  * Edge rule for the labels: a node whose label sits under it ("below") keeps
  * at least this many percent from either side of the map, so its widest label
- * ("unreachable") stays inside the box at 375 px.
+ * (the 10 px "unreachable" tag) stays inside the box from 375 px down to 320 px.
  */
-export const EDGE_INSET = 16
+export const EDGE_INSET = 17
 
 // The two bottom-corner nodes label below at every width (their labels grow
 // downward, never toward the box edge); the upper pair label outward from 640 px.
@@ -160,6 +160,18 @@ export type Reach = "in-range" | "silent" | "unreachable"
 export function reachOf(node: NodeState, beat: number): Reach {
   if (node.outSince === null) return "in-range"
   return beat - node.outSince < MISS_LIMIT ? "silent" : "unreachable"
+}
+
+/** The short reach word: the map tag under a node and the node button's name. */
+export const REACH_WORD: Readonly<Record<Reach, string>> = {
+  "in-range": "in range",
+  silent: "silent",
+  unreachable: "unreachable",
+}
+
+/** The NODE row's reach label: a dropped node reads as the red ERROR "unreachable" (plan §5 L7). */
+export function reachRowLabel(reach: Reach): string {
+  return reach === "unreachable" ? `ERROR · ${REACH_WORD.unreachable}` : REACH_WORD[reach]
 }
 
 /** True when the node is (believed) reachable: routing still uses a silent node until it times out. */

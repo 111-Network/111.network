@@ -11,6 +11,7 @@ import {
   MISS_LIMIT,
   NODES,
   NODE_IDS,
+  REACH_WORD,
   RELAY_LINE,
   SETTLE_BEATS,
   SETTLE_CAP,
@@ -32,6 +33,7 @@ import {
   pathLine,
   presenceReducer,
   reachOf,
+  reachRowLabel,
   roleOf,
   settle,
   tick,
@@ -264,6 +266,13 @@ describe("out of range", () => {
     for (let b = 10; b < 10 + MISS_LIMIT; b++) expect(reachOf(node, b)).toBe("silent")
     expect(reachOf(node, 10 + MISS_LIMIT)).toBe("unreachable")
     expect(reachOf({ mode: "none", outSince: null }, 99)).toBe("in-range")
+  })
+
+  it("labels a dropped node as the red ERROR \"unreachable\" in the NODE row, the short word on the map", () => {
+    expect(reachRowLabel("unreachable")).toBe("ERROR · unreachable")
+    expect(REACH_WORD.unreachable).toBe("unreachable")
+    expect(reachRowLabel("silent")).toBe("silent")
+    expect(reachRowLabel("in-range")).toBe("in range")
   })
 
   it("narrates nodes timing out on the same beat as one sentence", () => {

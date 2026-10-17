@@ -4,12 +4,14 @@ import {
   LINKS,
   NODES,
   NODE_IDS,
+  REACH_WORD,
   WORLD_EDGE,
   isGateway,
   isOnline,
   linkState,
   packetPlacement,
   reachOf,
+  reachRowLabel,
   roleOf,
   type LabelSide,
   type Link,
@@ -32,21 +34,29 @@ const GRID = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const
 
 // Below 640 px every role label sits under the square; from 640 px up the
 // upper pair moves beside it (outward), and "below" nodes keep it underneath.
+// The label starts just outside the 44 px button (its `top/left/right: 100%`
+// is the padding edge, so the 2 px margin clears the 1 px frame): the selected
+// node's frame stays a whole square, never covered by the label's backing.
 const LABEL_SIDE: Readonly<Record<LabelSide, string>> = {
-  below: "top-full left-1/2 -mt-1 -translate-x-1/2 items-center",
-  left: "top-full left-1/2 -mt-1 -translate-x-1/2 items-center sm:top-1/2 sm:right-full sm:left-auto sm:mt-0 sm:-mr-1 sm:translate-x-0 sm:-translate-y-1/2 sm:items-end",
-  right: "top-full left-1/2 -mt-1 -translate-x-1/2 items-center sm:top-1/2 sm:left-full sm:mt-0 sm:-ml-1 sm:translate-x-0 sm:-translate-y-1/2 sm:items-start",
+  below: "top-full left-1/2 mt-0.5 -translate-x-1/2 items-center",
+  left: "top-full left-1/2 mt-0.5 -translate-x-1/2 items-center sm:top-1/2 sm:right-full sm:left-auto sm:mt-0 sm:mr-0.5 sm:translate-x-0 sm:-translate-y-1/2 sm:items-end",
+  right: "top-full left-1/2 mt-0.5 -translate-x-1/2 items-center sm:top-1/2 sm:left-full sm:mt-0 sm:ml-0.5 sm:translate-x-0 sm:-translate-y-1/2 sm:items-start",
 }
 
-const REACH_DOT: Readonly<Record<Reach, { state: StatusState; label: string }>> = {
-  "in-range": { state: "live", label: "in range" },
-  silent: { state: "starting", label: "silent" },
-  unreachable: { state: "error", label: "unreachable" },
+const REACH_STATE: Readonly<Record<Reach, StatusState>> = {
+  "in-range": "live",
+  silent: "starting",
+  unreachable: "error",
 }
 
-/** The StatusDot props for a node's reachability (always labelled). */
+/** The map tag under a node: the dot plus the short reach word. */
+function reachTag(reach: Reach): { state: StatusState; label: string } {
+  return { state: REACH_STATE[reach], label: REACH_WORD[reach] }
+}
+
+/** The StatusDot props for the NODE row (always labelled; a dropped node reads "ERROR · unreachable"). */
 export function reachDot(reach: Reach): { state: StatusState; label: string } {
-  return REACH_DOT[reach]
+  return { state: REACH_STATE[reach], label: reachRowLabel(reach) }
 }
 
 function linkKey(a: NodeId, b: NodeId): string {
@@ -64,7 +74,7 @@ function nodeName(view: PresenceState, id: NodeId): string {
         : role === "flush"
           ? `gateway, online sometimes${isOnline(id, node.mode, view.beat) ? " and online now" : ""}`
           : "no internet"
-  return `${NODES[id].label}: ${what}, ${REACH_DOT[reachOf(node, view.beat)].label}`
+  return `${NODES[id].label}: ${what}, ${REACH_WORD[reachOf(node, view.beat)]}`
 }
 
 function squareClass(view: PresenceState, id: NodeId): string {
@@ -201,9 +211,9 @@ export function PresenceMap({ view, rings, onSelect, descriptionId }: PresenceMa
             >
               <span className="bg-card px-1 text-[10px] text-foreground">{node.label}</span>
               {reach !== "in-range" ? (
-                <StatusDot {...REACH_DOT[reach]} className="gap-1 bg-card px-1 text-[9px] tracking-normal text-muted-foreground" />
+                <StatusDot {...reachTag(reach)} className="gap-1 bg-card px-1 tracking-normal text-muted-foreground" />
               ) : isGateway(id, state.mode) ? (
-                <span className="bg-card px-1 text-[9px] text-muted-foreground">gateway</span>
+                <span className="bg-card px-1 text-[10px] text-muted-foreground">gateway</span>
               ) : null}
             </span>
           </button>
@@ -223,12 +233,13 @@ export function PresenceMap({ view, rings, onSelect, descriptionId }: PresenceMa
             style={{ transform: tagLeft ? "translate(calc(-100% + 5px), -50%)" : "translate(-5px, -50%)" }}
           >
             <span className="block h-2.5 w-2.5 shrink-0 bg-foreground outline outline-1 outline-offset-1 outline-background" />
+            {/* tracking-wide keeps the 10 px WAITING tag clear of the relay's frame at 375 px. */}
             {packet.status === "waiting" ? (
-              <span className="border border-dashed border-foreground bg-card px-1 font-mono text-[9px] tracking-widest text-foreground">
+              <span className="border border-dashed border-foreground bg-card px-1 font-mono text-[10px] tracking-wide text-foreground">
                 WAITING
               </span>
             ) : packet.status === "out" ? (
-              <span className="bg-card px-1 font-mono text-[9px] tracking-widest text-foreground">OUT</span>
+              <span className="bg-card px-1 font-mono text-[10px] tracking-widest text-foreground">OUT</span>
             ) : null}
           </span>
         </span>

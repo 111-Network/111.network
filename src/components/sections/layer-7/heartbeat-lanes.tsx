@@ -32,24 +32,29 @@ export function HeartbeatLanes({ view, legend, caption, className }: HeartbeatLa
       </div>
 
       <div aria-hidden="true" className="flex items-center gap-3 border-b border-border px-4 py-1.5">
-        <span className="w-24 shrink-0" />
+        <span className="w-28 shrink-0" />
         <span className="flex flex-1 justify-between font-mono text-[10px] text-muted-foreground">
           <span>earlier</span>
           <span>now</span>
         </span>
       </div>
 
-      <ul aria-label="Heartbeat lanes, one per node" className="divide-y divide-border">
+      {/* From lg the card is as tall as the map column: the lanes share that height
+          (taller bars, centred rows), so the legend and caption close the card with no empty block. */}
+      <ul aria-label="Heartbeat lanes, one per node" className="flex flex-1 flex-col divide-y divide-border">
         {NODE_IDS.map((id) => (
           <li
             key={id}
-            className={cn("flex items-center gap-3 px-4 py-2.5 transition-colors duration-200", view.selected === id && "bg-secondary/60")}
+            className={cn(
+              "flex flex-1 items-center gap-3 px-4 py-2.5 transition-colors duration-200",
+              view.selected === id && "bg-secondary/60",
+            )}
           >
-            <span aria-hidden="true" className="w-24 shrink-0 font-mono leading-tight">
+            <span aria-hidden="true" className="w-28 shrink-0 font-mono leading-tight">
               <span className="block text-[10px] text-foreground">{NODES[id].label}</span>
-              <span className="block text-[9px] text-muted-foreground">{laneTag(id, view.nodes[id])}</span>
+              <span className="block text-[10px] text-muted-foreground">{laneTag(id, view.nodes[id])}</span>
             </span>
-            <span aria-hidden="true" className="flex h-3 min-w-0 flex-1 gap-px">
+            <span aria-hidden="true" className="flex h-3 min-w-0 flex-1 gap-px lg:h-6">
               {view.lanes[id].map((cell, i) => (
                 <span key={i} className={cn("h-full min-w-0 flex-1", LANE_CELL_CLASS[cell])} />
               ))}

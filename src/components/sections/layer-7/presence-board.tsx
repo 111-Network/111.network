@@ -121,6 +121,7 @@ export function PresenceBoard({ lanesLegend, lanesCaption }: PresenceBoardProps)
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Node</span>
             <span className="font-mono text-sm font-bold text-foreground">{NODES[selected].label}</span>
+            {/* A dropped node's red dot reads "ERROR · unreachable" here; the map tag keeps the short word. */}
             <StatusDot {...reachDot(reach)} className="text-muted-foreground" />
           </div>
           <p className="-mt-2 font-mono text-xs leading-relaxed text-muted-foreground">{roleLine(role)}</p>
