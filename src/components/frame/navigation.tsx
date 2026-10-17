@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { AnchorLink, TopLink } from "./nav-anchor-link"
 import { NavDepthStrip } from "./nav-depth-strip"
 import { NavInstall, NavMenu } from "./nav-overlays"
-import { NavLongReadout, NavRail, NavShortReadout } from "./nav-rail"
+import { NavRail, NavShortReadout } from "./nav-rail"
 import { FOCUS, FOCUS_ON_WHITE } from "./nav-styles"
 
 const TEXT_LINK =
@@ -26,7 +26,7 @@ function GitHubMark({ className }: { className?: string }) {
  * DESIGN.md allows on the nav only. The popover and the sheet are loaded after
  * hydration, off the first-load JS (nav-overlays.tsx).
  *
- * - Desktop (lg+): logo · rail 0…9 · xl readout · DEMO (once ready) · TERMINAL · INSTALL · GitHub.
+ * - Desktop (lg+): logo · layer buttons 0…9 (every label from 1280 px; below that the active one only) · DEMO · TERMINAL · INSTALL · GitHub.
  * - Mobile: logo · "L3/9" · INSTALL (to #install) · MENU.
  */
 export function Navigation() {
@@ -43,7 +43,7 @@ export function Navigation() {
         Skip to content
       </a>
 
-      <div className="mx-auto flex h-full max-w-7xl items-center gap-3 px-4 lg:gap-4 lg:px-8">
+      <div className="mx-auto flex h-full max-w-7xl items-center gap-3 px-4 lg:gap-4 lg:px-8 min-[80rem]:max-w-none min-[80rem]:px-6 min-[96rem]:max-w-[96rem] min-[96rem]:px-8">
         <TopLink
           aria-label="111.network, back to top"
           className={cn(
@@ -60,8 +60,6 @@ export function Navigation() {
         {/* Desktop */}
         <nav aria-label="Site" className="hidden min-w-0 flex-1 items-center gap-4 lg:flex">
           <NavRail />
-          {/* w-56 (224 px) fits the longest readout, "L9 · SELF-HEALING & EVOLUTION" (nav-model.test.ts). */}
-          <NavLongReadout className="hidden w-56 xl:block" />
           <div className="ml-auto flex shrink-0 items-center gap-2">
             {DEMO_READY ? (
               <Link href={DEMO_PATH} className={cn(TEXT_LINK, FOCUS)}>

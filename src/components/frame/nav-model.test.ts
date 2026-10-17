@@ -2,12 +2,10 @@ import { describe, expect, it } from "vitest"
 import {
   DESKTOP_QUERY,
   READING_LINE,
-  READOUT_LONG_MAX_CHARS,
   SPY_ROOT_MARGIN,
   isPlainClick,
   layerAnchorLabel,
   pickActive,
-  readoutLong,
   readoutShort,
   segmentFills,
 } from "./nav-model"
@@ -57,20 +55,6 @@ describe("segmentFills", () => {
 })
 
 describe("readouts", () => {
-  it("long: layer number and title in capitals (plan §4.1)", () => {
-    expect(readoutLong(3)).toBe("L3 · LOCAL INTELLIGENCE")
-    expect(readoutLong(4)).toBe("L4 · INTERFACE & DASHBOARD")
-    expect(readoutLong(9)).toBe("L9 · SELF-HEALING & EVOLUTION")
-    expect(readoutLong(null)).toBe("LAYERS 0–9")
-  })
-
-  it("long: the reserved width fits the longest readout", () => {
-    expect(READOUT_LONG_MAX_CHARS).toBe("L9 · SELF-HEALING & EVOLUTION".length)
-    // navigation.tsx reserves w-56 (224 px); at text-[10px] + tracking-widest a
-    // Geist Mono cell is 6 px + 1 px, so the longest readout needs 7 px per character.
-    expect(READOUT_LONG_MAX_CHARS * 7).toBeLessThanOrEqual(224)
-  })
-
   it("short: L<n>/9", () => {
     expect(readoutShort(3)).toBe("L3/9")
     expect(readoutShort(0)).toBe("L0/9")

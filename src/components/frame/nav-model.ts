@@ -52,23 +52,6 @@ export function segmentFills(boxes: readonly (SectionBox | null)[], line: number
   })
 }
 
-/**
- * Desktop xl readout, the layer title in capitals as plan §4.1 shows it, e.g.
- * "L3 · LOCAL INTELLIGENCE" (the rail tooltip names the layer the same way);
- * "LAYERS 0–9" above Layer 0 or below Layer 9.
- */
-export function readoutLong(active: LayerNumber | null): string {
-  if (active === null) return "LAYERS 0–9"
-  const layer = layerByN(active)
-  return layer ? `L${layer.n} · ${layer.title.toUpperCase()}` : "LAYERS 0–9"
-}
-
-/** Characters in the longest readoutLong value; the readout's reserved width is sized from it. */
-export const READOUT_LONG_MAX_CHARS: number = Math.max(
-  readoutLong(null).length,
-  ...LAYERS.map((layer) => readoutLong(layer.n).length),
-)
-
 /** Tailwind `lg` (64rem): the desktop nav shows from here, the mobile MENU below it. */
 export const DESKTOP_QUERY = "(min-width: 64rem)"
 

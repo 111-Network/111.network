@@ -37,9 +37,9 @@ describe("Navigation server render", () => {
     expect(html).not.toContain("aria-current")
   })
 
-  it("prints the idle readouts", () => {
-    expect(html).toContain("LAYERS 0–9")
+  it("prints the idle mobile readout, and every layer label in the desktop nav", () => {
     expect(html).toContain("L–/9")
+    for (const layer of LAYERS) expect(html).toContain(`>${esc(layer.navLabel)}</span>`)
   })
 
   it("links TERMINAL to #terminal, and DEMO only once the demo is ready", () => {
