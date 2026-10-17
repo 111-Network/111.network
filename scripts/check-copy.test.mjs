@@ -383,11 +383,12 @@ describe("copy-denylist.json", () => {
   it("compiles every entry and gives every legacy entry a removeIn phase", () => {
     for (const e of config.text) expect(() => compileEntry(e, "text")).not.toThrow()
     for (const e of config.names) expect(() => compileEntry(e, "names")).not.toThrow()
+    const block = config.legacy ?? {}
     const legacy = [
-      ...config.legacy.skipSource,
-      ...config.legacy.tolerate,
-      config.legacy.exactlyOncePending,
-      ...(config.legacy.mustContainPending ?? []),
+      ...(block.skipSource ?? []),
+      ...(block.tolerate ?? []),
+      block.exactlyOncePending,
+      ...(block.mustContainPending ?? []),
     ].filter(Boolean)
     for (const entry of legacy) expect(entry.removeIn).toMatch(/^P\d$/)
   })
@@ -428,11 +429,16 @@ describe("copy-denylist.json", () => {
   it("keeps the W2 names exactly-once and never denies GitHub or the generic medium words", () => {
     const w2 = config.names.filter((e) => typeof e === "object" && e.exactlyOnce).map((e) => e.term)
     expect(w2).toEqual(["Meshtastic", "MeshCore", "Reticulum"])
+    // No legacy pending flag any more: the W2 line must be present exactly once in src and on the home page.
+    const generic = "GitHub · GITHUB · Wi-Fi · Bluetooth · USB-C · long-range radio · ethernet · a local model · keypair"
     const result = runCopyCheck({
       config,
       built: false,
-      pages: [page("/", "GitHub · GITHUB · Wi-Fi · Bluetooth · USB-C · long-range radio · ethernet · a local model · keypair")],
+      pages: [page("/", `<p>${W2_LINE}</p><p>${generic}</p>`)],
+      sources: new Map([["src/components/sections/layer-6/x.tsx", `export const a = ${JSON.stringify(W2_LINE)}`]]),
     })
     expect(errors(result)).toEqual([])
+    const missing = runCopyCheck({ config, built: false, pages: [page("/", generic)] })
+    expect(errors(missing).map((f) => f.term)).toEqual(expect.arrayContaining(["Meshtastic", "MeshCore", "Reticulum"]))
   })
 })

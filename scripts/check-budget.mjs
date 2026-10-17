@@ -28,8 +28,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 
 /** kB = 1000 bytes of gzip, first-load JS only. `pending` = page not built yet (skipped, not failed). */
 export const BUDGETS = [
-  // Measured 2026-10-17 at P0 (legacy frame + ten layer stubs): 203.5 kB → budget = floor(+15%) = 234 kB.
-  { route: "/", html: "index.html", budgetKB: 234 },
+  // P0 (legacy frame + ten layer stubs): 203.5 kB → 234 kB.
+  // Re-measured 2026-10-17 after P1–P3 (new frame + L0–L3, L5–L9 interactive sections; framer-motion
+  // dropped from the cookie banner, saving ~40 kB): 236.1 kB → budget = floor(+15%) = 271 kB.
+  { route: "/", html: "index.html", budgetKB: 271 },
   // P4 adds: { route: "/demo", html: "demo.html", budgetKB: <measured + ~15%> } (pending: true until the page lands).
 ]
 

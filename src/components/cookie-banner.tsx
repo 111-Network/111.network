@@ -1,7 +1,6 @@
 "use client"
 
 import { useSyncExternalStore } from "react"
-import { motion, AnimatePresence } from "framer-motion"
 import { X } from "lucide-react"
 
 const CONSENT_KEY = "111-cookie-consent"
@@ -53,54 +52,46 @@ function saveConsent(value: ConsentValue) {
 export function CookieBanner() {
   const consent = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
-  if (consent === "unknown") return null
+  // "unknown" (server / hydration) and a stored choice both render nothing.
+  if (consent !== "none") return null
 
-  const visible = consent === "none"
-
+  // CSS entrance (tw-animate-css), no framer on the first-load path; none under reduced motion.
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 16 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-          role="dialog"
-          aria-label="Cookie consent"
-          className="fixed bottom-4 left-4 z-50 max-w-sm border border-border bg-background/80 p-4 backdrop-blur-md"
+    <div
+      role="dialog"
+      aria-label="Cookie consent"
+      className="fixed bottom-4 left-4 z-50 max-w-sm border border-border bg-background/80 p-4 backdrop-blur-md animate-in fade-in slide-in-from-bottom-4 duration-250 ease-out motion-reduce:animate-none"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <p className="font-mono text-xs leading-relaxed text-muted-foreground">
+          We use{" "}
+          <span className="text-foreground">strictly necessary cookies</span>{" "}
+          to operate this website.{" "}
+          <a
+            href="/terms"
+            className="underline underline-offset-2 transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
+          >
+            Terms
+          </a>
+        </p>
+        <button
+          type="button"
+          onClick={() => saveConsent("dismissed")}
+          aria-label="Dismiss cookie banner"
+          className="-mt-3 -mr-3 flex h-11 w-11 shrink-0 items-center justify-center text-muted-foreground transition-colors duration-200 hover:bg-foreground hover:text-background focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
         >
-          <div className="flex items-start justify-between gap-3">
-            <p className="font-mono text-xs leading-relaxed text-muted-foreground">
-              We use{" "}
-              <span className="text-foreground">strictly necessary cookies</span>{" "}
-              to operate this website.{" "}
-              <a
-                href="/terms"
-                className="underline underline-offset-2 transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
-              >
-                Terms
-              </a>
-            </p>
-            <button
-              type="button"
-              onClick={() => saveConsent("dismissed")}
-              aria-label="Dismiss cookie banner"
-              className="-mt-3 -mr-3 flex h-11 w-11 shrink-0 items-center justify-center text-muted-foreground transition-colors duration-200 hover:bg-foreground hover:text-background focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
-            >
-              <X size={14} aria-hidden="true" />
-            </button>
-          </div>
-          <div className="mt-3 flex justify-end">
-            <button
-              type="button"
-              onClick={() => saveConsent("accepted")}
-              className="min-h-11 border border-border px-4 font-mono text-xs text-muted-foreground transition-all duration-200 hover:border-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
-            >
-              Accept
-            </button>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          <X size={14} aria-hidden="true" />
+        </button>
+      </div>
+      <div className="mt-3 flex justify-end">
+        <button
+          type="button"
+          onClick={() => saveConsent("accepted")}
+          className="min-h-11 border border-border px-4 font-mono text-xs text-muted-foreground transition-all duration-200 hover:border-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
+        >
+          Accept
+        </button>
+      </div>
+    </div>
   )
 }
