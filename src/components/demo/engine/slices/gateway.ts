@@ -1,35 +1,74 @@
-// Internet gateway slice (#/services/gateway, Layer 7). STUB: the Nearby view task owns this file
-// (with slices/nearby.ts, copy/gateway.ts and views/services/gateway/**) and fills it in place;
-// nobody else edits it. Plan §6.4 "Presence + Internet gateway": heard nodes, "[DEMO] connect to the
-// internet" -> core/internetConnected (the gateway is an overlay role: the node chip never changes),
-// the queue flushes (the messages slice reacts to the core event), "core/internetLost" makes it a
-// pure mesh node again. Its causes are namespaced "gateway/…" (pass `text`).
-//
-// Module shape (keep these four export names; ./index.ts already wires them):
-//   type GatewayState                 the slice's state (replace the placeholder with an interface)
-//   type GatewayAction                its actions, every type string prefixed "gateway/"
-//   initialGateway(world: World)      -> GatewayState
-//   reduceGateway(state, action: DemoAction, ctx: SliceCtx) -> GatewayState
-//       receives EVERY action (core/... and other slices'); return `state` itself when nothing applies.
-//       ctx.core = core state after this action; ctx.schedule / ctx.emit / ctx.dispatch record effects.
-//   needsGateway(state, core: CoreState) -> readonly NeedItem[]
-//       rows this slice adds to Overview's "needs you" and the header badge; NO_NEEDS when none.
-// Add the parameters as you need them (import World, DemoAction, SliceCtx, CoreState as types).
-// User-visible sentences go in copy/gateway.ts.
-import { NO_NEEDS, type NeedItem } from "../types"
+// Internet gateway slice (#/services/gateway, Layer 7; plan §6.4 "Presence + Internet gateway").
+// The gateway is an OVERLAY role, earned by reaching the internet (os/README.md Layer 7): the
+// internet itself and the gateway service live in core ("[DEMO] connect to the internet" dispatches
+// core/internetConnected; core/internetLost makes this node a pure mesh node again), and the node
+// chip never changes for it. The messages slice flushes its own queue on the core event and emits
+// "queue-flushed". This slice only keeps the page's record of it: one session per time online,
+// with when it began, when it ended, and when the waiting messages went out during it.
+import { NO_NEEDS, type NeedItem, type SliceCtx } from "../types"
+import type { DemoAction } from "./index"
 
-/** Placeholder until the Nearby view task defines it. */
-export type GatewayState = Record<never, never>
-
-/** "gateway/..." actions. None yet. */
-export type GatewayAction = never
-
-export function initialGateway(): GatewayState {
-  return {}
+export interface GatewaySession {
+  /** 1, 2, 3 … one per time online, never reused. */
+  n: number
+  /** Virtual ms the internet was reached. */
+  from: number
+  /** Virtual ms it was lost; null while still online. */
+  to: number | null
+  /** Virtual ms of the first "queue-flushed" while online, or null. */
+  flushedAt: number | null
 }
 
-export function reduceGateway(state: GatewayState): GatewayState {
-  return state
+export interface GatewayState {
+  seq: number
+  /** Oldest first, at most SESSION_LIMIT. */
+  sessions: readonly GatewaySession[]
+}
+
+/** The gateway page offers no actions of its own: it dispatches the core internet actions. */
+export type GatewayAction = never
+
+/** The page keeps the newest this many sessions. */
+export const SESSION_LIMIT = 20
+
+export function initialGateway(): GatewayState {
+  return { seq: 0, sessions: [] }
+}
+
+/** The session that is still open (this node is online), or null. */
+export function openSession(state: GatewayState): GatewaySession | null {
+  const last = state.sessions[state.sessions.length - 1]
+  return last && last.to === null ? last : null
+}
+
+function replaceLast(state: GatewayState, session: GatewaySession): GatewayState {
+  return { ...state, sessions: [...state.sessions.slice(0, -1), session] }
+}
+
+export function reduceGateway(state: GatewayState, action: DemoAction, ctx: SliceCtx): GatewayState {
+  const was = ctx.prev.core.internet
+  const is = ctx.core.internet
+  switch (action.type) {
+    case "core/internetConnected": {
+      if (was === is || is !== "connected") return state
+      const n = state.seq + 1
+      const session: GatewaySession = { n, from: ctx.now, to: null, flushedAt: null }
+      const kept = state.sessions.length >= SESSION_LIMIT ? state.sessions.slice(state.sessions.length - SESSION_LIMIT + 1) : state.sessions
+      return { seq: n, sessions: [...kept, session] }
+    }
+    case "core/internetLost": {
+      const open = openSession(state)
+      if (was === is || is !== "offline" || !open) return state
+      return replaceLast(state, { ...open, to: ctx.now })
+    }
+    case "core/emitEvent": {
+      const open = openSession(state)
+      if (action.cause !== "queue-flushed" || !open || open.flushedAt !== null) return state
+      return replaceLast(state, { ...open, flushedAt: ctx.now })
+    }
+    default:
+      return state
+  }
 }
 
 export function needsGateway(): readonly NeedItem[] {
