@@ -578,7 +578,8 @@ function onlyNeverLeft(store: Store): boolean {
 /** The sentence for one pour: what arrived, why space ran short, what was freed and why. */
 export function narrate(outcome: PourOutcome, store: Store): string {
   const what = BATCH_PHRASE[outcome.batch]
-  if (outcome.status === "forwarded") return `Forwarded ${what} without keeping it: a radio relay's store stays empty.`
+  // "a copy" reads right for one batch or many ("messages carried for others").
+  if (outcome.status === "forwarded") return `Passed on ${what} without keeping a copy: a radio relay's store stays empty.`
   if (outcome.status === "refused") {
     const left = onlyNeverLeft(store) ? " What is left is not yet delivered, plus the update this node runs." : ""
     return `Refused ${what}: even freeing everything the order allows would not make room, so nothing was freed. ${STORE_FULL}.${left}`

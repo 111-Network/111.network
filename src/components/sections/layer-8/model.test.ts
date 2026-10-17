@@ -143,7 +143,8 @@ describe("radio relay", () => {
       const result = pour(store, "radio-relay", batch)
       expect(result.outcome.status).toBe("forwarded")
       expect(result.store).toBe(store)
-      expect(narrate(result.outcome, result.store)).toMatch(/^Forwarded .+ without keeping it/)
+      // One phrasing for one batch or many: never "messages … without keeping it".
+      expect(narrate(result.outcome, result.store)).toMatch(/^Passed on .+ without keeping a copy: a radio relay's store stays empty\.$/)
       expect(logLine(result.outcome)).toBeNull()
     }
     expect(gaugeOf(store, null)).toBe("none")
@@ -163,7 +164,7 @@ describe("radio relay", () => {
       state = storeMapReducer(state, { type: "pour", batch: "map" })
       lines.push(state.message)
     }
-    expect(lines[0]).toMatch(/^Forwarded a regional map/)
+    expect(lines[0]).toMatch(/^Passed on a regional map/)
     expect(lines[1]).toBe(`Again: ${lines[0]}`)
     expect(lines[2]).toBe(`Once more: ${lines[0]}`)
   })

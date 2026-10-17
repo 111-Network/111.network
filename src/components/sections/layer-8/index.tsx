@@ -37,7 +37,8 @@ function SharedLog() {
         aria-label="Two nodes, A and B, hold the same entries in the same order."
         className="mt-4 self-start border border-border px-4 py-3"
       >
-        <pre aria-hidden="true" className="font-mono text-sm leading-relaxed text-foreground">
+        {/* Tight leading, as DESIGN.md sets for ASCII art: the │ column and the ┼ arm join row to row. */}
+        <pre aria-hidden="true" className="font-mono text-sm leading-none text-foreground">
           {SHARED_LOG_GLYPH}
         </pre>
       </div>
