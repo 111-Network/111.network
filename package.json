@@ -13,6 +13,7 @@
     "budget": "node scripts/check-budget.mjs",
     "check:glyphs": "node scripts/check-glyphs.mjs",
     "check:install": "node scripts/check-install.mjs",
+    "e2e": "playwright test",
     "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm budget && pnpm check:install"
   },
   "dependencies": {
@@ -69,6 +70,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24.19.2",
     "@types/react": "^19",
