@@ -14,8 +14,9 @@ import { AnchorLink } from "./nav-anchor-link"
 /** Evaluated once when the module loads (build time for this static page), never during render. */
 const COPYRIGHT_YEAR = new Date().getFullYear()
 
+/** `-mx-2 px-2`: the focus ring clears the icon and the "->" by 8 px while the text stays aligned with the column. */
 const LINK_CLASS =
-  "group flex min-h-11 items-center gap-3 py-2 font-mono text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none lg:min-h-0"
+  "group -mx-2 flex min-h-11 items-center gap-3 px-2 py-2 font-mono text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none lg:min-h-0"
 
 const LABEL_CLASS = "mb-4 block font-mono text-xs uppercase tracking-widest text-muted-foreground"
 
@@ -50,8 +51,14 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-3">
           {/* ASCII logo */}
           <div>
+            {/*
+              Seamless blocks: the rows overlap a little (leading 9 px at 8 px, 12 px at
+              10 px), and the dimming is element opacity, not a translucent text colour,
+              which would paint every overlap twice and draw a bright seam. Measured
+              at 1x, 2x and 3x.
+            */}
             <pre
-              className="font-mono text-[8px] leading-[10px] text-foreground/40 md:text-[10px] md:leading-[12px]"
+              className="font-mono text-[8px] leading-[9px] text-foreground opacity-40 md:text-[10px] md:leading-[12px]"
               aria-label={`${SITE_NAME} ASCII logo`}
               role="img"
             >
@@ -111,7 +118,7 @@ export function Footer() {
               </div>
             </div>
 
-            <BackToTopButton className="mt-8 flex min-h-11 items-center gap-2 self-start font-mono text-xs text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none lg:min-h-0 lg:self-end">
+            <BackToTopButton className="-mx-2 mt-8 flex min-h-11 items-center gap-2 self-start px-2 font-mono text-xs text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none lg:min-h-0 lg:self-end">
               <ArrowUp size={12} aria-hidden="true" />
               <span>BACK TO TOP</span>
             </BackToTopButton>

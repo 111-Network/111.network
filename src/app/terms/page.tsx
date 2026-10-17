@@ -1,7 +1,11 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { SITE_NAME, SITE_TAGLINE, SITE_URL, TERMS_LAST_UPDATED } from "@/lib/site"
 
 const TITLE = "Terms of Service"
+/** The site focus ring (P0 contract). */
+const FOCUS = "focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
+const TEXT_LINK = `underline underline-offset-2 transition-colors hover:text-foreground ${FOCUS}`
 const DESCRIPTION = `Terms of Service and Privacy Policy for ${SITE_NAME}.`
 /** Same text as src/app/opengraph-image.alt.txt and twitter-image.alt.txt; keep them in sync. */
 const SHARE_IMAGE_ALT = `${SITE_NAME} — ${SITE_TAGLINE}. A message network that runs on people, not servers.`
@@ -37,6 +41,16 @@ export default function TermsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 lg:px-8 lg:py-24">
       <header className="mb-16">
+        {/* This page has no nav or footer: the one way back to the site. */}
+        <Link
+          href="/"
+          className={`-mx-2 mb-8 flex min-h-11 w-fit items-center gap-2 px-2 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground lg:min-h-8 ${FOCUS}`}
+        >
+          <span aria-hidden="true">{"<-"}</span>
+          <span>
+            <span className="sr-only">Back to </span>111.network
+          </span>
+        </Link>
         <h1 className="font-pixel text-lg uppercase tracking-wider text-foreground">
           Terms of Service
         </h1>
@@ -129,7 +143,7 @@ export default function TermsPage() {
                 href="https://vercel.com/legal/privacy-policy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline underline-offset-2 transition-colors hover:text-foreground"
+                className={TEXT_LINK}
               >
                 Vercel&apos;s Privacy Policy
               </a>{" "}
@@ -217,7 +231,7 @@ export default function TermsPage() {
               href="https://github.com/111-Network/111.network"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-2 transition-colors hover:text-foreground"
+              className={TEXT_LINK}
             >
               GitHub repository
             </a>
