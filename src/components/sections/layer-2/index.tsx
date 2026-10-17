@@ -36,7 +36,7 @@ const NOTES: readonly { term: string; text: string }[] = [
 /** The four layer specs, printed as the reverse of the ID card. */
 function CardReverse({ specs }: { specs: readonly LayerSpec[] }) {
   return (
-    <Panel className="min-w-0">
+    <Panel className="min-w-0 lg:self-start">
       <div className="border-b border-border px-4 py-2">
         <h3 className={LABEL}>reverse of the card</h3>
       </div>
