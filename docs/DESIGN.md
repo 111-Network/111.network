@@ -54,11 +54,12 @@ A fresh, sharp, energetic orange: `signal` (`#ff5500`, Tailwind `bg-signal` / `t
 - It is never a state color: status dots keep green / grey / red, errors keep `destructive`. Orange never means LIVE, NOT SET or ERROR.
 - Flat fill or 1px border only. No gradients, glows, tints (`/50`) or text-on-black orange paragraphs.
 - Text on an orange fill is black (`text-background`, 6.5:1). Focus ring on an orange fill: `ring-background`.
-- At most one orange element on screen at a time.
+- Only the places in the table below, never more of them: each is one small hot spot (a row, a count), never an area.
 
 | Where | What | Asked |
 |---|---|---|
-| `/demo` (and the Layer 4 window): sidebar **Agent** row | Orange background until the visitor first opens the Agent (any way); from then on it is a normal row for good | 2026-10-17 |
+| `/demo` (and the Layer 4 window): sidebar **Agent** row | Orange background whenever the Agent is not the open page; when it is open, it is a normal active row like the others | 2026-10-17 |
+| `/demo` (and the Layer 4 window): sidebar **Messages** row | Orange count, shaped like the header's attention badge (black text): unread messages plus open message requests; it goes down as each conversation is opened, gone at 0 | 2026-10-17 |
 
 ### Color Usage Patterns
 

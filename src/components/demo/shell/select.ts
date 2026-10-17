@@ -1,6 +1,7 @@
 // Module-scope selectors for the shell and the views (React-free). useDemo(selector) memoises on the
 // selector's identity, so pass these (or other module-scope functions), never an inline arrow.
 import type { DemoState } from "../engine/slices"
+import { openRequestCount, unreadCount } from "../engine/slices/messages"
 import type { LayoutPref, UiMode } from "../engine/types"
 
 export const selectMode = (s: DemoState): UiMode => s.core.mode
@@ -11,6 +12,6 @@ export const selectNow = (s: DemoState): number => s.core.now
 export const selectDrawerOpen = (s: DemoState): boolean => s.core.drawerOpen
 export const selectLayoutPref = (s: DemoState): LayoutPref => s.core.layout
 export const selectRailCollapsed = (s: DemoState): boolean => s.core.railCollapsed
-/** False until the visitor first opens the Agent route (the sidebar's signal-orange row). */
-export const selectAgentSeen = (s: DemoState): boolean => s.core.agentSeen
+/** The Messages row's signal-orange count: unread messages plus open message requests. */
+export const selectNewMessages = (s: DemoState): number => unreadCount(s.messages) + openRequestCount(s.messages)
 export const selectFragment = (s: DemoState): string | null => s.core.route?.fragment ?? null

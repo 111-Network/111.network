@@ -17,6 +17,7 @@ import {
   reduceMessages,
   REPLIER,
   requestPeer,
+  unreadCount,
   type DemoMessage,
 } from "./messages"
 
@@ -424,6 +425,52 @@ describe("messages slice: message requests", () => {
     s.dispatch({ type: "messages/acceptRequest", peer: REPLIER })
     s.dispatch({ type: "messages/forgetRequest", peer: REPLIER })
     expect(snap(s)).toBe(before)
+  })
+})
+
+describe("messages slice: the sidebar's Messages count (unread + open requests)", () => {
+  const count = (s: DemoStore) => unreadCount(snap(s).messages) + openRequestCount(snap(s).messages)
+
+  it("opens at 2: Ada's welcome (unread) and the pending request; Bram's old message is read", () => {
+    const s = setup(PATHS.overview)
+    expect(unreadCount(snap(s).messages)).toBe(1)
+    expect(count(s)).toBe(2)
+  })
+
+  it("goes down per conversation: the Messages list alone clears nothing, opening Ada's thread clears hers", () => {
+    const s = setup(PATHS.overview)
+    s.navigate(PATHS.messages)
+    expect(count(s)).toBe(2)
+    s.navigate(PATHS.conversation(REPLIER))
+    expect(count(s)).toBe(1)
+  })
+
+  it("a request stays counted until handled; accepted, its held words count as unread until opened", () => {
+    const s = setup(PATHS.overview)
+    s.dispatch({ type: "messages/ignoreRequest", peer: REQ })
+    expect(count(s)).toBe(1)
+    s.dispatch({ type: "messages/acceptRequest", peer: REQ })
+    expect(count(s)).toBe(2)
+    s.navigate(PATHS.conversation(REQ))
+    expect(count(s)).toBe(1)
+  })
+
+  it("a reply that arrives while its conversation is closed counts; one that arrives open does not", () => {
+    const s = setup(PATHS.messages)
+    s.navigate(PATHS.conversation(REPLIER))
+    expect(count(s)).toBe(1)
+    s.dispatch({ type: "messages/send", peer: REPLIER, text: "Hello Ada." })
+    s.navigate(PATHS.overview)
+    s.scheduler.runUntilIdle()
+    expect(incomingOf(s, REPLIER).length).toBeGreaterThan(1)
+    expect(count(s)).toBe(2)
+
+    const open = setup(PATHS.messages)
+    open.navigate(PATHS.conversation(REPLIER))
+    open.dispatch({ type: "messages/send", peer: REPLIER, text: "Hello Ada." })
+    open.scheduler.runUntilIdle()
+    expect(incomingOf(open, REPLIER).length).toBeGreaterThan(1)
+    expect(count(open)).toBe(1)
   })
 })
 

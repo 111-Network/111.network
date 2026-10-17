@@ -68,13 +68,17 @@ function serviceItem(s: DemoService): ServiceNavItem {
   return { id: s.id, label: s.name, href: PATHS.service(s.id), state: s.state }
 }
 
-/** Everything the sidebar renders for `mode`. */
+/**
+ * Everything the sidebar renders for `mode`. Deviation (owner, 2026-10-17): the services group is
+ * advanced only; simple mode keeps the five core rows and Settings.
+ */
 export function visibleNav(mode: UiMode, services: readonly DemoService[]): VisibleNav {
   const rows = NAV.filter((i) => meetsMode(mode, i.minMode))
+  const listed = mode === "advanced" ? services : []
   return {
     core: rows.filter((i) => i.section === "core"),
-    services: services.filter((s) => s.canRunHere).map(serviceItem),
-    unavailable: services.filter((s) => !s.canRunHere).map(serviceItem),
+    services: listed.filter((s) => s.canRunHere).map(serviceItem),
+    unavailable: listed.filter((s) => !s.canRunHere).map(serviceItem),
     settings: rows.filter((i) => i.section === "settings"),
   }
 }
@@ -90,14 +94,4 @@ export function glyphOf(label: string): string {
 /** Is the route one of the settings pages (Essentials or a layer page)? */
 export function inSettings(route: DemoRoute | null): boolean {
   return route?.view === "settings" || route?.view === "settings-layer"
-}
-
-/**
- * The lowest mode a route is meant for, or undefined when it is for everyone (real `minModeFor`).
- * An advanced route opened in simple mode is shown, never redirected, and marked "advanced view".
- */
-export function minModeFor(route: DemoRoute | null): UiMode | undefined {
-  if (!route) return undefined
-  if (route.view === "settings-layer") return undefined
-  return NAV.find((i) => i.href === route.path)?.minMode
 }

@@ -430,6 +430,12 @@ export function openRequestCount(state: Pick<MessagesState, "threads">): number 
   return state.threads.filter((t) => t.kind === "request" && !t.ignored).length
 }
 
+/** Incoming messages after the read mark, over every conversation (requests are counted apart). */
+export function unreadCount(state: Pick<MessagesState, "threads" | "messages">): number {
+  const readSeq = new Map(state.threads.filter((t) => t.kind === "contact").map((t) => [t.peer, t.readSeq]))
+  return state.messages.filter((m) => m.dir === "in" && m.seq > (readSeq.get(m.peer) ?? Infinity)).length
+}
+
 /** One "needs you" row for the message requests (counted by the header badge). Core is not needed. */
 export function needsMessages(state: MessagesState): readonly NeedItem[] {
   const n = openRequestCount(state)

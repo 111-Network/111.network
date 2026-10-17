@@ -17,7 +17,7 @@ import { createAnnouncer, createRegionWriter, type SetTimer } from "./announcer"
 import { SHELL_COPY } from "./copy"
 import { DEMO_MAIN_ID } from "./frame-ids"
 import { canCollapse, isDrawerActive, isFillRoute, isRail, isWide, needsMeasure, resolveLayout, showsMenu, WIDE_MIN_PX } from "./layout"
-import { glyphOf, inSettings, meetsMode, minModeFor, NAV, visibleNav } from "./nav"
+import { glyphOf, inSettings, meetsMode, NAV, visibleNav } from "./nav"
 import { registryKeyOf, servicePageOf, VIEW_KEYS } from "./route-keys"
 import { handoffPrompt, kbRouteOf, servicePageState } from "./service-page"
 import { Shell } from "./shell"
@@ -29,6 +29,13 @@ import { ServicePageFrame } from "../views/services/frame"
 const Provider = DemoStoreProvider as FunctionComponent<{ store: DemoStore; children?: ReactNode }>
 
 const core = (layout: "auto" | "rail" | "docked" | "drawer", railCollapsed = false) => ({ layout, railCollapsed })
+
+/** The same store with its server snapshot in advanced mode (a server render reads only that snapshot). */
+function advancedOnServer(store: DemoStore): DemoStore {
+  const base = store.getServerSnapshot()
+  const snap = { ...base, core: { ...base.core, mode: "advanced" as const } }
+  return { ...store, getServerSnapshot: () => snap }
+}
 
 describe("nav model (real lib/nav.ts)", () => {
   it("has the five core rows in the real order, then Essentials and the ten layer pages", () => {
@@ -49,12 +56,20 @@ describe("nav model (real lib/nav.ts)", () => {
     expect(simple.core).toEqual(advanced.core)
   })
 
-  it("lists one service row per registry record, in registry order, and splits off what cannot run here", () => {
+  it("lists no services in simple mode (demo deviation): the five core rows and Settings stay", () => {
     const nav = visibleNav("simple", DEMO_WORLD.services)
+    expect(nav.services).toEqual([])
+    expect(nav.unavailable).toEqual([])
+    expect(nav.core.map((i) => i.id)).toEqual(["overview", "agent", "devices", "nearby", "messages"])
+    expect(nav.settings).toHaveLength(11)
+  })
+
+  it("lists one service row per registry record in advanced mode, in registry order, and splits off what cannot run here", () => {
+    const nav = visibleNav("advanced", DEMO_WORLD.services)
     expect(nav.services.map((s) => s.id)).toEqual(DEMO_WORLD.services.map((s) => s.id))
     expect(nav.services.find((s) => s.id === "radio")).toMatchObject({ label: "Long-range radio", href: "/services/radio", state: "unset" })
     const away: DemoService = { ...DEMO_WORLD.services[0], canRunHere: false }
-    const split = visibleNav("simple", [away, ...DEMO_WORLD.services.slice(1)])
+    const split = visibleNav("advanced", [away, ...DEMO_WORLD.services.slice(1)])
     expect(split.unavailable.map((s) => s.id)).toEqual(["agent"])
     expect(split.services.map((s) => s.id)).not.toContain("agent")
   })
@@ -69,14 +84,6 @@ describe("nav model (real lib/nav.ts)", () => {
     expect(inSettings(parsePath("/settings/l3"))).toBe(true)
     expect(inSettings(parsePath("/services/radio"))).toBe(false)
     expect(inSettings(null)).toBe(false)
-  })
-
-  it("never marks a layer page, Essentials or a core view as advanced", () => {
-    for (let n = 0; n <= 9; n++) expect(minModeFor(parsePath(`/settings/l${n}`))).toBeUndefined()
-    expect(minModeFor(parsePath("/settings"))).toBeUndefined()
-    expect(minModeFor(parsePath("/overview"))).toBeUndefined()
-    expect(minModeFor(parsePath("/services/bridge"))).toBeUndefined()
-    expect(minModeFor(null)).toBeUndefined()
   })
 })
 
@@ -288,10 +295,11 @@ describe("server render (node: no window)", () => {
     expect(html).toContain(">LAPTOP</span>")
     expect(html).toContain(SHELL_COPY.node.caption)
     expect(html).toContain(">LIVE</span>")
-    // Core rows, a service row with its state word, the settings group, the mode switch.
-    for (const label of ["Overview", "Agent", "Devices", "Nearby", "Messages", "Local AI agent", "Long-range radio", "NOT SET", "Settings", "SIMPLE", "ADVANCED"]) {
+    // Core rows, the settings group, the mode switch; simple mode lists no services (demo deviation).
+    for (const label of ["Overview", "Agent", "Devices", "Nearby", "Messages", "Settings", "SIMPLE", "ADVANCED"]) {
       expect(html).toContain(label)
     }
+    for (const label of ["Local AI agent", "Long-range radio", 'aria-label="Services"']) expect(html).not.toContain(label)
     expect(html).toContain('role="radiogroup" aria-label="Interface mode"')
     // Before measuring: docked markup hidden below 1024 px by a container query, MENU hidden from 1024 px.
     expect(html).toContain('data-layout="unknown"')
@@ -306,6 +314,20 @@ describe("server render (node: no window)", () => {
     // The shell header is not a second banner (the /demo site bar is the page's banner).
     expect(html).not.toContain("<header")
     expect(html).toContain('<nav aria-label="Main"')
+  })
+
+  it("advanced mode lists the services, each with its state word", () => {
+    const store = createDemoStore(DEMO_WORLD, { router: "memory", layout: "auto", initialPath: "/devices", driver: null })
+    const html = renderToString(createElement(Provider, { store: advancedOnServer(store) }, createElement(Shell, { mainId: "m", embedded: false })))
+    for (const label of ['aria-label="Services"', "Local AI agent", "Long-range radio", "NOT SET"]) expect(html).toContain(label)
+  })
+
+  it("signal orange: the Agent row while it is not the open page, and the Messages count (1 unread + 1 request)", () => {
+    const store = createDemoStore(DEMO_WORLD, { router: "memory", layout: "auto", initialPath: "/devices", driver: null })
+    const html = renderToString(createElement(Provider, { store }, createElement(Shell, { mainId: "m", embedded: false })))
+    expect(html).toMatch(/<a [^>]*class="[^"]*bg-signal[^"]*"[^>]*>Agent<\/a>|<a [^>]*class="[^"]*bg-signal[^"]*"[^>]*><span[^>]*>Agent<\/span>/)
+    expect(html).toMatch(/class="[^"]*bg-signal[^"]*"><span aria-hidden="true">2<\/span><span class="sr-only">2 new<\/span>/)
+    expect(html.match(/bg-signal/g)).toHaveLength(2)
   })
 
   it("renders the forced rail of the L4 window: no MENU, no collapse, glyph rows", () => {
@@ -329,7 +351,8 @@ describe("server render (node: no window)", () => {
   })
 
   it("the rail never shows a state by colour alone: a state mark and the state word in the tooltip", () => {
-    const html = renderToString(createElement(DemoWindow, { initialPath: "/nearby" }))
+    const store = createDemoStore(DEMO_WORLD, { router: "memory", layout: "rail", initialPath: "/nearby", driver: null })
+    const html = renderToString(createElement(Provider, { store: advancedOnServer(store) }, createElement(Shell, { mainId: "m", embedded: true })))
     expect(html).toContain('title="Long-range radio: NOT SET"')
     expect(html).toContain('title="Local AI agent: LIVE"')
     expect(html).toMatch(/aria-hidden="true" class="[^"]*">N<\/span>/)

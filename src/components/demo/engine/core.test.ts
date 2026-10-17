@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { LABEL_PATTERN } from "@/lib/labels"
-import { OPENING_TRIES, TIMING } from "./core"
+import { needsAdvanced, OPENING_TRIES, TIMING } from "./core"
+import { parsePath } from "./router"
 import { createFakeDriver } from "./scheduler"
 import {
   attentionCount,
@@ -111,24 +112,29 @@ describe("core: opening state", () => {
   })
 })
 
-describe("core: agentSeen (the signal-orange Agent row)", () => {
-  it("is false at open, flips on the first visit to the Agent and stays true", () => {
+describe("core: service pages switch to advanced mode", () => {
+  it("opens in simple; a service page switches to advanced, other pages leave the mode alone", () => {
     const store = newStore()
-    expect(store.getSnapshot().core.agentSeen).toBe(false)
+    expect(store.getSnapshot().core.mode).toBe("simple")
     store.navigate("/devices")
-    expect(store.getSnapshot().core.agentSeen).toBe(false)
-    store.navigate("/")
-    expect(store.getSnapshot().core.agentSeen).toBe(true)
+    expect(store.getSnapshot().core.mode).toBe("simple")
+    store.navigate("/services/bridge")
+    expect(store.getSnapshot().core.mode).toBe("advanced")
     store.navigate("/overview")
-    expect(store.getSnapshot().core.agentSeen).toBe(true)
+    expect(store.getSnapshot().core.mode).toBe("advanced")
   })
 
-  it("flips when a prepared prompt opens the Agent, and starts true on an Agent deep link", () => {
+  it("switching back to simple on a service page keeps the page; a service deep link starts in advanced", () => {
     const store = newStore()
-    store.dispatch({ type: "core/agentPrefill", text: "Tell me about identity.", from: "L2 · Identity" })
-    expect(store.getSnapshot().core.agentSeen).toBe(true)
-    const deep = createDemoStore(DEMO_WORLD, { router: "memory", driver: null, initialPath: "/" })
-    expect(deep.getSnapshot().core.agentSeen).toBe(true)
+    store.navigate("/services/storage")
+    store.dispatch({ type: "core/setMode", mode: "simple" })
+    expect(store.getSnapshot().core.mode).toBe("simple")
+    expect(store.getSnapshot().core.route?.view).toBe("service")
+    const deep = createDemoStore(DEMO_WORLD, { router: "memory", driver: null, initialPath: "/services/repairs" })
+    expect(deep.getSnapshot().core.mode).toBe("advanced")
+    expect(needsAdvanced(parsePath("/services/radio"))).toBe(true)
+    expect(needsAdvanced(parsePath("/settings/l9"))).toBe(false)
+    expect(needsAdvanced(null)).toBe(false)
   })
 })
 

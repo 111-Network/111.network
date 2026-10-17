@@ -36,6 +36,8 @@ export const SHELL_COPY = {
     unavailable: (n: number): string => `Not available on this device (${n})`,
     unavailableList: "Not available on this device",
     settings: "Settings",
+    /** The Messages row's count: unread messages + open requests. */
+    newMessages: (n: number): string => (n === 1 ? "1 new" : `${n} new`),
     more: "v more",
     moreRail: "v",
   },
@@ -68,7 +70,6 @@ export const SHELL_COPY = {
 
   /** Main area (real routes.tsx). */
   view: {
-    advanced: "advanced view",
     loading: "Loading view",
     notFound: {
       kicker: "404",

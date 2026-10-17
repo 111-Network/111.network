@@ -15,6 +15,7 @@ import { DemoLink, useDemo, useDispatch, useRoute, useWorld } from "../engine/re
 import { isActive, PATHS } from "../engine/router"
 import { nodeHealth, selectServices } from "../engine/selectors"
 import type { UiMode } from "../engine/types"
+import { attentionText } from "../ui/attention"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Segmented } from "../ui/segmented"
@@ -24,7 +25,7 @@ import { useShellEmbedded } from "./context"
 import { SHELL_COPY } from "./copy"
 import { canCollapse, isRail, type ResolvedLayout } from "./layout"
 import { glyphOf, inSettings as routeInSettings, visibleNav, type NavItem, type ServiceNavItem } from "./nav"
-import { selectAgentSeen, selectAlias, selectLayoutPref, selectMode, selectRailCollapsed } from "./select"
+import { selectAlias, selectLayoutPref, selectMode, selectNewMessages, selectRailCollapsed } from "./select"
 import { useMoreBelow } from "./use-more-below"
 
 export type CloseFocus = "menu" | "main"
@@ -53,8 +54,8 @@ const ROW =
   "group flex min-h-11 w-full items-center gap-3 px-3 text-start font-mono text-xs transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset"
 
 /**
- * Row colours. `signal` = the one signal-orange row (DESIGN.md "Signal orange"): the Agent row until
- * the visitor first opens the Agent; once opened it is a normal row for good.
+ * Row colours. `signal` = the signal-orange row (DESIGN.md "Signal orange"): the Agent row, orange
+ * whenever it is not the open page; active, it is a normal active row like the others.
  */
 function rowTone(active: boolean, signal = false): string {
   if (active) return "bg-foreground text-background focus-visible:ring-background"
@@ -74,7 +75,7 @@ interface NavRowProps {
   caps?: boolean
   /** The rail tooltip (default: the label). Service rows add their state word. */
   railTitle?: string
-  /** Wear the signal orange (only the Agent row, until it is first opened). */
+  /** Wear the signal orange when not active (only the Agent row). */
   signal?: boolean
   onNavigate: () => void
 }
@@ -95,7 +96,7 @@ function NavRow({ href, active, rail, label, glyph, dot, trail, caps = false, ra
       aria-current={active ? "page" : undefined}
       title={rail ? (railTitle ?? label) : undefined}
       onClick={onNavigate}
-      className={cn(ROW, rowTone(active, signal), caps && "uppercase tracking-widest", rail && "justify-center px-0")}
+      className={cn(ROW, rowTone(active, signal), caps && "uppercase tracking-widest", rail && "relative justify-center px-0")}
     >
       {rail ? (
         dot ? (
@@ -107,6 +108,7 @@ function NavRow({ href, active, rail, label, glyph, dot, trail, caps = false, ra
           <>
             <span aria-hidden="true">{glyph}</span>
             <span className="sr-only">{label}</span>
+            {trail}
           </>
         )
       ) : (
@@ -149,6 +151,25 @@ function ServiceRow({ item, active, rail, onNavigate }: { item: ServiceNavItem; 
         )
       }
     />
+  )
+}
+
+/**
+ * The signal-orange count on the Messages row (DESIGN.md "Signal orange"): unread messages plus open
+ * requests, shaped like the header's attention badge. In the rail it sits on the row's top corner.
+ */
+function NewCount({ n, rail }: { n: number; rail: boolean }) {
+  if (n <= 0) return null
+  return (
+    <span
+      className={cn(
+        "inline-flex min-w-5 shrink-0 items-center justify-center border border-signal bg-signal px-1.5 py-0.5 font-mono text-[10px] leading-none font-bold text-background",
+        rail && "absolute end-1 top-1 min-w-4 px-1",
+      )}
+    >
+      <span aria-hidden="true">{attentionText(n)}</span>
+      <span className="sr-only">{SHELL_COPY.nav.newMessages(n)}</span>
+    </span>
   )
 }
 
@@ -210,7 +231,7 @@ export function Sidebar({ ids, layout, drawerActive, onClose, onNavigate }: Side
   const dispatch = useDispatch()
   const route = useRoute()
   const mode = useDemo(selectMode)
-  const agentSeen = useDemo(selectAgentSeen)
+  const newMessages = useDemo(selectNewMessages)
   const layoutPref = useDemo(selectLayoutPref)
   const railCollapsed = useDemo(selectRailCollapsed)
   const services = useDemo(selectServices)
@@ -277,20 +298,25 @@ export function Sidebar({ ids, layout, drawerActive, onClose, onNavigate }: Side
 
   const setMode = (next: UiMode) => dispatch({ type: "core/setMode", mode: next })
 
-  const row = (item: NavItem, caps = false) => (
-    <li key={item.id}>
-      <NavRow
-        href={item.href}
-        active={isActive(item.href, path)}
-        rail={railed}
-        label={item.label}
-        glyph={glyphOf(item.label)}
-        caps={caps}
-        signal={item.id === "agent" && !agentSeen}
-        onNavigate={onNavigate}
-      />
-    </li>
-  )
+  const row = (item: NavItem, caps = false) => {
+    const counted = item.id === "messages" && newMessages > 0
+    return (
+      <li key={item.id}>
+        <NavRow
+          href={item.href}
+          active={isActive(item.href, path)}
+          rail={railed}
+          label={item.label}
+          glyph={glyphOf(item.label)}
+          caps={caps}
+          railTitle={counted ? `${item.label}: ${SHELL_COPY.nav.newMessages(newMessages)}` : undefined}
+          signal={item.id === "agent"}
+          trail={counted ? <NewCount n={newMessages} rail={railed} /> : undefined}
+          onNavigate={onNavigate}
+        />
+      </li>
+    )
+  }
 
   const serviceRow = (s: ServiceNavItem) => (
     <li key={s.id}>
@@ -335,10 +361,15 @@ export function Sidebar({ ids, layout, drawerActive, onClose, onNavigate }: Side
                 {nav.core.map((i) => row(i, true))}
               </ul>
 
-              <SectionLabel rail={railed}>{SHELL_COPY.nav.services}</SectionLabel>
-              <ul aria-label={SHELL_COPY.nav.servicesList} className="flex flex-col">
-                {nav.services.map(serviceRow)}
-              </ul>
+              {/* Simple mode lists no services (visibleNav), so the whole group goes with its label. */}
+              {nav.services.length > 0 ? (
+                <>
+                  <SectionLabel rail={railed}>{SHELL_COPY.nav.services}</SectionLabel>
+                  <ul aria-label={SHELL_COPY.nav.servicesList} className="flex flex-col">
+                    {nav.services.map(serviceRow)}
+                  </ul>
+                </>
+              ) : null}
               {nav.unavailable.length > 0 && !railed ? (
                 <div>
                   <GroupToggle id={ids.unavailable} open={unavailableOpen} onToggle={() => setUnavailableOpen((o) => !o)}>

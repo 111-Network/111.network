@@ -6,6 +6,7 @@
 // initialiser), and pauses the virtual clock while the tab is hidden or the shell is offscreen.
 import { createContext, useContext, useEffect, useMemo, useState, useSyncExternalStore, type AnchorHTMLAttributes, type MouseEvent, type ReactNode } from "react"
 import { useInViewPlayRef } from "@/hooks/use-in-view-play"
+import { needsAdvanced } from "./core"
 import type { DemoRoute } from "./router"
 import type { DemoAction, DemoState } from "./slices"
 import { createDemoStore, type DemoStore, type DemoStoreOptions } from "./store"
@@ -59,7 +60,8 @@ export function DemoStoreProvider({ store, children }: { store: DemoStore; child
     if (!store.options.persist) return
     const mode = readStored(MODE_STORAGE_KEY)
     const rail = readStored(RAIL_STORAGE_KEY)
-    if (isMode(mode)) store.dispatch({ type: "core/setMode", mode })
+    // A saved "simple" never overrides the switch a service page made (start() above already read the hash).
+    if (isMode(mode) && !(mode === "simple" && needsAdvanced(store.getSnapshot().core.route))) store.dispatch({ type: "core/setMode", mode })
     if (rail === "1" || rail === "0") store.dispatch({ type: "core/setRail", collapsed: rail === "1" })
     let last = store.getSnapshot().core
     return store.subscribe(() => {

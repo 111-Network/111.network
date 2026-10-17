@@ -155,11 +155,6 @@ export interface CoreState {
   proposals: readonly DemoProposal[]
   prefill: AgentPrefill | null
   prefillSeq: number
-  /**
-   * False until the visitor first lands on the Agent route (any way: a sidebar click, a prepared
-   * prompt, a deep link). Until then the sidebar's Agent row wears the signal orange (DESIGN.md).
-   */
-  agentSeen: boolean
 }
 
 export interface CoreInit {
@@ -170,14 +165,21 @@ export interface CoreInit {
 /** The seek ladder when the demo opens: the node already went down its list once and nothing was in range. */
 export const OPENING_TRIES: Readonly<Record<NetworkId, NetworkTry>> = { "network-a": "no signal", "network-b": "no signal", "network-c": "no signal" }
 
+/**
+ * Service pages are the advanced part of the dashboard (owner, 2026-10-17): the sidebar lists them
+ * in advanced mode only, so opening one (a link, a deep link) switches the mode to advanced.
+ */
+export function needsAdvanced(route: DemoRoute | null): boolean {
+  return route?.view === "service"
+}
+
 export function initialCore(world: World, init: CoreInit): CoreState {
   return {
     now: 0,
     route: init.route,
     navCount: 0,
-    agentSeen: init.route?.view === "agent",
     layout: init.layout,
-    mode: "simple",
+    mode: needsAdvanced(init.route) ? "advanced" : "simple",
     railCollapsed: init.layout === "rail",
     drawerOpen: false,
     alias: world.self.name,
@@ -402,7 +404,7 @@ function step(s: CoreState, a: CoreAction, ctx: ReduceCtx): CoreState {
     case "core/navigate": {
       const route = parsePath(a.path)
       if (sameRoute(s.route, route)) return s.drawerOpen ? { ...s, drawerOpen: false } : s
-      return { ...s, route, navCount: s.navCount + 1, drawerOpen: false, agentSeen: s.agentSeen || route.view === "agent" }
+      return { ...s, route, navCount: s.navCount + 1, drawerOpen: false, mode: needsAdvanced(route) ? "advanced" : s.mode }
     }
     case "core/setMode":
       return s.mode === a.mode ? s : { ...s, mode: a.mode }
@@ -546,7 +548,6 @@ function step(s: CoreState, a: CoreAction, ctx: ReduceCtx): CoreState {
         route,
         navCount: moved ? s.navCount + 1 : s.navCount,
         drawerOpen: false,
-        agentSeen: true,
       }
     }
     case "core/prefillTaken":
