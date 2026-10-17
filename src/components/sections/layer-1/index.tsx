@@ -41,11 +41,14 @@ export function Layer1() {
         <TerminalChrome title="install@111-network" subtitle="simulation" right={<SimulationChip />} />
 
         <BootProvider>
-          {/* DOM (= mobile) order: title, picker, description, facts, log, specs, strip.
+          {/* DOM (= mobile) order: title, picker, facts, log, description, specs, strip.
               The picker comes right after the H2 so the chips are on screen when the
-              "following: … · change" links on L3, L8 and L9 land on #layer-1. From lg the
-              picker spans the top, the log sits left, and the right column stacks
-              title + description (one block), specs, then facts. */}
+              "following: … · change" links on L3, L8 and L9 land on #layer-1. The facts and
+              the log follow the chips directly, so on a phone a chip tap retypes the log on
+              screen, not below the fold; the static description waits under the log. From
+              lg every block is placed explicitly: the picker spans the top, the log sits
+              left, and the right column stacks title + description (one block), specs,
+              then facts. */}
           {/* grid-cols-1 = minmax(0, 1fr): without it the implicit auto column grows to the
               log's widest line (the nowrap dot leader) and the page scrolls sideways on phones. */}
           <div className="grid grid-cols-1 lg:grid-cols-5 lg:grid-rows-[auto_auto_auto_auto_1fr_auto]">
@@ -67,12 +70,6 @@ export function Layer1() {
               <DevicePicker />
             </div>
 
-            <div className="border-b border-border px-4 py-4 sm:px-6 sm:pb-6 lg:col-span-2 lg:col-start-4 lg:row-start-3 lg:border-l lg:pt-3">
-              <p className="max-w-prose font-mono text-xs leading-relaxed text-muted-foreground md:text-sm">
-                {layer.description}
-              </p>
-            </div>
-
             <div className="border-b border-border lg:col-span-2 lg:col-start-4 lg:row-start-5 lg:border-b-0 lg:border-l">
               <PaneBar>what the installer works out</PaneBar>
               <DeviceFacts />
@@ -80,6 +77,12 @@ export function Layer1() {
 
             <div className="border-b border-border lg:col-span-3 lg:col-start-1 lg:row-span-4 lg:row-start-2 lg:border-b-0">
               <BootLog />
+            </div>
+
+            <div className="border-b border-border px-4 py-4 sm:px-6 sm:pb-6 lg:col-span-2 lg:col-start-4 lg:row-start-3 lg:border-l lg:pt-3">
+              <p className="max-w-prose font-mono text-xs leading-relaxed text-muted-foreground md:text-sm">
+                {layer.description}
+              </p>
             </div>
 
             <div className="border-b border-border lg:col-span-2 lg:col-start-4 lg:row-start-4 lg:border-l">

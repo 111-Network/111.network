@@ -156,10 +156,13 @@ function LogLine({ line, shown, cursor }: { line: BootLine; shown: boolean; curs
       </span>
       {line.ok && (
         <>
-          <span aria-hidden="true" className="min-w-4 flex-1 overflow-hidden whitespace-nowrap text-muted-foreground/40">
+          {/* Basis 0 and min-w-0: the leader only takes the room the label leaves. When a
+              label wraps (phones) it takes all of it, so the leader collapses to nothing
+              instead of a ".." stub, and [ok] stays right-aligned on the label's first line. */}
+          <span aria-hidden="true" className="min-w-0 flex-1 overflow-hidden whitespace-nowrap text-muted-foreground/40">
             {DOTS}
           </span>
-          <span className="shrink-0 text-foreground">[ok]</span>
+          <span className="ml-auto shrink-0 self-start text-foreground">[ok]</span>
         </>
       )}
     </div>
