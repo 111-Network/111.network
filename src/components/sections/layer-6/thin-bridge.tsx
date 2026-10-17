@@ -110,7 +110,10 @@ export function ThinBridge() {
             <span className={cn("flex flex-col gap-1", LANE_GAP)}>
               <span className="font-pixel-line text-2xl font-bold tracking-tight md:text-4xl">NETWORK A</span>
               <span className="text-[10px] uppercase tracking-widest">{BRIDGE_SIDES.a.medium}</span>
-              <span className="text-[10px] text-muted-foreground group-hover:text-foreground">press: drop a sealed packet ↓</span>
+              <span className="text-[10px] text-muted-foreground group-hover:text-foreground">
+                {/* A no-break space keeps the arrow on the line with its last word. */}
+                press: drop a sealed packet&nbsp;↓
+              </span>
             </span>
           </span>
         </button>
@@ -123,7 +126,9 @@ export function ThinBridge() {
           aria-label="Bridge: what it does and does not do"
           className={cn(
             "group flex h-[var(--bridge-h)] w-full items-center bg-foreground text-left font-mono text-background transition-colors duration-200 hover:bg-foreground/90",
-            "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-background focus-visible:outline-none",
+            // The band's edges touch the dark networks and the screen edges, so a ring
+            // there is lost: draw a black frame well inside the white band instead.
+            "focus-visible:outline-2 focus-visible:-outline-offset-6 focus-visible:outline-background focus-visible:outline-solid",
           )}
         >
           <span className={BAND_INNER}>
@@ -153,7 +158,7 @@ export function ThinBridge() {
             <span className={cn("flex flex-col gap-1", LANE_GAP)}>
               <span className="font-pixel-line text-2xl font-bold tracking-tight md:text-4xl">NETWORK B</span>
               <span className="text-[10px] uppercase tracking-widest">{BRIDGE_SIDES.b.medium}</span>
-              <span className="text-[10px] text-muted-foreground group-hover:text-foreground">press: send one back up ↑</span>
+              <span className="text-[10px] text-muted-foreground group-hover:text-foreground">press: send one back up&nbsp;↑</span>
             </span>
           </span>
         </button>
