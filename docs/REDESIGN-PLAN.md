@@ -32,7 +32,7 @@ Inputs:
 ## 2. Page map
 
 ```
-/            nav (0–9 rail) ─ hero ─ ticker ─ L0 … L9 ─ DEMO CTA band ─ terminal ─ footer
+/            nav (0–9 layer buttons) ─ hero ─ ticker ─ L0 … L9 ─ terminal ─ DEMO CTA band ─ footer   (P5: the band moved to the very end, owner 2026-10-17)
 /demo        site bar ─ "DEMO · sample data · nothing leaves this page" strip ─ interactive dashboard
 /terms       unchanged except one analytics sentence (W7) + its own canonical
 ```
@@ -151,6 +151,8 @@ It reuses the current string-frame renderer. The alternative is no hero extra.
 ## 4. Frame
 
 ### 4.1 Nav
+> **As built (P5, owner 2026-10-17):** the 28 px square rail was replaced by the old header's text style: one button per layer, dim number + uppercase label, hover inverted, active solid. Every label shows from 1280 px (10 px type; 12 px from 1536 px, where the header widens to 96rem); below 1280 px the numbers show and only the active layer adds its label. The xl readout is gone. DEMO · TERMINAL · INSTALL · GitHub stay on the right.
+
 - **Desktop:** `> 111.network` · a rail of ten 28 px square anchors `0`…`9` (tooltip = layer name; `aria-current` on the active one; at xl a readout "L3 · LOCAL INTELLIGENCE") · `DEMO` (behind a `DEMO_READY` flag until P5) · `TERMINAL` · an inverted `INSTALL` button that opens a popover with the same install terminal (Radix popover is already a dependency; force zero radius) · a GitHub icon (org).
 - A 2 px, ten-segment depth strip on the header's bottom edge fills with scroll progress.
 - **Mobile:** logo · `L3/9` readout · `INSTALL` (links to `#install`) · `MENU`. The menu is a full-height, focus-trapped sheet with a 2×5 grid of layer tiles, then DEMO / TERMINAL.
