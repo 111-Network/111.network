@@ -363,7 +363,7 @@ export const DEVICE_COPY = {
 
 // ------------------------------------------------------------------------------- layer pages
 
-/** Settings layer pages (real `lib/layers.ts`, verbatim): plain title first, the number second. */
+/** Settings layer pages (real `lib/layers.ts`; L9 reads "Self-healing" as on the home page, owner 2026-10-17). */
 export const LAYER_PAGES = [
   {
     n: 0,
@@ -413,7 +413,7 @@ export const LAYER_PAGES = [
   },
   {
     n: 9,
-    title: "Repairs",
+    title: "Self-healing",
     description: "The agent watches every layer, diagnoses failures, tests fixes in a sandbox and prepares a change for a human to approve.",
   },
 ] as const

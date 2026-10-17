@@ -16,7 +16,7 @@
 
 ## 2. Color Palette
 
-The palette is strictly **pure black and white** with a single grayscale ladder. No accent colors exist outside the destructive red — with exactly one scoped exception: the three **status-dot** colors below (decision D15, 2026-10-13), which may appear only on status dots.
+The palette is strictly **pure black and white** with a single grayscale ladder. No accent colors exist outside the destructive red — with two scoped exceptions: the three **status-dot** colors below (decision D15, 2026-10-13), which may appear only on status dots, and the **signal orange** (2026-10-17), which may appear only where the owner explicitly asks for it.
 
 | Token | Hex | Usage |
 |-------|-----|-------|
@@ -35,6 +35,7 @@ The palette is strictly **pure black and white** with a single grayscale ladder.
 | `status-live` | `#22c55e` | **Status dots only** — a service/node is live and healthy |
 | `status-unset` | `#a0a0a0` | **Status dots only** — not installed / not configured (= `muted-foreground`) |
 | `status-error` | `#ff3333` | **Status dots only** — errored / unreachable (= `destructive`) |
+| `signal` | `#ff5500` | **Ask-only accent** — only in the places listed under Signal Orange below |
 
 ### Status Dots (scoped exception)
 
@@ -44,6 +45,20 @@ The dashboard (`os/interface/`) signals service and node state with a `h-2 w-2` 
 - The dot is always paired with a text label (`LIVE` / `NOT SET` / `ERROR`); state is never conveyed by color alone.
 - Transitional states (starting, syncing) use the **grey** dot + `animate-blink`, never a fourth color.
 - Nothing else in the system gains an accent color because of this exception.
+
+### Signal Orange (ask-only accent)
+
+A fresh, sharp, energetic orange: `signal` (`#ff5500`, Tailwind `bg-signal` / `text-signal` / `border-signal`). It is deliberately **off-brand**, which is why it works: one hot spot in a black-and-white system pulls the eye exactly where it is placed. Rules:
+
+- **Use it only where the owner explicitly asks for it.** No agent or contributor adds a new place on their own; every place is listed in the table below, with the date it was asked for.
+- It is never a state color: status dots keep green / grey / red, errors keep `destructive`. Orange never means LIVE, NOT SET or ERROR.
+- Flat fill or 1px border only. No gradients, glows, tints (`/50`) or text-on-black orange paragraphs.
+- Text on an orange fill is black (`text-background`, 6.5:1). Focus ring on an orange fill: `ring-background`.
+- At most one orange element on screen at a time.
+
+| Where | What | Asked |
+|---|---|---|
+| `/demo` (and the Layer 4 window): sidebar **Agent** row | Orange background until the visitor first opens the Agent (any way); from then on it is a normal row for good | 2026-10-17 |
 
 ### Color Usage Patterns
 

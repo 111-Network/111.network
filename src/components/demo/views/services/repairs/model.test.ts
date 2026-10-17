@@ -43,7 +43,7 @@ describe("health matrix", () => {
     expect(r[1].parts).toEqual([{ key: "node-1", name: "Updater", state: "live", href: null, repaired: null }])
     expect(r[4].parts[0].name).toBe("This dashboard")
     expect(r[5].parts[0]).toMatchObject({ key: "messaging", state: "live", href: "/services/messaging" })
-    expect(r[9].title).toBe("Repairs · L9")
+    expect(r[9].title).toBe("L9 · Self-healing")
   })
 
   it("the summary names what is broken, and NOT SET is not broken", () => {

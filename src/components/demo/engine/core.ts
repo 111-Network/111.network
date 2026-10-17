@@ -155,6 +155,11 @@ export interface CoreState {
   proposals: readonly DemoProposal[]
   prefill: AgentPrefill | null
   prefillSeq: number
+  /**
+   * False until the visitor first lands on the Agent route (any way: a sidebar click, a prepared
+   * prompt, a deep link). Until then the sidebar's Agent row wears the signal orange (DESIGN.md).
+   */
+  agentSeen: boolean
 }
 
 export interface CoreInit {
@@ -170,6 +175,7 @@ export function initialCore(world: World, init: CoreInit): CoreState {
     now: 0,
     route: init.route,
     navCount: 0,
+    agentSeen: init.route?.view === "agent",
     layout: init.layout,
     mode: "simple",
     railCollapsed: init.layout === "rail",
@@ -396,7 +402,7 @@ function step(s: CoreState, a: CoreAction, ctx: ReduceCtx): CoreState {
     case "core/navigate": {
       const route = parsePath(a.path)
       if (sameRoute(s.route, route)) return s.drawerOpen ? { ...s, drawerOpen: false } : s
-      return { ...s, route, navCount: s.navCount + 1, drawerOpen: false }
+      return { ...s, route, navCount: s.navCount + 1, drawerOpen: false, agentSeen: s.agentSeen || route.view === "agent" }
     }
     case "core/setMode":
       return s.mode === a.mode ? s : { ...s, mode: a.mode }
@@ -540,6 +546,7 @@ function step(s: CoreState, a: CoreAction, ctx: ReduceCtx): CoreState {
         route,
         navCount: moved ? s.navCount + 1 : s.navCount,
         drawerOpen: false,
+        agentSeen: true,
       }
     }
     case "core/prefillTaken":

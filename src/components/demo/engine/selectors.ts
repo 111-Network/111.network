@@ -536,10 +536,10 @@ export function titleFor(route: DemoRoute | null, services: readonly DemoService
 
 export const routeTitle = memoState((s) => titleFor(s.core.route, s.core.services))
 
-/** "Identity · L2" (sidebar row and header of a layer page). */
+/** "L2 · Identity" (sidebar row and header of a layer page): the number first, so the list reads in layer order. */
 export function layerPageTitle(n: number): string {
   const page = LAYER_PAGES.find((l) => l.n === n)
-  return page ? `${page.title} · L${n}` : ROUTE_TITLES.settings
+  return page ? `L${n} · ${page.title}` : ROUTE_TITLES.settings
 }
 
 export type ShellLayout = Exclude<LayoutPref, "auto">

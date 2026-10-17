@@ -11,4 +11,6 @@ export const selectNow = (s: DemoState): number => s.core.now
 export const selectDrawerOpen = (s: DemoState): boolean => s.core.drawerOpen
 export const selectLayoutPref = (s: DemoState): LayoutPref => s.core.layout
 export const selectRailCollapsed = (s: DemoState): boolean => s.core.railCollapsed
+/** False until the visitor first opens the Agent route (the sidebar's signal-orange row). */
+export const selectAgentSeen = (s: DemoState): boolean => s.core.agentSeen
 export const selectFragment = (s: DemoState): string | null => s.core.route?.fragment ?? null

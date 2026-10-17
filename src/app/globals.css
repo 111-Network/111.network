@@ -64,6 +64,12 @@
   --color-status-unset: #a0a0a0;
   --color-status-error: #ff3333;
 
+  /*
+   * Signal orange (DESIGN.md "Signal orange"): an ask-only accent. Use it ONLY where the owner
+   * explicitly asked for it; the list of places is in DESIGN.md. Black text on it (6.5:1).
+   */
+  --color-signal: #ff5500;
+
   /* The one layered panel shadow (DESIGN.md §5): `shadow-panel`. */
   --shadow-panel:
     rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px,

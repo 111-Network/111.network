@@ -35,14 +35,17 @@ describe("nav model (real lib/nav.ts)", () => {
     expect(NAV.filter((i) => i.section === "core").map((i) => i.label)).toEqual(["Overview", "Agent", "Devices", "Nearby", "Messages"])
     const settings = NAV.filter((i) => i.section === "settings")
     expect(settings.map((i) => i.href)).toEqual([PATHS.settings, ...Array.from({ length: 10 }, (_, n) => `/settings/l${n}`)])
-    expect(settings[3].label).toBe("Identity · L2")
+    expect(settings[3].label).toBe("L2 · Identity")
+    expect(settings.slice(1).map((i) => i.label.slice(0, 2))).toEqual(Array.from({ length: 10 }, (_, n) => `L${n}`))
+    expect(settings[1].label).toBe("L0 · Knowledge")
+    expect(settings[10].label).toBe("L9 · Self-healing")
   })
 
-  it("shows Essentials and Messaging & data in simple mode, all ten layer pages in advanced", () => {
+  it("shows Essentials and all ten layer pages, in layer order, in both modes (demo deviation)", () => {
     const simple = visibleNav("simple", DEMO_WORLD.services)
     const advanced = visibleNav("advanced", DEMO_WORLD.services)
-    expect(simple.settings.map((i) => i.label)).toEqual(["Essentials", "Messaging & data · L5"])
-    expect(advanced.settings).toHaveLength(11)
+    expect(simple.settings).toHaveLength(11)
+    expect(simple.settings).toEqual(advanced.settings)
     expect(simple.core).toEqual(advanced.core)
   })
 
@@ -68,9 +71,8 @@ describe("nav model (real lib/nav.ts)", () => {
     expect(inSettings(null)).toBe(false)
   })
 
-  it("marks the advanced layer pages, never Essentials, L5 or the core views", () => {
-    expect(minModeFor(parsePath("/settings/l2"))).toBe("advanced")
-    expect(minModeFor(parsePath("/settings/l5"))).toBeUndefined()
+  it("never marks a layer page, Essentials or a core view as advanced", () => {
+    for (let n = 0; n <= 9; n++) expect(minModeFor(parsePath(`/settings/l${n}`))).toBeUndefined()
     expect(minModeFor(parsePath("/settings"))).toBeUndefined()
     expect(minModeFor(parsePath("/overview"))).toBeUndefined()
     expect(minModeFor(parsePath("/services/bridge"))).toBeUndefined()

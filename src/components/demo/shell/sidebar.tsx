@@ -24,7 +24,7 @@ import { useShellEmbedded } from "./context"
 import { SHELL_COPY } from "./copy"
 import { canCollapse, isRail, type ResolvedLayout } from "./layout"
 import { glyphOf, inSettings as routeInSettings, visibleNav, type NavItem, type ServiceNavItem } from "./nav"
-import { selectAlias, selectLayoutPref, selectMode, selectRailCollapsed } from "./select"
+import { selectAgentSeen, selectAlias, selectLayoutPref, selectMode, selectRailCollapsed } from "./select"
 import { useMoreBelow } from "./use-more-below"
 
 export type CloseFocus = "menu" | "main"
@@ -52,10 +52,14 @@ const FOCUSABLE = 'a[href], button:not([disabled]):not([tabindex="-1"]), input:n
 const ROW =
   "group flex min-h-11 w-full items-center gap-3 px-3 text-start font-mono text-xs transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset"
 
-function rowTone(active: boolean): string {
-  return active
-    ? "bg-foreground text-background focus-visible:ring-background"
-    : "text-muted-foreground hover:bg-foreground hover:text-background focus-visible:ring-foreground"
+/**
+ * Row colours. `signal` = the one signal-orange row (DESIGN.md "Signal orange"): the Agent row until
+ * the visitor first opens the Agent; once opened it is a normal row for good.
+ */
+function rowTone(active: boolean, signal = false): string {
+  if (active) return "bg-foreground text-background focus-visible:ring-background"
+  if (signal) return "bg-signal text-background hover:bg-foreground focus-visible:ring-background"
+  return "text-muted-foreground hover:bg-foreground hover:text-background focus-visible:ring-foreground"
 }
 
 interface NavRowProps {
@@ -70,6 +74,8 @@ interface NavRowProps {
   caps?: boolean
   /** The rail tooltip (default: the label). Service rows add their state word. */
   railTitle?: string
+  /** Wear the signal orange (only the Agent row, until it is first opened). */
+  signal?: boolean
   onNavigate: () => void
 }
 
@@ -82,14 +88,14 @@ function RailMark({ state, active }: { state: DotState; active: boolean }) {
   )
 }
 
-function NavRow({ href, active, rail, label, glyph, dot, trail, caps = false, railTitle, onNavigate }: NavRowProps) {
+function NavRow({ href, active, rail, label, glyph, dot, trail, caps = false, railTitle, signal = false, onNavigate }: NavRowProps) {
   return (
     <DemoLink
       to={href}
       aria-current={active ? "page" : undefined}
       title={rail ? (railTitle ?? label) : undefined}
       onClick={onNavigate}
-      className={cn(ROW, rowTone(active), caps && "uppercase tracking-widest", rail && "justify-center px-0")}
+      className={cn(ROW, rowTone(active, signal), caps && "uppercase tracking-widest", rail && "justify-center px-0")}
     >
       {rail ? (
         dot ? (
@@ -204,6 +210,7 @@ export function Sidebar({ ids, layout, drawerActive, onClose, onNavigate }: Side
   const dispatch = useDispatch()
   const route = useRoute()
   const mode = useDemo(selectMode)
+  const agentSeen = useDemo(selectAgentSeen)
   const layoutPref = useDemo(selectLayoutPref)
   const railCollapsed = useDemo(selectRailCollapsed)
   const services = useDemo(selectServices)
@@ -279,6 +286,7 @@ export function Sidebar({ ids, layout, drawerActive, onClose, onNavigate }: Side
         label={item.label}
         glyph={glyphOf(item.label)}
         caps={caps}
+        signal={item.id === "agent" && !agentSeen}
         onNavigate={onNavigate}
       />
     </li>

@@ -15,6 +15,8 @@ column only; the node chip badge is plain device words.
 |---|---|---|---|
 | (rule) motion | os/interface/README.md §3 "no entrance animations on data panels" | — | No entrance animation anywhere inside the shell. Motion only as a response (W14): a click (STARTING blink → LIVE), the agent's reply streaming, a delivery state stepping, a radar blip with a named cause. CSS transitions and `animate-blink` only; `framer-motion`, `motion` and `lucide-react` are denied for `src/components/demo/**` and `src/app/demo/**`, transitively (scripts/check-copy.mjs `demoImports`). |
 | (deviation) Overview first | os/interface/ui/src/app/routes.tsx (`/` = Agent, the default route) | — | An empty hash opens Overview (`#/overview`), not the Agent; `#/` is still the Agent (`engine/router.ts` `DEFAULT_PATH`). The one deliberate route deviation (plan §6.1). |
+| (deviation) all ten layer pages, numbered | os/interface/ui/src/lib/nav.ts (only Messaging & data in simple mode; titles "Identity · L2") | — | Owner, 2026-10-17: the sidebar's Settings group lists all ten layer pages in both modes, number first and in layer order, `L0 · Knowledge` … `L9 · Self-healing` (L9 reads "Self-healing", not "Repairs"); no layer page is marked "advanced view". The OS dashboard will follow later. |
+| (deviation) signal-orange Agent row | — (the dashboard has no accent colour) | — | Owner, 2026-10-17: the Agent row wears the DESIGN.md signal orange until the visitor first opens the Agent (any way), then it is a normal row for good (`core.agentSeen`). |
 
 ## Frame and shell
 

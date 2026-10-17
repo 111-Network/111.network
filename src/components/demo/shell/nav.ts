@@ -4,7 +4,7 @@
 import { LAYER_PAGES, ROUTE_TITLES } from "../copy/core"
 import { PATHS, type DemoRoute } from "../engine/router"
 import { layerPageTitle } from "../engine/selectors"
-import type { LayerNumber, ServiceId, ServiceState, UiMode } from "../engine/types"
+import type { ServiceId, ServiceState, UiMode } from "../engine/types"
 import type { DemoService } from "../engine/world"
 
 export type NavSection = "core" | "settings"
@@ -20,12 +20,11 @@ export interface NavItem {
 }
 
 /**
- * The one layer page shown in simple mode (Messaging & data, "/settings/l5"), as in the real
- * dashboard: every other layer page is an advanced page (shown on a deep link, and marked).
+ * Sidebar order: the five core rows, then Settings (Essentials and the ten layer pages, numbered,
+ * L0 Knowledge to L9 Self-healing). Deviation from the real dashboard (owner, 2026-10-17): every
+ * layer page shows in both modes, so the whole stack is visible in the demo; the real one keeps
+ * only Messaging & data in simple mode.
  */
-export const SIMPLE_LAYER_PAGE: LayerNumber = 5
-
-/** Sidebar order: the five core rows, then Settings (Essentials and the ten layer pages). */
 export const NAV: readonly NavItem[] = [
   { id: "overview", label: ROUTE_TITLES.overview, href: PATHS.overview, section: "core" },
   { id: "agent", label: ROUTE_TITLES.agent, href: PATHS.agent, section: "core" },
@@ -38,7 +37,6 @@ export const NAV: readonly NavItem[] = [
       id: `settings-l${l.n}`,
       label: layerPageTitle(l.n),
       href: PATHS.settingsLayer(l.n),
-      ...(l.n === SIMPLE_LAYER_PAGE ? {} : { minMode: "advanced" as const }),
       section: "settings",
     }),
   ),
@@ -100,6 +98,6 @@ export function inSettings(route: DemoRoute | null): boolean {
  */
 export function minModeFor(route: DemoRoute | null): UiMode | undefined {
   if (!route) return undefined
-  if (route.view === "settings-layer") return route.layer === SIMPLE_LAYER_PAGE ? undefined : "advanced"
+  if (route.view === "settings-layer") return undefined
   return NAV.find((i) => i.href === route.path)?.minMode
 }

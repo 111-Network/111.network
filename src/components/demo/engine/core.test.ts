@@ -111,6 +111,27 @@ describe("core: opening state", () => {
   })
 })
 
+describe("core: agentSeen (the signal-orange Agent row)", () => {
+  it("is false at open, flips on the first visit to the Agent and stays true", () => {
+    const store = newStore()
+    expect(store.getSnapshot().core.agentSeen).toBe(false)
+    store.navigate("/devices")
+    expect(store.getSnapshot().core.agentSeen).toBe(false)
+    store.navigate("/")
+    expect(store.getSnapshot().core.agentSeen).toBe(true)
+    store.navigate("/overview")
+    expect(store.getSnapshot().core.agentSeen).toBe(true)
+  })
+
+  it("flips when a prepared prompt opens the Agent, and starts true on an Agent deep link", () => {
+    const store = newStore()
+    store.dispatch({ type: "core/agentPrefill", text: "Tell me about identity.", from: "L2 · Identity" })
+    expect(store.getSnapshot().core.agentSeen).toBe(true)
+    const deep = createDemoStore(DEMO_WORLD, { router: "memory", driver: null, initialPath: "/" })
+    expect(deep.getSnapshot().core.agentSeen).toBe(true)
+  })
+})
+
 describe("core: radio lifecycle", () => {
   it("plug in -> allow once -> identify -> flash -> region -> live -> joined -> nodes heard one by one", () => {
     const store = newStore()

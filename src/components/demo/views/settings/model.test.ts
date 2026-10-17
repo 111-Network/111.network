@@ -216,7 +216,7 @@ describe("layer pages", () => {
     const core = store.getSnapshot().core
     expect(core.route?.view).toBe("agent")
     expect(core.prefill?.text).toBe(layerAsk(2).text)
-    expect(core.prefill?.from).toBe("Identity · L2")
+    expect(core.prefill?.from).toBe("L2 · Identity")
   })
 })
 
