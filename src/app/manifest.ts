@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next"
+import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "111 Network",
+    name: SITE_NAME,
     short_name: "111.network",
-    description:
-      "A global mesh messaging network that runs on people, not servers. Works with phones, radios, satellites — anything that can carry a message.",
+    // The hero subtitle (plan §3.1), the same wording as every meta description.
+    description: SITE_DESCRIPTION,
     start_url: "/",
     scope: "/",
     display: "standalone",

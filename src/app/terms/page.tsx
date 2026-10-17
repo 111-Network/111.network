@@ -1,10 +1,35 @@
 import type { Metadata } from "next"
-import { SITE_NAME, SITE_URL, TERMS_LAST_UPDATED } from "@/lib/site"
+import { SITE_NAME, SITE_TAGLINE, SITE_URL, TERMS_LAST_UPDATED } from "@/lib/site"
 
+const TITLE = "Terms of Service"
+const DESCRIPTION = `Terms of Service and Privacy Policy for ${SITE_NAME}.`
+/** Same text as src/app/opengraph-image.alt.txt and twitter-image.alt.txt; keep them in sync. */
+const SHARE_IMAGE_ALT = `${SITE_NAME} — ${SITE_TAGLINE}. A message network that runs on people, not servers.`
+
+// Metadata merges shallowly: openGraph and twitter set here replace the root
+// layout's objects whole (file-based share images included), so both are
+// complete, with the root's share images restated.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: `Terms of Service · ${SITE_NAME}`,
-  description: `Terms of Service and Privacy Policy for ${SITE_NAME}.`,
+  // The root layout's title template appends " · 111 Network".
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/terms" },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    url: "/terms",
+    title: `${TITLE} · ${SITE_NAME}`,
+    description: DESCRIPTION,
+    locale: "en_US",
+    images: [{ url: "/opengraph-image.png", width: 1200, height: 630, type: "image/png", alt: SHARE_IMAGE_ALT }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${TITLE} · ${SITE_NAME}`,
+    description: DESCRIPTION,
+    images: [{ url: "/twitter-image.png", width: 1200, height: 600, type: "image/png", alt: SHARE_IMAGE_ALT }],
+  },
   robots: { index: true, follow: true },
 }
 
@@ -84,6 +109,8 @@ export default function TermsPage() {
               We do not collect personal data, use tracking cookies, analytics
               cookies, or advertising cookies. We do not build profiles, track
               behaviour across sites, or share data with third-party advertisers.
+              The website counts anonymous page views through its host, Vercel,
+              using cookieless analytics.
             </p>
             <p>
               <strong className="text-foreground">Strictly Necessary Cookies.</strong>{" "}

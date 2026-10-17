@@ -12,7 +12,7 @@ export const SITE_DESCRIPTION =
 /** GitHub organisation page (W8). */
 export const GITHUB_URL = "https://github.com/111-Network"
 /** Date shown on /terms. */
-export const TERMS_LAST_UPDATED = "2026-05-13"
+export const TERMS_LAST_UPDATED = "2026-10-17"
 
 /** The one version string, rendered everywhere it appears (W9). */
 export const SITE_VERSION = "V.0.0.6 Experimental"
