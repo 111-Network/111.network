@@ -98,14 +98,15 @@ describe("store", () => {
 })
 
 describe("core: opening state", () => {
-  it("reads alone on the mesh, with the radio waiting in needs-you and nothing counted", () => {
+  it("reads alone on the mesh, with the radio waiting in needs-you and only the sample message request counted", () => {
     const s = newStore().getSnapshot()
     expect(transportStatus(s)).toBe("isolated")
     expect(verdict(s)).toEqual({ sentence: "Your node is running. It is alone on the mesh right now: no nearby nodes heard.", tone: "attention" })
     const need = needsYou(s)
-    expect(need.items.map((i) => i.key)).toEqual(["setup:radio"])
-    expect(need.count).toBe(0)
-    expect(attentionSummary(s)).toBe("Nothing needs you")
+    // The messages slice opens with one sample request; core's own row is the radio set-up (never counted).
+    expect(need.items.map((i) => i.key)).toEqual(["requests", "setup:radio"])
+    expect(need.count).toBe(1)
+    expect(attentionSummary(s)).toBe("1 message request")
     expect(needsYou(s)).toBe(need)
   })
 })
@@ -174,7 +175,7 @@ describe("core: radio lifecycle", () => {
     expect(devicesSummary(store.getSnapshot()).text).toBe("1 device, connected.")
     expect(ownDevice(store.getSnapshot(), store.world)).toMatchObject({ bridges: true, deviceLabel: "laptop", badge: "LAPTOP" })
     // The bridge can now be set up with the agent; the radio row is gone.
-    expect(needsYou(store.getSnapshot()).items.map((i) => i.key)).toEqual(["setup:bridge"])
+    expect(needsYou(store.getSnapshot()).items.map((i) => i.key)).toEqual(["requests", "setup:bridge"])
   })
 
   it("the scheduler is the only clock: paused, nothing advances", () => {
@@ -241,7 +242,9 @@ describe("core: internet", () => {
     const s1 = store.getSnapshot()
     expect(s1.core.internet).toBe("connected")
     expect(serviceById(s1, "gateway")?.state).toBe("starting")
-    expect(s1.core.events.at(-1)).toMatchObject({ cause: "internet-connected", ref: "gateway" })
+    // Messages flushes its queue on connect, so "queue-flushed" follows the caused event.
+    expect(causes(store).slice(-2)).toEqual(["internet-connected", "queue-flushed"])
+    expect(s1.core.events.at(-2)).toMatchObject({ cause: "internet-connected", ref: "gateway" })
     store.scheduler.advance(TIMING.startingMs)
     const s2 = store.getSnapshot()
     expect(serviceById(s2, "gateway")?.state).toBe("live")
@@ -263,6 +266,8 @@ describe("core: internet", () => {
 describe("core: proposals and needs-you", () => {
   it("accept -> target STARTING -> LIVE; the badge and needs-you update at once", () => {
     const store = newStore()
+    // The messages slice's sample request is counted from the start; measure core's share on top of it.
+    const base = attentionCount(store.getSnapshot())
     store.dispatch({ type: "core/serviceTransition", id: "mesh", to: "error" })
     store.dispatch({
       type: "core/proposalAdded",
@@ -270,15 +275,15 @@ describe("core: proposals and needs-you", () => {
     })
     let s = store.getSnapshot()
     expect(verdict(s)).toMatchObject({ sentence: "Your node is running, but the mesh link has a problem.", tone: "error" })
-    expect(attentionCount(s)).toBe(2)
-    expect(attentionSummary(s)).toBe("1 proposal, 1 service error")
+    expect(attentionCount(s)).toBe(base + 2)
+    expect(attentionSummary(s)).toBe("1 proposal, 1 service error, 1 message request")
     expect(attentionHref(s)).toBe("/overview#needs-you")
-    expect(needsYou(s).items.map((i) => i.kind)).toEqual(["proposal", "service", "setup"])
+    expect(needsYou(s).items.map((i) => i.kind)).toEqual(["proposal", "request", "service", "setup"])
 
     store.dispatch({ type: "core/proposalAccepted", id: "repairs-fix-1" })
     s = store.getSnapshot()
     expect(serviceById(s, "mesh")?.state).toBe("starting")
-    expect(attentionCount(s)).toBe(0)
+    expect(attentionCount(s)).toBe(base)
     expect(s.core.proposals[0].decision?.decision).toBe("accepted")
 
     store.scheduler.advance(TIMING.startingMs)
@@ -294,13 +299,15 @@ describe("core: proposals and needs-you", () => {
 
   it("accept is refused while the target cannot start: the proposal stays open and the log says why", () => {
     const store = newStore()
+    // The messages slice's sample request is counted from the start; measure core's share on top of it.
+    const base = attentionCount(store.getSnapshot())
     store.dispatch({ type: "core/proposalAdded", proposal: { id: "radio-1", kind: "setup", title: "Set up the long-range radio", body: "", target: "radio" } })
     expect(proposalBlockedReason(store.getSnapshot(), store.world, "radio-1")).toBe("Needs a radio board.")
     store.dispatch({ type: "core/proposalAccepted", id: "radio-1" })
     let s = store.getSnapshot()
     expect(s.core.proposals[0].decision).toBeNull()
     expect(openProposals(s).map((p) => p.id)).toEqual(["radio-1"])
-    expect(attentionCount(s)).toBe(1)
+    expect(attentionCount(s)).toBe(base + 1)
     expect(serviceById(s, "radio")?.state).toBe("unset")
     expect(s.core.events.at(-1)).toMatchObject({ cause: "proposal-blocked", ref: "radio-1", text: "Long-range radio cannot start yet. Needs a radio board." })
 
@@ -326,10 +333,12 @@ describe("core: proposals and needs-you", () => {
 
   it("dismiss leaves the service as it was", () => {
     const store = newStore()
+    // The messages slice's sample request is counted from the start; measure core's share on top of it.
+    const base = attentionCount(store.getSnapshot())
     store.dispatch({ type: "core/proposalAdded", proposal: { id: "p1", kind: "setup", title: "Set up the bridge", body: "", target: "bridge" } })
     store.dispatch({ type: "core/proposalDismissed", id: "p1" })
     expect(serviceById(store.getSnapshot(), "bridge")?.state).toBe("unset")
-    expect(attentionCount(store.getSnapshot())).toBe(0)
+    expect(attentionCount(store.getSnapshot())).toBe(base)
   })
 
   it("an error moving to STARTING cancels nothing it should not, and an error cancels a pending LIVE", () => {

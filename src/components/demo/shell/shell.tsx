@@ -154,7 +154,17 @@ export function Shell({ className = "h-full", mainId: mainIdProp, skipLink, embe
   const urlRouter = store.options.router === "url"
   useEffect(() => {
     if (!urlRouter || title === "") return
-    document.title = `${title} · ${SHELL_COPY.pageTitle} · ${SITE_NAME}`
+    const wanted = `${title} · ${SHELL_COPY.pageTitle} · ${SITE_NAME}`
+    document.title = wanted
+    // The page's <title> hydrates after this island and puts the server title back on a deep link,
+    // so re-apply ours whenever its text changes under us while this view is open.
+    const el = document.querySelector("head > title")
+    if (!el) return
+    const observer = new MutationObserver(() => {
+      if (document.title !== wanted) document.title = wanted
+    })
+    observer.observe(el, { childList: true, characterData: true, subtree: true })
+    return () => observer.disconnect()
   }, [urlRouter, title])
 
   // ------------------------------------------------------------------------------- live region

@@ -32,12 +32,12 @@ export const BUDGETS = [
   // Re-measured 2026-10-17 after P1–P3 (new frame + L0–L3, L5–L9 interactive sections; framer-motion
   // dropped from the cookie banner, saving ~40 kB): 236.1 kB → budget = floor(+15%) = 271 kB.
   { route: "/", html: "index.html", budgetKB: 271 },
-  // P4 /demo: the page has landed, but its views are still being built. Measured 2026-10-17 at the
-  // foundations gate (site bar + shell + stub views; every view is its own lazy chunk, so finished
-  // views add little first-load JS): 195.4 kB → provisional budget = floor(+15%) = 224 kB, enforced
-  // whenever demo.html is built. The integration gate re-measures the finished route, resets
-  // budgetKB to <measured + ~15%> and drops `pending`.
-  { route: "/demo", html: "demo.html", budgetKB: 224, pending: true },
+  // P4 /demo: foundations gate (site bar + shell + stub views) measured 195.4 kB. Re-measured
+  // 2026-10-17 at the integration gate with every view built: 230.5 kB → budget = floor(+15%) = 265 kB.
+  // First load is the site bar, the shell and the engine (store, scheduler and every slice reducer with
+  // the copy it emits); each view, the nearby radar and the bridge/storage/repairs/gateway service pages
+  // are lazy chunks and are not counted. The home loads none of the demo engine.
+  { route: "/demo", html: "demo.html", budgetKB: 265 },
 ]
 
 const attr = (tag, name) => tag.match(new RegExp(`\\s${name}\\s*=\\s*["']([^"']*)["']`, "i"))?.[1]
