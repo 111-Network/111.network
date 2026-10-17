@@ -1,31 +1,48 @@
-// Kb slice (#/kb, #/kb/<drawer>, #/kb/<drawer>/<note>). STUB: the Kb view task owns this file and fills it in place;
-// nobody else edits it. Plan §6.4: the index by drawer (projects, devices, recipes, protocols, local-models, concepts), the note view, grades as in L0; it must provide every note a service's `kb` field names (engine/world.ts).
+// Kb slice (#/kb, #/kb/<drawer>, #/kb/<drawer>/<note>; plan §6.4, Layer 0). UI state only: which
+// reader the visitor picked (HUMAN reads the full note, AGENT reads the one-line index, as on the
+// home L0 section) and the find field's text. Both live in the store so they survive moving
+// between the index, a drawer and a note, and between other views and back.
 //
-// Module shape (keep these four export names; ./index.ts already wires them):
-//   type KbState                 the slice's state (replace the placeholder with an interface)
-//   type KbAction                its actions, every type string prefixed "kb/"
-//   initialKb(world: World)      -> KbState
-//   reduceKb(state, action: DemoAction, ctx: SliceCtx) -> KbState
-//       receives EVERY action (core/... and other slices'); return `state` itself when nothing applies.
-//       ctx.core = core state after this action; ctx.schedule / ctx.emit / ctx.dispatch record effects.
-//   needsKb(state, core: CoreState) -> readonly NeedItem[]
-//       rows this slice adds to Overview's "needs you" and the header badge; NO_NEEDS when none.
-// Add the parameters as you need them (import World, DemoAction, SliceCtx, CoreState as types).
-// User-visible sentences go in copy/kb.ts.
+// The library itself is static sample data (views/kb/model.ts over the home L0 catalog), so
+// nothing here is ever scheduled, emitted or counted: the knowledge base never asks for the
+// visitor (NO_NEEDS), and nothing moves while idle.
 import { NO_NEEDS, type NeedItem } from "../types"
+import type { DemoAction } from "./index"
 
-/** Placeholder until the Kb view task defines it. */
-export type KbState = Record<never, never>
+/** HUMAN reads the full note; AGENT reads the one-line index (L0 `ReaderView`). */
+export type KbReader = "human" | "agent"
 
-/** "kb/..." actions. None yet. */
-export type KbAction = never
-
-export function initialKb(): KbState {
-  return {}
+export interface KbState {
+  reader: KbReader
+  /** The find field's text as typed (clamped to KB_QUERY_MAX characters). */
+  query: string
 }
 
-export function reduceKb(state: KbState): KbState {
-  return state
+export type KbAction = { type: "kb/setReader"; reader: KbReader } | { type: "kb/setQuery"; query: string }
+
+/** The longest find text kept; anything past it is dropped as it is typed. */
+export const KB_QUERY_MAX = 80
+
+/** The find text as the slice keeps it. */
+export function clampKbQuery(query: string): string {
+  return query.length > KB_QUERY_MAX ? query.slice(0, KB_QUERY_MAX) : query
+}
+
+export function initialKb(): KbState {
+  return { reader: "human", query: "" }
+}
+
+export function reduceKb(state: KbState, action: DemoAction): KbState {
+  switch (action.type) {
+    case "kb/setReader":
+      return action.reader === state.reader ? state : { ...state, reader: action.reader }
+    case "kb/setQuery": {
+      const query = clampKbQuery(action.query)
+      return query === state.query ? state : { ...state, query }
+    }
+    default:
+      return state
+  }
 }
 
 export function needsKb(): readonly NeedItem[] {
