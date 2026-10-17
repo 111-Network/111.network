@@ -33,6 +33,9 @@ export const INSTALL_TARGET_OPTIONS: readonly { value: InstallTarget; label: str
   { value: "phone", label: "ATTACHED PHONE" },
 ]
 
+/** Every copy outcome. The COPY button is sized to the longest of their labels, so its width never changes on a press. */
+export const COPY_STATES: readonly CopyState[] = ["idle", "copied", "selected"]
+
 /** COPY button text for a copy outcome. */
 export function copyButtonLabel(state: CopyState): string {
   switch (state) {

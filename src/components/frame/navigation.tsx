@@ -32,9 +32,13 @@ function GitHubMark({ className }: { className?: string }) {
 export function Navigation() {
   return (
     <header className="sticky top-0 z-50 h-nav bg-background/80 backdrop-blur-md">
+      {/*
+        The padding is set under focus: on purpose: `not-sr-only` resets padding to 0,
+        and only the focus: variants are emitted after it (Tailwind 4 sorts them later).
+      */}
       <a
         href={`#${ANCHORS.main}`}
-        className="sr-only bg-foreground px-3 py-2 font-mono text-xs text-background focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[70] focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
+        className="sr-only bg-foreground font-mono text-xs text-background focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[70] focus:px-3 focus:py-2 focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
       >
         Skip to content
       </a>
