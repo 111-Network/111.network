@@ -111,10 +111,12 @@ export function PullRequest({ state, device, specs }: PullRequestProps) {
               onKeyDown={(e) => onKeyDown(e, i)}
               className={cn(
                 "flex min-h-11 shrink-0 items-center gap-2 border-r border-border px-4 py-2 font-mono text-xs transition-colors duration-200 motion-reduce:transition-none sm:min-h-10 sm:px-5",
-                "focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none focus-visible:ring-inset",
+                // Selection follows focus, so keyboard focus always sits on the white tab. Its
+                // indicator is a dark frame drawn 4 px inside the tab's edge: a white margin keeps
+                // it apart from the dark tablist, so it never merges into the surroundings.
                 selected
-                  ? "bg-foreground text-background focus-visible:ring-background"
-                  : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground",
+                  ? "bg-foreground text-background focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-background"
+                  : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-inset focus-visible:outline-none",
               )}
             >
               <span aria-hidden="true" className="text-[10px] opacity-60">

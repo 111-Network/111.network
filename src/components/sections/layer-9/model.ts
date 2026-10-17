@@ -193,6 +193,12 @@ export const RELAY_LINES = [
   "A nearby node with an agent does the healing, for the layers that node runs.",
 ] as const
 
+/**
+ * The live line on a radio relay. The agent log above already prints RELAY_LINES,
+ * so this says something else: where to go to watch a layer heal.
+ */
+export const RELAY_NARRATION = "No agent on a radio relay. Follow another device to watch a layer heal itself."
+
 /** The gate rail's hint under APPROVE ON THIS NODE on a radio relay (it has no gate of its own). */
 export const RELAY_GATE_HINT = "a radio relay runs no agent: a nearby node approves its own fixes"
 
@@ -597,7 +603,7 @@ function leftBrokenSentence(state: HealState): string {
 
 /** The one polite line narrating the bench (LiveLine). */
 export function narrate(state: HealState, device: DeviceId): string {
-  if (healMode(device) === "none") return RELAY_LINES.join(" ")
+  if (healMode(device) === "none") return RELAY_NARRATION
   if (state.fault === null) return "Every layer this device runs is healthy. Break one to watch the agent work."
   const fault = faultById(state.fault)
   const Word = capitalize(fault.layerWord)

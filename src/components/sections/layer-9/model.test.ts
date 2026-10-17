@@ -11,6 +11,7 @@ import {
   REJECTED_LINE,
   RELAY_GATE_HINT,
   RELAY_LINES,
+  RELAY_NARRATION,
   agentLog,
   boardHealth,
   boardRows,
@@ -513,7 +514,10 @@ describe("devices", () => {
   it("has no bench on a radio relay and says why in plain words", () => {
     expect(healMode("radio-relay")).toBe("none")
     for (const f of FAULTS) expect(canBreak("radio-relay", f.id)).toBe(false)
-    expect(narrate(INITIAL_HEAL_STATE, "radio-relay")).toBe(RELAY_LINES.join(" "))
+    // The live line never repeats the agent log's two sentences word for word.
+    expect(narrate(INITIAL_HEAL_STATE, "radio-relay")).toBe(RELAY_NARRATION)
+    for (const line of RELAY_LINES) expect(RELAY_NARRATION).not.toContain(line)
+    expect(RELAY_NARRATION).toMatch(/another device/)
     expect(RELAY_LINES.join(" ")).toMatch(/only forwards/)
     expect(RELAY_LINES.join(" ")).toMatch(/nearby node/)
     expect(RELAY_GATE_HINT).toMatch(/runs no agent/)
@@ -593,7 +597,7 @@ describe("copy in every state", () => {
         }
       }
     }
-    for (const line of [...RELAY_LINES, RELAY_GATE_HINT, LEFT_BROKEN_NOTE]) {
+    for (const line of [...RELAY_LINES, RELAY_NARRATION, RELAY_GATE_HINT, LEFT_BROKEN_NOTE]) {
       expect(line).not.toMatch(/\d/)
       expect(line).not.toMatch(GLYPHS)
     }
