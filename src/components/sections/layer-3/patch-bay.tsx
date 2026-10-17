@@ -77,7 +77,8 @@ export interface PatchBayProps {
  * Layout: at lg the questions and the printout sit in a panel beside the rack.
  * Below lg they move into the device panel itself (the device is the one
  * asking), right above its jacks, so the button, the cable and the answer are
- * on one phone screen. Only one copy is displayed at a time (display: none
+ * on one phone screen; the printout comes after the buttons, so its growth
+ * never moves a control. Only one copy is displayed at a time (display: none
  * hides the other from the accessibility tree); the LiveLine is single.
  */
 export function PatchBay({ caption }: PatchBayProps) {
@@ -226,8 +227,10 @@ function Questions({
 
 /**
  * The followed device's rack panel: tape label, agent status, brain line,
- * consent switch, jacks (last row, facing the cable). `screen` and `keys` are
- * the below-lg printout and question buttons.
+ * consent switch, jacks (last row, facing the cable). `keys` and `screen` are
+ * the below-lg question buttons and printout, in that order: the printout
+ * grows as an answer prints, so it sits below every control and pushes none
+ * of them (a quick second tap lands where the visitor aimed).
  */
 function DevicePanel({
   device,
@@ -262,7 +265,6 @@ function DevicePanel({
       <p className="mt-3 font-mono text-xs leading-relaxed text-muted-foreground">
         brain: <span className="text-foreground">{BRAIN_LINES[mode]}</span>
       </p>
-      {screen}
       <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
         <button
           ref={switchRef}
@@ -272,7 +274,7 @@ function DevicePanel({
           disabled={!agent}
           onClick={onConsent}
           className={cn(
-            "inline-flex min-h-11 items-center gap-3 font-mono text-xs text-foreground sm:min-h-8",
+            "inline-flex min-h-11 items-center gap-3 text-left font-mono text-xs text-foreground sm:min-h-8",
             RING,
             "disabled:cursor-not-allowed disabled:opacity-40",
           )}
@@ -298,6 +300,7 @@ function DevicePanel({
         </span>
       </div>
       {keys}
+      {screen}
       <JackRow className="mt-4" patched={plugIn} label={JACK_LABELS[mode].device} />
     </div>
   )

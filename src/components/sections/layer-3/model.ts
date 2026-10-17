@@ -451,12 +451,28 @@ export function followHint(device: DeviceId): string | null {
 
 // ---- narration ----------------------------------------------------------
 
+/**
+ * What sits in the hub slot, in the hub panel's own terms (empty, too far,
+ * unreachable). Narrated while consent is off, when the slot chips and the
+ * plug still work but nothing else on the rack changes.
+ */
+export function describeSlot(rack: RackState): string {
+  switch (rack.hub) {
+    case "none":
+      return "In the slot: nothing."
+    case "across-town":
+      return "In the slot: the hub across town, too far."
+    case "next-door":
+      return rack.plugged ? "In the slot: the hub next door." : "In the slot: the hub next door, unreachable."
+  }
+}
+
 /** One sentence on the rack as it now stands (the LiveLine after a rack change). */
 export function describeRack(device: DeviceId, rack: RackState): string {
   const mode = brainMode(device)
   const label = deviceById(device).label
   if (mode === "none") return "A radio relay has no agent."
-  if (!rack.consent) return "Agent off: you decide."
+  if (!rack.consent) return `Agent off: you decide. ${describeSlot(rack)}`
   const hubGone = rack.hub === "next-door" && !rack.plugged
   switch (mode) {
     case "borrows":

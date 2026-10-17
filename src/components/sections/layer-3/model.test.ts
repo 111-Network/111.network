@@ -426,7 +426,27 @@ describe("reducer", () => {
     expect(s.narration).toMatch(/borrows the hub next door/)
     const back = run(s, { type: "toggle-consent", device: "old-phone" })
     expect(back.consent).toBe(false)
-    expect(back.narration).toBe("Agent off: you decide.")
+    expect(back.narration).toBe("Agent off: you decide. In the slot: the hub next door.")
+  })
+
+  it("with consent off, every slot or plug change names what is now in the slot", () => {
+    const right = run(INITIAL_PATCH_STATE, { type: "choose-hub", device: "old-phone", hub: "across-town" })
+    expect(right.narration).toBe("Agent off: you decide. In the slot: the hub across town, too far.")
+    const left = run(right, { type: "choose-hub", device: "old-phone", hub: "next-door" })
+    expect(left.narration).toBe("Agent off: you decide. In the slot: the hub next door.")
+    expect(left.narration).not.toMatch(/^Again:/)
+    const empty = run(left, { type: "choose-hub", device: "old-phone", hub: "none" })
+    expect(empty.narration).toBe("Agent off: you decide. In the slot: nothing.")
+    const pulled = run(INITIAL_PATCH_STATE, { type: "toggle-plug", device: "laptop" })
+    expect(pulled.consent).toBe(false)
+    expect(pulled.narration).toBe("Agent off: you decide. In the slot: the hub next door, unreachable.")
+    // Each consent-off rack reads differently, so no change is announced as "Again:".
+    for (const device of DEVICE_IDS.filter(hasAgent)) {
+      const lines = allRacks()
+        .filter((r) => !r.consent && (r.hub === "next-door" || r.plugged))
+        .map((r) => describeRack(device, r))
+      expect(new Set(lines).size).toBe(lines.length)
+    }
   })
 
   it("a radio relay ignores every rack control", () => {
@@ -578,7 +598,9 @@ describe("the follow shortcut", () => {
     expect(s.ask.phase).toBe("idle")
     expect(s.consent).toBe(true)
     expect(s.narration).toBe("Following: old phone. Cable in: this old phone borrows the hub next door's brain.")
-    expect(describeFollow("old-phone", OFF)).toBe("Following: old phone. Agent off: you decide.")
+    expect(describeFollow("old-phone", OFF)).toBe(
+      "Following: old phone. Agent off: you decide. In the slot: the hub next door.",
+    )
   })
 
   it("from the default device, one follow plus consent on makes the trip one ask away", () => {
