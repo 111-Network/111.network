@@ -1,7 +1,7 @@
 "use client"
 
-import { motion, useInView } from "framer-motion"
-import { useRef, useState, useEffect } from "react"
+import { motion } from "framer-motion"
+import { useRef, useEffect } from "react"
 import type { TechSection } from "@/lib/sections-data"
 
 const shadow = "rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px"
@@ -71,7 +71,8 @@ function Oscilloscope() {
             Math.sin(phase * 11 + t * 0.7) * 0.15 +
             Math.sin(phase * 2 - t * 0.4) * 0.1
           )
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
+        if (i === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
       }
       ctx.stroke()
 
@@ -86,7 +87,8 @@ function Oscilloscope() {
         const y =
           H / 2 +
           (H / 6) * Math.sin(phase * 5 + t * 1.8 + 1.2)
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
+        if (i === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
       }
       ctx.stroke()
 

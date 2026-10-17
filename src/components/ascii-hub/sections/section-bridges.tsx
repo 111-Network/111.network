@@ -207,7 +207,7 @@ export function SectionBridges({ section }: { section: TechSection }) {
             transition={{ delay: 0.3 }}
             className="flex flex-col gap-4"
           >
-            {section.specs.map((spec, i) => (
+            {section.specs.map((spec) => (
               <div
                 key={spec.label}
                 className="flex items-center justify-between border border-border p-4 font-mono"

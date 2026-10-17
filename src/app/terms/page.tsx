@@ -26,7 +26,7 @@ export default function TermsPage() {
             Agreement to Terms
           </h2>
           <p className="mt-3 font-mono text-xs leading-relaxed text-muted-foreground">
-            By accessing or using 111.network ("the Site"), you agree to be
+            By accessing or using 111.network (&quot;the Site&quot;), you agree to be
             bound by these Terms of Service. If you do not agree to these
             Terms, you must not access or use the Site. These Terms apply to
             all visitors, users, and others who access the Site.
@@ -137,7 +137,7 @@ export default function TermsPage() {
             Disclaimer of Warranties
           </h2>
           <p className="mt-3 font-mono text-xs leading-relaxed text-muted-foreground">
-            THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT
+            THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT
             WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT
             NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
             PARTICULAR PURPOSE, OR NON-INFRINGEMENT. WE MAKE NO WARRANTY THAT
@@ -174,7 +174,7 @@ export default function TermsPage() {
           </h2>
           <p className="mt-3 font-mono text-xs leading-relaxed text-muted-foreground">
             We may update these Terms at any time. Changes will be posted on
-            this page with an updated "Last updated" date. Continued use of
+            this page with an updated &quot;Last updated&quot; date. Continued use of
             the Site after changes constitutes acceptance of the revised
             Terms.
           </p>

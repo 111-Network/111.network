@@ -1,40 +1,61 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useSyncExternalStore } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X } from "lucide-react"
-import { Button } from "@/components/ui/button"
 
 const CONSENT_KEY = "111-cookie-consent"
 
 type ConsentValue = "accepted" | "dismissed"
+// "unknown" = server render / hydration (render nothing, so nothing flashes);
+// "none" = no choice stored yet (show the banner).
+type ConsentSnapshot = ConsentValue | "none" | "unknown"
+
+// Holds the choice when storage is unavailable (private mode, blocked site
+// data), so the banner still closes for this page view.
+let memoryChoice: ConsentValue | null = null
+const listeners = new Set<() => void>()
+
+function subscribe(onChange: () => void) {
+  listeners.add(onChange)
+  window.addEventListener("storage", onChange)
+  return () => {
+    listeners.delete(onChange)
+    window.removeEventListener("storage", onChange)
+  }
+}
+
+function getSnapshot(): ConsentSnapshot {
+  if (memoryChoice) return memoryChoice
+  try {
+    const stored = localStorage.getItem(CONSENT_KEY)
+    if (!stored) return "none"
+    return stored === "accepted" ? "accepted" : "dismissed"
+  } catch {
+    return "none"
+  }
+}
+
+function getServerSnapshot(): ConsentSnapshot {
+  return "unknown"
+}
+
+function saveConsent(value: ConsentValue) {
+  memoryChoice = value
+  try {
+    localStorage.setItem(CONSENT_KEY, value)
+  } catch {
+    // localStorage not available; memoryChoice keeps the banner closed
+  }
+  listeners.forEach((listener) => listener())
+}
 
 export function CookieBanner() {
-  const [mounted, setMounted] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const consent = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
-  useEffect(() => {
-    setMounted(true)
-    try {
-      const stored = localStorage.getItem(CONSENT_KEY)
-      if (!stored) {
-        setVisible(true)
-      }
-    } catch {
-      setVisible(true)
-    }
-  }, [])
+  if (consent === "unknown") return null
 
-  const handleConsent = (value: ConsentValue) => {
-    try {
-      localStorage.setItem(CONSENT_KEY, value)
-    } catch {
-      // localStorage not available
-    }
-    setVisible(false)
-  }
-
-  if (!mounted) return null
+  const visible = consent === "none"
 
   return (
     <AnimatePresence>
@@ -55,30 +76,28 @@ export function CookieBanner() {
               to operate this website.{" "}
               <a
                 href="/terms"
-                className="underline underline-offset-2 transition-colors hover:text-foreground"
+                className="underline underline-offset-2 transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
               >
                 Terms
               </a>
             </p>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => handleConsent("dismissed")}
+            <button
+              type="button"
+              onClick={() => saveConsent("dismissed")}
               aria-label="Dismiss cookie banner"
-              className="shrink-0"
+              className="-mt-3 -mr-3 flex h-11 w-11 shrink-0 items-center justify-center text-muted-foreground transition-colors duration-200 hover:bg-foreground hover:text-background focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
             >
-              <X size={14} />
-            </Button>
+              <X size={14} aria-hidden="true" />
+            </button>
           </div>
           <div className="mt-3 flex justify-end">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleConsent("accepted")}
-              className="font-mono text-xs"
+            <button
+              type="button"
+              onClick={() => saveConsent("accepted")}
+              className="min-h-11 border border-border px-4 font-mono text-xs text-muted-foreground transition-all duration-200 hover:border-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
             >
               Accept
-            </Button>
+            </button>
           </div>
         </motion.div>
       )}

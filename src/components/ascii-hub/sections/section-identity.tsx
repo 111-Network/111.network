@@ -46,10 +46,13 @@ function TimelineView() {
   const [tick, setTick] = useState(0)
   const [mounted, setMounted] = useState(false)
 
-  // Generate lanes only on client to avoid hydration mismatch
+  // Generate lanes only on client to avoid hydration mismatch (next frame, not during the effect)
   useEffect(() => {
-    setMounted(true)
-    setLanes(generateLanes())
+    const frame = requestAnimationFrame(() => {
+      setMounted(true)
+      setLanes(generateLanes())
+    })
+    return () => cancelAnimationFrame(frame)
   }, [])
 
   useEffect(() => {

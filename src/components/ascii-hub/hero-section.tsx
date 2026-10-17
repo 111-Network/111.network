@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef, useCallback } from "react"
+import { useEffect, useState, useRef, useCallback, useSyncExternalStore } from "react"
 import { motion } from "framer-motion"
 import { GITHUB_URL } from "@/lib/site"
 
@@ -31,8 +31,9 @@ function useAsciiFrame(rows: number, cols: number, enabled: boolean) {
 
   useEffect(() => {
     if (!enabled) {
-      setFrame(generateFrame())
-      return
+      // One static frame, drawn on the next animation frame (not during the effect).
+      rafRef.current = requestAnimationFrame(() => setFrame(generateFrame()))
+      return () => cancelAnimationFrame(rafRef.current)
     }
 
     const animate = (time: number) => {
@@ -50,16 +51,21 @@ function useAsciiFrame(rows: number, cols: number, enabled: boolean) {
   return frame
 }
 
-export function HeroSection() {
-  const [motionEnabled, setMotionEnabled] = useState(true)
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)"
 
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-    setMotionEnabled(!mq.matches)
-    const handler = (e: MediaQueryListEvent) => setMotionEnabled(!e.matches)
-    mq.addEventListener("change", handler)
-    return () => mq.removeEventListener("change", handler)
-  }, [])
+function subscribeReducedMotion(onChange: () => void) {
+  const mq = window.matchMedia(REDUCED_MOTION_QUERY)
+  mq.addEventListener("change", onChange)
+  return () => mq.removeEventListener("change", onChange)
+}
+
+export function HeroSection() {
+  // Server and hydration assume motion is on (as before); the client value follows the media query.
+  const motionEnabled = useSyncExternalStore(
+    subscribeReducedMotion,
+    () => !window.matchMedia(REDUCED_MOTION_QUERY).matches,
+    () => true,
+  )
 
   const asciiFrame = useAsciiFrame(30, 80, motionEnabled)
 
