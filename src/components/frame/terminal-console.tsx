@@ -53,9 +53,19 @@ const FOCUS = "focus-visible:ring-2 focus-visible:ring-foreground focus-visible:
 const WINDOW_FOCUS =
   "has-[input:focus-visible]:border-foreground has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-foreground has-[input:focus-visible]:ring-offset-2 has-[input:focus-visible]:ring-offset-background"
 
+/**
+ * Below sm the hit area grows to 44 px tall (plan §7) through an empty overlay,
+ * so the line height and the hanging indent stay as they are.
+ */
+const LINK_HIT_AREA = "relative max-sm:after:absolute max-sm:after:inset-x-0 max-sm:after:-inset-y-3.5"
+
 /** One output link: in-page hashes scroll (reduced-motion aware), routes use Link, the rest open a new tab. */
 function LineLink({ href, label, children }: { href: string; label?: string; children: string }) {
-  const className = cn("text-foreground underline underline-offset-4 hover:bg-foreground hover:text-background", FOCUS)
+  const className = cn(
+    "text-foreground underline underline-offset-4 hover:bg-foreground hover:text-background",
+    LINK_HIT_AREA,
+    FOCUS,
+  )
   if (href.startsWith("#")) {
     const onClick = (event: MouseEvent<HTMLAnchorElement>) => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
@@ -192,11 +202,13 @@ export function TerminalConsole() {
     runKey: last?.id ?? -1,
   })
 
-  // Keep the newest output in view inside the terminal body (never scrolls the page).
+  // Keep the newest output and the prompt in view inside the terminal body (never
+  // scrolls the page). The input is a dependency too: a long command wraps onto
+  // new lines, and the caret line must not slip below the body's bottom edge.
   useEffect(() => {
     const el = scrollRef.current
     if (el) el.scrollTop = el.scrollHeight
-  }, [session.entries, typed.count])
+  }, [session.entries, typed.count, session.input])
 
   const input = session.input
   const at = Math.min(caret, input.length)

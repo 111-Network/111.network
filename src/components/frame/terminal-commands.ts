@@ -409,7 +409,8 @@ const HANDLERS: Readonly<Record<CommandName, Handler>> = {
           ],
           state,
         )
-      : result([out("The dashboard demo is coming to this page.")], state),
+      : // The demo is its own route; its path stays unprinted until it exists.
+        result([out("The dashboard demo is coming soon, on its own page.")], state),
   ),
 
   uninstall: noArgs("uninstall", (state) =>

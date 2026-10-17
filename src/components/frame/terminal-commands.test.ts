@@ -380,10 +380,11 @@ describe("policy", () => {
 })
 
 describe("demo", () => {
-  it("says the demo is coming while it is not ready, with no link", () => {
+  it("says the demo is coming on its own page while it is not ready, with no link and no path", () => {
     const res = run("demo")
-    expect(texts(res)).toEqual(["The dashboard demo is coming to this page."])
+    expect(texts(res)).toEqual(["The dashboard demo is coming soon, on its own page."])
     expect(res.lines.some((line) => line.href)).toBe(false)
+    expect(joined(res)).not.toContain(DEMO_PATH)
   })
 
   it("prints the /demo path and a clickable link once ready", () => {
