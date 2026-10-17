@@ -1,0 +1,15 @@
+// The /demo copy barrel: `import { FRAME_STRIP, SERVICE_COPY, AGENT_COPY } from "@/components/demo/copy"`.
+// core.ts is shared; each <view>.ts belongs to its view task and exports only <VIEW>_ prefixed names.
+export * from "./core"
+export * from "./agent"
+export * from "./overview"
+export * from "./devices"
+export * from "./nearby"
+export * from "./gateway"
+export * from "./messages"
+export * from "./kb"
+export * from "./services"
+export * from "./bridge"
+export * from "./storage"
+export * from "./repairs"
+export * from "./settings"
