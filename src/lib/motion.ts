@@ -15,3 +15,9 @@ export function prefersReducedMotion(): boolean {
 export function scrollBehavior(): ScrollBehavior {
   return prefersReducedMotion() ? "auto" : "smooth"
 }
+
+/**
+ * Typing pace of the two install runs (the hero install terminal and the Layer 1 boot log), per
+ * line. Slower than the default 150 ms so each step can be read as it lands (owner, 2026-10-17).
+ */
+export const INSTALL_LINE_MS = 280

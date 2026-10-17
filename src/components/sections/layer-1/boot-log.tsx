@@ -19,6 +19,7 @@ import {
 import { PaneBar } from "@/components/sections/layer-1/pane-bar"
 import { useInViewPlayRef } from "@/hooks/use-in-view-play"
 import { useTypedLines } from "@/hooks/use-typed-lines"
+import { INSTALL_LINE_MS } from "@/lib/motion"
 import { useDevice } from "@/lib/device-store"
 import { deviceById } from "@/lib/devices"
 import { scrollToAnchor } from "@/lib/scroll"
@@ -54,7 +55,11 @@ export function BootLog() {
 
   const view = bootView(state, device)
   const { key, lines, taps, tapsDone, animate } = view
-  const typed = useTypedLines(lines, { play: inView && animate, runKey: `${key}:${animate ? "typed" : "still"}` })
+  const typed = useTypedLines(lines, {
+    play: inView && animate,
+    runKey: `${key}:${animate ? "typed" : "still"}`,
+    intervalMs: INSTALL_LINE_MS,
+  })
   const count = animate ? typed.count : view.stillCount
   const finished = count >= lines.length
   const cursor = animate && !finished

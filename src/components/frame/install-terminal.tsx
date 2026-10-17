@@ -8,6 +8,7 @@ import { TerminalChrome } from "@/components/common/terminal-chrome"
 import { useCopy } from "@/hooks/use-copy"
 import { useInViewPlay } from "@/hooks/use-in-view-play"
 import { useTypedLines } from "@/hooks/use-typed-lines"
+import { INSTALL_LINE_MS } from "@/lib/motion"
 import {
   INSTALL_COMMANDS,
   INSTALL_LIVE,
@@ -101,7 +102,7 @@ export function InstallTerminal({ id, label = "Install", framed = true, classNam
 
   const command = INSTALL_COMMANDS[state.target]
   const lines = INSTALL_RUN[state.target]
-  const { count } = useTypedLines(lines, { play, runKey: state.run })
+  const { count } = useTypedLines(lines, { play, runKey: state.run, intervalMs: INSTALL_LINE_MS })
   const cursorRow = count - 1
 
   const onCopy = () => {
