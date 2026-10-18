@@ -8,3 +8,5 @@ If you want to help:
 2. Open an [issue](../../issues) or a [discussion](../../discussions) on this repo to say hi and tell us what you'd like to work on.
 
 We'll take it from there.
+
+Any sort of contribution is appreciated: code, documentation, testing, design, translations, bug reports, questions. Contributions are accepted under the project's license, GPL-3.0-or-later (see [LICENSE](LICENSE)); you keep your copyright.

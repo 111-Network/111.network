@@ -4,7 +4,7 @@
 
 ## Free, Secure Communication for Everyone
 
-[![License](https://img.shields.io/badge/license-Open%20Source-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-In%20Development-yellow.svg)](https://github.com/111-Network/111.network-website)
 
 </div>
