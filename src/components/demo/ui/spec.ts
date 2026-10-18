@@ -1,4 +1,4 @@
-// Spec-table model (React-free). Real source: os/interface/ui/src/components/spec-table.tsx.
+// Spec-table model (React-free). Real source: os/40-interface/ui/src/components/spec-table.tsx.
 import type { ReactNode } from "react"
 
 /** Density mode (SIMPLE | ADVANCED). Structurally identical to the shell's own mode type. */

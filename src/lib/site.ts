@@ -30,7 +30,7 @@ export type InstallTarget = keyof typeof INSTALL_COMMANDS
 export const INSTALL_LIVE: boolean = false
 /** Readable source of the installer shim ("READ IT FIRST ->" while INSTALL_LIVE is false). */
 export const INSTALL_SCRIPT_SOURCE =
-  "https://github.com/111-Network/os/blob/main/bootstrap/shim/install.sh"
+  "https://github.com/111-Network/os/blob/main/10-bootstrap/shim/install.sh"
 /** Where "READ IT FIRST ->" points: the served script once live, the GitHub source until then. */
 export const INSTALL_READ_FIRST_URL: string = INSTALL_LIVE ? INSTALL_URL : INSTALL_SCRIPT_SOURCE
 

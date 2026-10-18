@@ -1,4 +1,4 @@
-// Diff model (React-free). Real source: os/interface/ui/src/components/diff-view.tsx.
+// Diff model (React-free). Real source: os/40-interface/ui/src/components/diff-view.tsx.
 
 export type DiffLineKind = "add" | "del" | "hunk" | "meta" | "ctx"
 

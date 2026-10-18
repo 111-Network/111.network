@@ -1,4 +1,4 @@
-// Copy for the Agent view (#/, Layers 3 and 4). Real source: os/interface/ui/src/views/agent/*
+// Copy for the Agent view (#/, Layers 3 and 4). Real source: os/40-interface/ui/src/views/agent/*
 // (index, composer, messages, proposals, banners, state.ts) and lib/api/mock/chat.ts, in plain
 // words (W1, W5; scripts/check-copy.mjs scans every literal here). The canned replies are built
 // from these sentences by engine/slices/agent.ts and always tell the truth about the demo state.

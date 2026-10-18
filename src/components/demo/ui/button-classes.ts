@@ -1,4 +1,4 @@
-// Button look (React-free, server-safe). Real source: os/interface/ui/src/components/button.tsx.
+// Button look (React-free, server-safe). Real source: os/40-interface/ui/src/components/button.tsx.
 import { cn } from "@/lib/utils"
 import { FOCUS_RING_OFFSET } from "./classes"
 

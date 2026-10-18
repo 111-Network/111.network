@@ -1,5 +1,5 @@
 // Agent slice (#/, Layers 3 and 4). Owned by the Agent view task.
-// Real source: os/interface/ui/src/views/agent/session.ts (the chat session: rows, the live turn, the
+// Real source: os/40-interface/ui/src/views/agent/session.ts (the chat session: rows, the live turn, the
 // queue, stop, new conversation, staged text), state.ts (agent state machine, queued notice, tool
 // lines) and lib/api/mock/chat.ts (canned replies). Plan §6.3 "Canned chat", §6.4.
 //

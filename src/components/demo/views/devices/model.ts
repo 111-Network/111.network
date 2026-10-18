@@ -1,4 +1,4 @@
-// Pure display logic of the Devices views, in plain words (real os/interface/ui/src/lib/devices.ts
+// Pure display logic of the Devices views, in plain words (real os/40-interface/ui/src/lib/devices.ts
 // and views/devices/flash-model.ts, minus everything API-specific). No React: unit-tested in node.
 // The confirmation rules themselves (nameMatches, confirmMissing, confirmValid) live with the slice
 // that enforces them: engine/slices/devices.ts.

@@ -3,7 +3,7 @@
 // (W1, W5; scripts/check-copy.mjs scans these literals). Export only names prefixed MESSAGES_
 // so the copy/index.ts barrel never collides.
 //
-// Real source: os/interface/ui/src/views/messages/model.ts. The four state sentences, the reason
+// Real source: os/40-interface/ui/src/views/messages/model.ts. The four state sentences, the reason
 // sentences, the request notes, the cancel sentences and the compose gate are VERBATIM (plan §6.8:
 // "Use the real queued sentences verbatim; never invent reason codes"). The length limit, the
 // contacts page, retry, the raw advanced block and every protocol name are left out (plan §6.4, W1).

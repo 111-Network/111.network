@@ -3,7 +3,7 @@
 // (W1, W5; scripts/check-copy.mjs scans these literals). Export only names prefixed SETTINGS_
 // (or grow the one SETTINGS_COPY object) so the copy/index.ts barrel never collides.
 //
-// Mirrors os/interface/ui/src/views/settings/{essentials,layer-page,model}.ts, minus everything
+// Mirrors os/40-interface/ui/src/views/settings/{essentials,layer-page,model}.ts, minus everything
 // that only exists because of the real API: no CLI strings, no hostnames, no addresses, no word
 // count for the backup, no pair codes (plan §6.8), and no "coming" marks (W4).
 import type { LayerNumber } from "../engine/types"

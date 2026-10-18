@@ -1,7 +1,7 @@
 // Layer 0 sample catalog: the six drawers and their index cards (plan §5 L0).
 //
 // Every card is a ROLE, never a product (W1). Each one is grounded in a real
-// note under os/knowledge/ and translated into plain words:
+// note under os/00-knowledge/ and translated into plain words:
 //   long-range-mesh-firmware ← projects/meshtastic · phone-first-mesh-stack ← projects/briar-bramble
 //   any-link-network-stack ← projects/reticulum · offline-merge-library ← projects/automerge
 //   compact-crypto-library ← projects/monocypher (the KB's one testing entry)

@@ -1,5 +1,5 @@
 // Server-rendered checks of the /demo primitives: what they put in the HTML is what a keyboard or
-// screen-reader user gets (no DOM needed). Mirrors os/interface/ui/test/components.test.ts.
+// screen-reader user gets (no DOM needed). Mirrors os/40-interface/ui/test/components.test.ts.
 import { createElement, type ReactElement } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
 import { describe, expect, it } from "vitest"

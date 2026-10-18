@@ -1,4 +1,4 @@
-// Log-tail helpers of MiniTerminal (React-free). Real source: os/interface/ui/src/components/mini-terminal.tsx.
+// Log-tail helpers of MiniTerminal (React-free). Real source: os/40-interface/ui/src/components/mini-terminal.tsx.
 
 /** A typed command (`$ …`) is bright; output is muted. */
 export function lineTone(line: string): "command" | "output" {

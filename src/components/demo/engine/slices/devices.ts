@@ -9,7 +9,7 @@
 //   device-name confirm, checked here) -> core/radioFlash -> flashed (emits "radio-flashed") ->
 //   core/radioRegionSet -> the Long-range radio service STARTING -> LIVE (core, scheduler).
 //
-// Real source: os/interface/ui/src/views/devices/flash-model.ts (confirmation rules, verbatim) and
+// Real source: os/40-interface/ui/src/views/devices/flash-model.ts (confirmation rules, verbatim) and
 // views/devices/flash.tsx (the human-confirmed gate: nothing here can start a flash by itself).
 import type { RadioBoard } from "../core"
 import { NO_NEEDS, type NeedItem, type SliceCtx } from "../types"

@@ -1,6 +1,6 @@
 // Copy for the service page template (#/services/<id> for the Local AI agent, Local model, Mesh link,
 // Long-range radio, Knowledge base and Messaging; the Internet gateway, Bridge, Storage and Repairs have
-// their own pages). Owned by the services-template task. Real wording: os/interface/ui/src/views/services/
+// their own pages). Owned by the services-template task. Real wording: os/40-interface/ui/src/views/services/
 // index.tsx + model.ts, minus everything API-specific (no technical names, ports, ids, versions or
 // reason codes). Plain words only (W1, W5); scripts/check-copy.mjs scans every literal here.
 import type { NetworkTry, RadioStage } from "../engine/types"

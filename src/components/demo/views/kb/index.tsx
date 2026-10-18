@@ -1,5 +1,5 @@
 // Knowledge base (#/kb, #/kb/<drawer>, #/kb/<drawer>/<note>; Layer 0; plan §6.4). Real source:
-// os/interface/ui/src/views/kb/{index,render}.tsx: a section header, the "All entries / path"
+// os/40-interface/ui/src/views/kb/{index,render}.tsx: a section header, the "All entries / path"
 // breadcrumb, the record table and the note body, with honest 404 states. The demo reads the same
 // library as the home L0 section (six drawers, the same cards and grades) from views/kb/model.ts
 // instead of the node's API, and adds L0's two reader views (HUMAN reads the full note, AGENT the

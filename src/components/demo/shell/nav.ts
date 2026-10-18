@@ -1,4 +1,4 @@
-// Navigation model of the demo shell (plan §6.2; real os/interface/ui/src/lib/nav.ts). Pure data and
+// Navigation model of the demo shell (plan §6.2; real os/40-interface/ui/src/lib/nav.ts). Pure data and
 // pure functions: no React, no window, so vitest runs it in node. The services group is dynamic: one
 // row per registry record in the store.
 import { LAYER_PAGES, ROUTE_TITLES } from "../copy/core"

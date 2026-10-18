@@ -1,4 +1,4 @@
-// Roving-focus key handling of Segmented (React-free). Real source: os/interface/ui/src/components/segmented.tsx.
+// Roving-focus key handling of Segmented (React-free). Real source: os/40-interface/ui/src/components/segmented.tsx.
 
 /** Index to move to from `from` in direction `dir`, skipping disabled options, wrapping. */
 export function nextEnabled(disabled: readonly boolean[], from: number, dir: 1 | -1): number {

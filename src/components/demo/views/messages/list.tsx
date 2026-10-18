@@ -1,4 +1,4 @@
-// The Messages list (real views/messages/list.tsx; os/messaging/README.md §16): requests first (they
+// The Messages list (real views/messages/list.tsx; os/50-messaging/README.md §16): requests first (they
 // need an answer), then conversations, newest activity first. Every row says who, the last line,
 // how far the last own message got, and what is unread. Incoming items carry the "demo message"
 // note. New messages and requests are announced by the shell from their store events, so this list

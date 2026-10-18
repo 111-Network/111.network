@@ -1,4 +1,4 @@
-// Attention-badge model (React-free). Real source: os/interface/ui/src/components/attention-badge.tsx.
+// Attention-badge model (React-free). Real source: os/40-interface/ui/src/components/attention-badge.tsx.
 
 /** Screen-reader text for the count. */
 export function attentionLabel(count: number): string {

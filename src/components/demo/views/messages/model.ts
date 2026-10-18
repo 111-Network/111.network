@@ -1,4 +1,4 @@
-// Messages view model (real os/interface/ui/src/views/messages/model.ts, minus everything API
+// Messages view model (real os/40-interface/ui/src/views/messages/model.ts, minus everything API
 // specific): the words and pips for delivery evidence, the reason a message waits, the custody
 // line, the "received" time with the sender's claim kept apart, the one-line summaries of a thread,
 // the compose gate, the messaging line and the request items. Pure: no React, no clock of its own

@@ -1,6 +1,6 @@
 // Bridge service page (#/services/bridge, Layer 6; plan §6.4 Bridge, §6.8 bootstrap rule). Not built in
 // reality: the intended Layer 6 surface from os/README.md "Transport & Bridge", framed by the real
-// service page (os/interface/ui/src/views/services/index.tsx, via the shared ServicePageFrame).
+// service page (os/40-interface/ui/src/views/services/index.tsx, via the shared ServicePageFrame).
 //
 //   needs-radio  NOT SET "Needs a radio.": [DEMO] plug in a radio board (core/radioPlugged, the same
 //                action as Devices), the facts and the board's steps still to come
