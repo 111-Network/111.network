@@ -13,7 +13,7 @@ Inputs:
 | # | Decision |
 |---|---|
 | W1 | **Logic, not tech.** The page explains the final layer logic from `os/README.md`. No tech-stack names anywhere: no projects, protocols, algorithms, models, runtimes, libraries or file formats. Generic words are fine: long-range radio, Wi-Fi, Bluetooth, local model, keypair, signature, encrypted store. |
-| W2 | **One naming exception:** a single example line in the Layer 6 section, "Works with existing mesh networks and stacks like Meshtastic, MeshCore and Reticulum (examples; the real list lives in the Knowledge Layer)". All three are in `os/00-knowledge/projects/`. Nowhere else, never in `/demo`. |
+| W2 | **One naming exception:** a single example line in the Layer 6 section, "Works with existing mesh networks and stacks like Meshtastic, MeshCore and Reticulum (examples; the real list lives in the Knowledge Layer)". All three are in `os/0-knowledge/projects/`. Nowhere else, never in `/demo`. |
 | W3 | **Depth = README + key details.** README logic plus the few locked-spec details that make a demo meaningful: the four delivery states (queued / sent / relayed / delivered), the order in which a full store frees space, "known keys are pinned", "works with no backup". Recovery edge cases (lost phrase, identity/label collision) stay in the docs. |
 | W4 | **No built/planned marks.** All ten layers are shown as intended. The only disclaimer is a `SIMULATION` / `DEMO` chip on simulated components. |
 | W5 | **Device categories in plain words only:** old phone, laptop, radio relay, small box with a radio, home server, PC with a graphics card. No category names or codes (no "2B", no "AI-native terminal"). The role nouns *relay, bridge, hub, gateway* appear in prose, the way `os/README.md` uses them. |
@@ -415,10 +415,10 @@ Rules: no browser chrome (L4 owns it); TALK is a log, not a chat box.
 ## 6. `/demo`: interactive dashboard (W14)
 
 ### 6.1 What it is
-A clickable copy of the node dashboard with sample data, covering the whole intended system: all ten layers, built or not. It opens straight onto **Overview** (`#/overview`). This is the one deliberate deviation from the real default route, recorded in the parity table. There is no intro modal, tour, spotlight, narration or autoplay. It mirrors the real UI's structure (`os/40-interface/ui/src`: shell, nav, views, primitives) and extends it with the intended surfaces of Layers 6–9. Inputs for those surfaces:
+A clickable copy of the node dashboard with sample data, covering the whole intended system: all ten layers, built or not. It opens straight onto **Overview** (`#/overview`). This is the one deliberate deviation from the real default route, recorded in the parity table. There is no intro modal, tour, spotlight, narration or autoplay. It mirrors the real UI's structure (`os/4-interface/ui/src`: shell, nav, views, primitives) and extends it with the intended surfaces of Layers 6–9. Inputs for those surfaces:
 - `os/README.md`, the final word on logic
 - `os/plan/cross-layer/devices.md` (the Layer 6 opener brief)
-- `os/50-messaging/README.md`, for mailbox and announce roles
+- `os/5-messaging/README.md`, for mailbox and announce roles
 
 ### 6.2 Frame
 ```
@@ -494,7 +494,7 @@ v2, not in v1: map tiles, relations graph, topology view, phone-pairing window, 
   3. `matchMedia` becomes a `ResizeObserver` on the shell root, unless `layout` is forced.
   4. The drawer and its overlay are `absolute inset-*` inside a `relative overflow-hidden` root, with no body scroll lock and `inert` on the shell's main only. Nothing inside the shell is `position: fixed`.
   5. The NodeChip category badge becomes plain words.
-- **Primitives ported** from `os/40-interface/ui/src/components`: status-dot, terminal-chrome, panel, spec-table, badge, button, segmented, toggle, disclosure, mini-terminal, sparkline, diff-view, empty, section-header, attention-badge, copy-button.
+- **Primitives ported** from `os/4-interface/ui/src/components`: status-dot, terminal-chrome, panel, spec-table, badge, button, segmented, toggle, disclosure, mini-terminal, sparkline, diff-view, empty, section-header, attention-badge, copy-button.
 - **Motion and imports.** `src/components/demo/**` imports neither `framer-motion` nor `lucide-react`. Inside the shell, motion is limited to CSS transitions, `animate-blink`, the streaming buffer and the state-glyph steps; no `whileInView`, no entrance animations (the real dashboard has none). An import-denylist check covers that directory. The L4 window chrome may animate in; the shell inside it may not.
 - **Parity table** `docs/demo-parity.md`: one row per demo file mapped to its real source file, plus a "viewport → container" column and a "mirrors dashboard as of 2026-10" note. The first rows are the motion rule and the Overview-first deviation.
 - **Copy.** All copy lives in one file, `src/components/demo/copy.ts`. The cast is sample data: Workshop laptop (this node), Ada, Bram, Workshop hub, Ridge repeater (a relay), Valley hub. Sample labels use only `a–z2–7`, enforced by a vitest regex. Enrollment codes are not derived from labels.

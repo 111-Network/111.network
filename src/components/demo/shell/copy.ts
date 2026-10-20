@@ -2,7 +2,7 @@
 // live region, the view frame and the shared service page frame. Plain words only (W1, W5);
 // scripts/check-copy.mjs scans every literal here. The engine's shared copy (cast, services,
 // verdict, layer pages, route titles) stays in copy/core.ts; this file holds what only the shell says.
-// Mirrors the real dashboard's wording (os/40-interface/ui/src/app/*, views/services/index.tsx).
+// Mirrors the real dashboard's wording (os/4-interface/ui/src/app/*, views/services/index.tsx).
 
 export const SHELL_COPY = {
   /** The page <title> part (the root layout's template appends " · 111 Network"). */

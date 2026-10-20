@@ -1,4 +1,4 @@
-// The live-region throttle and writer (real os/40-interface/ui/src/app/LiveRegion.tsx, ported). Pure:
+// The live-region throttle and writer (real os/4-interface/ui/src/app/LiveRegion.tsx, ported). Pure:
 // time and timers are injected, so the shell feeds them from the demo scheduler (virtual clock,
 // pausable) and the tests from a fake. Nothing here reads Date.now or calls setTimeout itself.
 

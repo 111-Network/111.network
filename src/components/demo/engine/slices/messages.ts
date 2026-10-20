@@ -1,7 +1,7 @@
 // Messages slice (#/messages, #/messages/<peer>; plan §6.4, layers 5 and 2). Plain TS: no React.
 //
-// Real source: os/50-messaging/README.md §9 (the four delivery states, the mailbox), §7.2 (requests) and
-// §16 (the Messages UI), as the dashboard draws them in os/40-interface/ui/src/views/messages/*. The
+// Real source: os/5-messaging/README.md §9 (the four delivery states, the mailbox), §7.2 (requests) and
+// §16 (the Messages UI), as the dashboard draws them in os/4-interface/ui/src/views/messages/*. The
 // sample world (engine/world.ts): Ada is a member of your home hub (Workshop hub, over Wi-Fi), so a
 // message to her goes queued -> sent -> relayed (the hub's custody receipt) -> delivered (her node's
 // acknowledgement), and she answers a few seconds later. Bram's hub is not yours: a message to him

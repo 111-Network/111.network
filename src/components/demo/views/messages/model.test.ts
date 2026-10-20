@@ -49,7 +49,7 @@ const bram = base.threads.find((t) => t.peer === "bram") as DemoThread
 
 describe("delivery evidence", () => {
   it("the four state sentences are the real dashboard's, verbatim", () => {
-    // os/40-interface/ui/src/views/messages/model.ts STATE_COPY
+    // os/4-interface/ui/src/views/messages/model.ts STATE_COPY
     expect(MESSAGES_STATE_COPY).toEqual({
       queued: "In the outbox on this node: there is no path to them yet, their key is missing, or their hub is not yours.",
       sent: "A frame was written to a link. They have not confirmed it yet.",

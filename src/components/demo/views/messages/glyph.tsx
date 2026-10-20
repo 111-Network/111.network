@@ -1,4 +1,4 @@
-// The delivery-evidence glyph (real views/messages/glyph.tsx; os/50-messaging/README.md §9): three pips
+// The delivery-evidence glyph (real views/messages/glyph.tsx; os/5-messaging/README.md §9): three pips
 // after the outbox, filled as far as the evidence got. Shape and the word carry the state, never
 // colour. The pips are CSS squares (the body font has no ■ □): filled = bg-foreground, empty =
 // hollow border. A pip fills with a short colour transition only when a scheduled step lands (a

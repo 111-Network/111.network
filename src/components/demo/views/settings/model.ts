@@ -1,4 +1,4 @@
-// Pure model of Settings (real os/40-interface/ui/src/views/settings/model.ts): the Essentials rows,
+// Pure model of Settings (real os/4-interface/ui/src/views/settings/model.ts): the Essentials rows,
 // the node-name and restart rules, the update block and its steps, the per-layer status rows, the
 // "On this dashboard" links and the "ask the agent" prompt. No React, so vitest runs it in node.
 // The views map these plain values onto primitives. Everything reads the demo store instead of

@@ -1,5 +1,5 @@
 // Shared class strings of the /demo primitives (React-free, server-safe).
-// Real source: os/40-interface/ui/src/lib/cx.ts (FOCUS_RING) + components/input.tsx (FIELD_CLASS).
+// Real source: os/4-interface/ui/src/lib/cx.ts (FOCUS_RING) + components/input.tsx (FIELD_CLASS).
 
 /** Focus ring for every plain control (DESIGN.md §8). */
 export const FOCUS_RING = "focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"

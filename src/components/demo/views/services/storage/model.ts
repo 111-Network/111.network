@@ -1,5 +1,5 @@
 // What the Storage page draws, computed from the storage slice (pure: no React, tested in node).
-// Real source: os/40-interface/ui/src/views/services/store-gauge.tsx (a bar plus "N% · used of
+// Real source: os/4-interface/ui/src/views/services/store-gauge.tsx (a bar plus "N% · used of
 // watermark"); here the bar is the home L8 strip (one bar per internal unit, a tick at the line,
 // a dashed overshoot) and the readout is words only. No size, threshold or percentage is printed.
 import { STORAGE_COPY } from "../../../copy/storage"

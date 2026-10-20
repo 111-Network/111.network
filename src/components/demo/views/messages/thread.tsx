@@ -1,4 +1,4 @@
-// One conversation (real views/messages/thread.tsx; os/50-messaging/README.md §16): messages in the
+// One conversation (real views/messages/thread.tsx; os/5-messaging/README.md §16): messages in the
 // order they arrived here, each with its own delivery evidence in the exact words of §9, the reason
 // when it waits, the custody line while your home hub holds it, the time it was received here, and
 // the sender's own claim behind a disclosure, marked unverified. Peer text is rendered as text only.

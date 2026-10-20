@@ -1,4 +1,4 @@
-// Pure logic of the service page template (real os/40-interface/ui/src/views/services/model.ts: the Restart
+// Pure logic of the service page template (real os/4-interface/ui/src/views/services/model.ts: the Restart
 // phase and button label, the control panel rows that `flattenDetail` built from the registry's `detail`,
 // and tabs.tsx `nextTab`). No React, so every rule is unit-tested in node.
 //

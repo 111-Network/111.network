@@ -1,4 +1,4 @@
-// Status-dot model (React-free). Real source: os/40-interface/ui/src/components/status-dot.tsx.
+// Status-dot model (React-free). Real source: os/4-interface/ui/src/components/status-dot.tsx.
 
 /** Service / node state. "starting" = grey + blink; "unknown" = hollow grey (stale or not heard). */
 export type DotState = "live" | "unset" | "error" | "starting" | "unknown"

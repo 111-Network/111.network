@@ -39,7 +39,7 @@ The palette is strictly **pure black and white** with a single grayscale ladder.
 
 ### Status Dots (scoped exception)
 
-The dashboard (`os/40-interface/`) signals service and node state with a `h-2 w-2` square dot in one of three colors: `status-live` (green), `status-unset` (grey), `status-error` (red). Rules:
+The dashboard (`os/4-interface/`) signals service and node state with a `h-2 w-2` square dot in one of three colors: `status-live` (green), `status-unset` (grey), `status-error` (red). Rules:
 
 - The color appears **only on the dot** — never on text, backgrounds, borders, icons, or charts.
 - The dot is always paired with a text label (`LIVE` / `NOT SET` / `ERROR`); state is never conveyed by color alone.

@@ -1,5 +1,5 @@
 // Pure model of the Knowledge base view (React-free, server-safe, tested in node). Real source:
-// os/40-interface/ui/src/lib/markdown.ts (kbRouteTarget, frontmatterRows) + os/00-knowledge/_meta/schema.md
+// os/4-interface/ui/src/lib/markdown.ts (kbRouteTarget, frontmatterRows) + os/0-knowledge/_meta/schema.md
 // (the index line grammar, sections in a fixed order), translated from files into plain data.
 //
 // The library is the home L0 catalog (the same six drawers, cards and grades) plus the demo-only

@@ -1,4 +1,4 @@
-// Sparkline math (React-free). Real source: os/40-interface/ui/src/components/sparkline.tsx.
+// Sparkline math (React-free). Real source: os/4-interface/ui/src/components/sparkline.tsx.
 
 /** Eight block heights, low to high (all inside the body font's block range). */
 export const SPARK_GLYPHS = "▁▂▃▄▅▆▇█"

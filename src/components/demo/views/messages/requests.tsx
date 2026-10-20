@@ -1,4 +1,4 @@
-// Pending message requests (real views/messages/requests.tsx; os/50-messaging/README.md §7.2): the held
+// Pending message requests (real views/messages/requests.tsx; os/5-messaging/README.md §7.2): the held
 // words as text only, and what a person can do with them.
 //
 //   accept          makes the contact; the held words stay in the thread, and it can be written to.

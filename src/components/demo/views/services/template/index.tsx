@@ -1,6 +1,6 @@
 // Service page template (#/services/<id> for the Local AI agent, Local model, Mesh link, Long-range radio,
 // Knowledge base and Messaging; the Internet gateway, Bridge, Storage and Repairs have their own pages).
-// Port of the real os/40-interface/ui/src/views/services/index.tsx ServicePage, minus every API call and the
+// Port of the real os/4-interface/ui/src/views/services/index.tsx ServicePage, minus every API call and the
 // hosted-panel, partner-client and messaging-detail parts:
 //   the shared ServicePageFrame   header, dot + since, reason, description, NOT SET setup panel with
 //                                 "Set up with the agent", STARTING note, ERROR "Fix with the agent", recipe

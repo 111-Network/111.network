@@ -1,6 +1,6 @@
 // Copy for the Overview view (#/overview, where /demo opens). Owned by the Overview view task.
 // Every user-visible sentence of the view lives here, in plain words (W1, W5; scripts/check-copy.mjs
-// scans these literals). Mirrors the real dashboard's wording (os/40-interface/ui/src/views/overview/*,
+// scans these literals). Mirrors the real dashboard's wording (os/4-interface/ui/src/views/overview/*,
 // lib/prompts.ts) minus everything API-specific. The verdict, nearby, needs-you and device sentences
 // are shared and live in copy/core.ts (VERDICT_COPY, NEARBY_SENTENCE, NEEDS_COPY, DEVICE_COPY).
 // No identity-backup command and no recovery-word count (plan §6.8).

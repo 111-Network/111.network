@@ -1,5 +1,5 @@
 // Settings slice (#/settings, #/settings/l0 .. l9; plan §6.4 last three rows). Owned by the settings
-// view task. Real sources: os/40-interface/ui/src/views/settings/{essentials,model}.ts (restart, update
+// view task. Real sources: os/4-interface/ui/src/views/settings/{essentials,model}.ts (restart, update
 // check, LAN sharing) and lib/api/mock/scenarios.ts `updating` (staged -> probation -> idle).
 //
 // What lives here, and only here:

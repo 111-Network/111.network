@@ -1,5 +1,5 @@
 // Storage service page (#/services/storage, Layer 8; plan §6.4 Storage, W3, §6.8). Real sources:
-// os/40-interface/ui/src/views/services/fabric.tsx (the "store ~ encrypted" panel: gauge, full and
+// os/4-interface/ui/src/views/services/fabric.tsx (the "store ~ encrypted" panel: gauge, full and
 // prune sentences) and store-gauge.tsx, in plain words, plus the intended Layer 8 surfaces from
 // os/README.md: classes, the free-space order, hubs that host the big libraries, the optional
 // append-only shared log.

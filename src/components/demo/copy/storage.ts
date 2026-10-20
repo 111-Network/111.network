@@ -2,7 +2,7 @@
 // sizes, thresholds or percentages anywhere (plan §5 L8, §6.8 "keep storage numbers consistent";
 // this page prints none). The free-space order is the home page's L8 wording, verbatim (W3);
 // storage.test.ts pins it against src/components/sections/layer-8/model.ts.
-// Real counterparts: os/40-interface/ui/src/views/services/fabric-model.ts (STORE_* sentences) and
+// Real counterparts: os/4-interface/ui/src/views/services/fabric-model.ts (STORE_* sentences) and
 // store-gauge.tsx (the gauge), translated to words.
 
 /** The numbered free-space order (W3), exactly as home L8 prints it. Rule 3 is followed by the export chip. */

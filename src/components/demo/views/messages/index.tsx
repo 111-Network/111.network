@@ -1,5 +1,5 @@
 // Messages and conversation (#/messages, #/messages/<peer>; Layers 5 and 2). Real source:
-// os/40-interface/ui/src/views/messages/index.tsx: the route picks the list or one conversation. The
+// os/4-interface/ui/src/views/messages/index.tsx: the route picks the list or one conversation. The
 // state lives in the messages slice (engine/slices/messages.ts); this module only draws it.
 //
 // Focus: moving inside this view (list -> conversation and back) lands on the new title. The first

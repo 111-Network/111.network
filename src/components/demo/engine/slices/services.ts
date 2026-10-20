@@ -1,6 +1,6 @@
 // Services slice: the service page TEMPLATE (#/services/<id> for the Local AI agent, Local model, Mesh
 // link, Long-range radio, Knowledge base and Messaging). The Internet gateway, Bridge, Storage and
-// Repairs have their own slices. Real source: os/40-interface/ui/src/views/services/model.ts (restart
+// Repairs have their own slices. Real source: os/4-interface/ui/src/views/services/model.ts (restart
 // phases, KIND_LABEL) + log.tsx (the log tail) + lib/api/mock/fixtures.ts (the sample log lines).
 //
 // What it keeps:

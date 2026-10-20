@@ -4,7 +4,7 @@
 // carried for others, public data you can fetch again, updates). Sizes are internal units for the
 // gauge and are NEVER printed: the page speaks in words only.
 //
-// Rules (os/README.md layer 8, os/50-messaging/README.md §10.4, home L8):
+// Rules (os/README.md layer 8, os/5-messaging/README.md §10.4, home L8):
 // - Pruning by capacity only. Nothing expires on a timer; nothing happens while idle.
 // - When new data pushes the store past the line, room is freed in a fixed order:
 //     1 copies already handed over + public data you can fetch again

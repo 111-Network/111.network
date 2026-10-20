@@ -1,6 +1,6 @@
 // Layer 5 "Courier Receipt": the pure delivery model behind the home-page widget.
 //
-// Semantics follow os/50-messaging/README.md §6 and §9 (and the dashboard's
+// Semantics follow os/5-messaging/README.md §6 and §9 (and the dashboard's
 // views/messages/model.ts):
 // - queued: in the outbox, no path yet;
 // - sent: a frame was written to a link, nothing confirmed;
