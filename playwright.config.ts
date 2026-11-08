@@ -8,6 +8,12 @@ import { defineConfig } from "@playwright/test"
 const PORT = 3100
 const BASE_URL = `http://localhost:${PORT}`
 
+// Optional: run against a Chromium already on the machine (CI images, dev
+// containers) instead of the build Playwright downloads for its own version.
+// `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/path/to/chrome pnpm e2e`. Unset: the default.
+const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE
+const launchOptions = executablePath ? { executablePath } : {}
+
 export default defineConfig({
   testDir: "e2e",
   fullyParallel: true,
@@ -18,6 +24,7 @@ export default defineConfig({
   use: {
     baseURL: BASE_URL,
     trace: "on-first-retry",
+    launchOptions,
   },
   projects: [
     {

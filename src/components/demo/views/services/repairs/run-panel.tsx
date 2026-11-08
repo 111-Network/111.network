@@ -6,6 +6,7 @@
 import { useRef } from "react"
 import { useReducedMotion } from "@/hooks/use-reduced-motion"
 import { cn } from "@/lib/utils"
+import { SERVICE_NOUN } from "../../../copy/core"
 import { REPAIRS_COPY } from "../../../copy/repairs"
 import { useDemo, useDispatch } from "../../../engine/react"
 import { PATHS } from "../../../engine/router"
@@ -73,7 +74,7 @@ function RunActions({ run, onAct }: { run: RepairRun; onAct: () => void }) {
       {run.phase === "rejected" ? (
         <div className="space-y-1 border-s-2 border-foreground ps-3">
           <p className="font-mono text-xs font-bold text-foreground">{REPAIRS_COPY.rejected}</p>
-          <p className={TEXT}>{C.rejectedDetail(REPAIRS_COPY.faults[run.fault].layerWord)}</p>
+          <p className={TEXT}>{C.rejectedDetail(SERVICE_NOUN[run.target])}</p>
         </div>
       ) : null}
 

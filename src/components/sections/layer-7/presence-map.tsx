@@ -63,18 +63,19 @@ function linkKey(a: NodeId, b: NodeId): string {
   return a < b ? `${a}|${b}` : `${b}|${a}`
 }
 
-function nodeName(view: PresenceState, id: NodeId): string {
+/** What follows a node's visible label in its accessible name: role and reach, e.g. "gateway, always online, in range". */
+function nodeDetail(view: PresenceState, id: NodeId): string {
   const node = view.nodes[id]
   const role = roleOf(id, node.mode)
   const what =
     role === "relay"
-      ? "relay, repeats only"
+      ? "repeats only"
       : role === "stream"
         ? "gateway, always online"
         : role === "flush"
           ? `gateway, online sometimes${isOnline(id, node.mode, view.beat) ? " and online now" : ""}`
           : "no internet"
-  return `${NODES[id].label}: ${what}, ${REACH_WORD[reachOf(node, view.beat)]}`
+  return `${what}, ${REACH_WORD[reachOf(node, view.beat)]}`
 }
 
 function squareClass(view: PresenceState, id: NodeId): string {
@@ -187,12 +188,15 @@ export function PresenceMap({ view, rings, onSelect, descriptionId }: PresenceMa
         const reach = reachOf(state, beat)
         const selected = view.selected === id
         const heard = view.lanes[id][last] === "heard"
+        // Accessible name = the visible label + an sr-only tail (WCAG 2.5.3: the words on
+        // screen start the name), read as "laptop gateway, online sometimes, in range". The
+        // tail starts with a word, not a colon: browsers put a space before a hidden block.
+        const nameTail = nodeDetail(view, id)
         return (
           <button
             key={id}
             type="button"
             aria-current={selected ? "true" : undefined}
-            aria-label={nodeName(view, id)}
             onClick={() => onSelect(id)}
             style={{ left: `${node.x}%`, top: `${node.y}%` }}
             className={cn(
@@ -205,15 +209,19 @@ export function PresenceMap({ view, rings, onSelect, descriptionId }: PresenceMa
             <span aria-hidden="true" className={cn("relative block", node.canBeGateway ? "h-6 w-6 sm:h-7 sm:w-7" : "h-4 w-4", squareClass(view, id))}>
               {rings && heard ? <span key={beat} className="absolute -inset-px animate-ping-once border border-foreground" /> : null}
             </span>
-            <span
-              aria-hidden="true"
-              className={cn("absolute flex flex-col gap-0.5 font-mono leading-tight whitespace-nowrap", LABEL_SIDE[node.side])}
-            >
-              <span className="bg-card px-1 text-[10px] text-foreground">{node.label}</span>
+            <span className={cn("absolute flex flex-col gap-0.5 font-mono leading-tight whitespace-nowrap", LABEL_SIDE[node.side])}>
+              <span className="bg-card px-1 text-[10px] text-foreground">
+                {node.label}
+                <span className="sr-only">{nameTail}</span>
+              </span>
               {reach !== "in-range" ? (
-                <StatusDot {...reachTag(reach)} className="gap-1 bg-card px-1 tracking-normal text-muted-foreground" />
+                <span aria-hidden="true">
+                  <StatusDot {...reachTag(reach)} className="gap-1 bg-card px-1 tracking-normal text-muted-foreground" />
+                </span>
               ) : isGateway(id, state.mode) ? (
-                <span className="bg-card px-1 text-[10px] text-muted-foreground">gateway</span>
+                <span aria-hidden="true" className="bg-card px-1 text-[10px] text-muted-foreground">
+                  gateway
+                </span>
               ) : null}
             </span>
           </button>

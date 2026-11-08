@@ -224,7 +224,7 @@ export function CourierReceipt() {
                 )}
               >
                 {LINK_LABELS[kind]}
-                <span aria-hidden="true" className="text-[10px] uppercase tracking-widest opacity-70">
+                <span aria-hidden="true" className="text-[10px] uppercase tracking-widest">
                   {on ? "on" : "off"}
                 </span>
               </button>

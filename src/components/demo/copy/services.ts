@@ -64,7 +64,7 @@ export const SERVICES_COPY = {
     tools: "Tools",
     toolsValue: "reading knowledge, checking health, reading logs, writing a proposal",
     cannot: "Cannot",
-    cannotValue: "touch hardware or run commands",
+    cannotValue: "touch hardware or change this node by itself",
     proposals: "Proposals waiting",
     proposalsValue: (n: number): string => (n === 0 ? "none" : String(n)),
     openChat: "open the chat",

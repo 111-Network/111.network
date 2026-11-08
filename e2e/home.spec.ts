@@ -352,7 +352,7 @@ test.describe("interactive sections: one key interaction each", () => {
     await openHome(page)
     const l6 = section(page, 6)
     // The detail (does / does not) starts open under the bridge band.
-    await expect(l6.getByRole("button", { name: "Bridge: what it does and does not do" })).toHaveAttribute(
+    await expect(l6.getByRole("button", { name: /^BRIDGE\s*: what it does and does not do/ })).toHaveAttribute(
       "aria-expanded",
       "true",
     )
@@ -366,7 +366,7 @@ test.describe("interactive sections: one key interaction each", () => {
     await openHome(page)
     const l7 = section(page, 7)
 
-    await l7.getByRole("button", { name: /^relay:/ }).click()
+    await l7.getByRole("button", { name: /^relay repeats only/ }).click()
     await expect(statusLine(l7, "Relays only repeat. They cannot be gateways.")).toHaveCount(1)
     const internet = l7.getByRole("radiogroup", { name: "internet for the relay" })
     await expect(internet.getByRole("radio").first()).toBeDisabled()
