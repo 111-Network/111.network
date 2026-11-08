@@ -1,0 +1,20 @@
+# Dependency updates (SECURITY.md, "Dependencies"). One grouped PR per area,
+# weekly, so a security release of Next.js or React is never waiting on a
+# human to notice it. Every PR still has to pass `pnpm check` and `pnpm e2e`.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      next:
+        patterns: ["next", "eslint-config-next", "@next/*"]
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+      radix:
+        patterns: ["@radix-ui/*"]
+      dev-tooling:
+        dependency-type: development
