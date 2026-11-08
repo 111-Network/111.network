@@ -103,7 +103,6 @@ export function ThinBridge() {
         <button
           type="button"
           onClick={() => send("a")}
-          aria-label={`${BRIDGE_SIDES.a.name}, ${BRIDGE_SIDES.a.medium}: drop a sealed packet down through the bridge`}
           className={cn(NETWORK_BAND, "border-t")}
         >
           <span className={BAND_INNER}>
@@ -123,7 +122,6 @@ export function ThinBridge() {
           onClick={() => dispatch({ type: "toggle-detail" })}
           aria-expanded={state.detailOpen}
           aria-controls={detailId}
-          aria-label="Bridge: what it does and does not do"
           className={cn(
             "group flex h-[var(--bridge-h)] w-full items-center bg-foreground text-left font-mono text-background transition-colors duration-200 hover:bg-foreground/90",
             // The band's edges touch the dark networks and the screen edges, so a ring
@@ -134,7 +132,8 @@ export function ThinBridge() {
           <span className={BAND_INNER}>
             <span className={cn("flex flex-wrap items-baseline gap-x-3", LANE_GAP)}>
               <span className="font-pixel-line text-lg font-bold tracking-tight md:text-xl">
-                BRIDGE{" "}
+                BRIDGE
+                <span className="sr-only">: what it does and does not do</span>{" "}
                 {/* Geist Mono, not the pixel face: the pixel face has ▲ but no ▼. */}
                 <span aria-hidden="true" className="font-mono text-sm font-normal">
                   {state.detailOpen ? "▲" : "▼"}
@@ -151,7 +150,6 @@ export function ThinBridge() {
         <button
           type="button"
           onClick={() => send("b")}
-          aria-label={`${BRIDGE_SIDES.b.name}, ${BRIDGE_SIDES.b.medium}: send a sealed packet up through the bridge`}
           className={cn(NETWORK_BAND, "border-b")}
         >
           <span className={BAND_INNER}>

@@ -88,7 +88,6 @@ export function SeekBoard() {
                 <button
                   type="button"
                   aria-pressed={on}
-                  aria-label={`${networkName(i)}, ${net.medium}: in range`}
                   onClick={() => dispatch({ type: "toggle", index: i })}
                   className={cn(
                     "flex min-h-11 w-full flex-col items-start gap-1 border p-3 text-left font-mono transition-colors duration-200",

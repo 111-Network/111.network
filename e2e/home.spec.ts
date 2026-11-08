@@ -352,7 +352,7 @@ test.describe("interactive sections: one key interaction each", () => {
     await openHome(page)
     const l6 = section(page, 6)
     // The detail (does / does not) starts open under the bridge band.
-    await expect(l6.getByRole("button", { name: "Bridge: what it does and does not do" })).toHaveAttribute(
+    await expect(l6.getByRole("button", { name: /^BRIDGE\s*: what it does and does not do/ })).toHaveAttribute(
       "aria-expanded",
       "true",
     )
