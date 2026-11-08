@@ -6,7 +6,7 @@
 
 ## 1. Brand Identity
 
-**111 Network** is a global mesh messaging network. The visual language is terminal-native, monochrome, and engineering-first. No gradients, no rounded corners, no decorative flourishes. Every pixel communicates function.
+**111 Network** is a message network that runs on people, not servers: any device becomes a node, joins the mesh networks that already exist, and a local AI keeps it running. The visual language is terminal-native, monochrome, and engineering-first. No gradients, no rounded corners, no decorative flourishes. Every pixel communicates function.
 
 **Mood**: Restricted-access technical archive. Cold, precise, utilitarian. The interface feels like a system monitor for decentralized infrastructure.
 
@@ -213,6 +213,8 @@ Every terminal-like panel follows this header pattern:
 </div>
 ```
 
+**Where chrome appears.** Terminal chrome lives only in the hero install box, Layer 1's boot terminal, panels inside the Layer 4 window and /demo, and the finale terminal. Never as decoration elsewhere.
+
 ### Spec Table
 
 ```jsx
@@ -340,7 +342,13 @@ Used for emphasis bands (network header, active nav item):
 | `animate-blink` | `blink` | 1s ease-in-out | Infinite cursor blink |
 | `animate-scanline` | `scanline` | 8s linear | Infinite CRT sweep |
 
+### Motion budget
+
+At most two JavaScript-driven loops in view at once. Every loop is gated by in-view (`useInViewPlay`) and tab visibility (`usePageVisible`) through `<MotionRoot>`. Inside /demo, motion is only a response to a click; data panels get no entrance animations.
+
 ### Framer Motion Patterns
+
+> `framer-motion` and `lucide-react` are denied under `src/components/demo/**` (`scripts/check-copy.mjs` `demoImports`).
 
 **Scroll-triggered entrance** (used on every section):
 
@@ -366,7 +374,7 @@ Used for emphasis bands (network header, active nav item):
 
 **Typewriter / boot sequence** (kernel, mini-terminal):
 
-Lines reveal one-by-one via `setInterval(..., 150-200ms)` with `motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}`.
+**Legacy pattern (pre-redesign):** lines revealed one-by-one via `setInterval(..., 150-200ms)` with `motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}`. Today a loop runs through `useInViewPlay` / `usePageVisible` under `<MotionRoot>`, never a bare `setInterval`.
 
 **Live indicators**:
 
