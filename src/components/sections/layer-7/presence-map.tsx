@@ -63,18 +63,19 @@ function linkKey(a: NodeId, b: NodeId): string {
   return a < b ? `${a}|${b}` : `${b}|${a}`
 }
 
-function nodeName(view: PresenceState, id: NodeId): string {
+/** What follows a node's visible label in its accessible name: role and reach, e.g. "gateway, always online, in range". */
+function nodeDetail(view: PresenceState, id: NodeId): string {
   const node = view.nodes[id]
   const role = roleOf(id, node.mode)
   const what =
     role === "relay"
-      ? "relay, repeats only"
+      ? "repeats only"
       : role === "stream"
         ? "gateway, always online"
         : role === "flush"
           ? `gateway, online sometimes${isOnline(id, node.mode, view.beat) ? " and online now" : ""}`
           : "no internet"
-  return `${NODES[id].label}: ${what}, ${REACH_WORD[reachOf(node, view.beat)]}`
+  return `${what}, ${REACH_WORD[reachOf(node, view.beat)]}`
 }
 
 function squareClass(view: PresenceState, id: NodeId): string {
@@ -188,8 +189,9 @@ export function PresenceMap({ view, rings, onSelect, descriptionId }: PresenceMa
         const selected = view.selected === id
         const heard = view.lanes[id][last] === "heard"
         // Accessible name = the visible label + an sr-only tail (WCAG 2.5.3: the words on
-        // screen start the name), e.g. "laptop: gateway, online sometimes, in range".
-        const nameTail = nodeName(view, id).slice(node.label.length)
+        // screen start the name), read as "laptop gateway, online sometimes, in range". The
+        // tail starts with a word, not a colon: browsers put a space before a hidden block.
+        const nameTail = nodeDetail(view, id)
         return (
           <button
             key={id}
