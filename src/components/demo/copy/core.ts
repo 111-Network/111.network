@@ -101,7 +101,7 @@ export const SERVICE_COPY: Readonly<Record<ServiceId, ServiceCopy>> = {
   agent: {
     name: "Local AI agent",
     description:
-      "A small assistant that runs on this node. It reads the built-in knowledge base and the node's health, answers your questions, and writes proposals you can accept or dismiss. It cannot touch hardware or run commands.",
+      "A small assistant that runs on this node. It reads the built-in knowledge base and the node's health, answers your questions, and writes proposals you can accept or dismiss. It cannot touch hardware or change this node by itself: a fix runs only in its sandbox until you accept it.",
     requires: "A local model on this node, or a nearby hub's.",
     reasons: { live: "Running and answering health checks.", unset: "Not set up yet.", starting: STARTING, error: "The agent stopped answering health checks." },
   },

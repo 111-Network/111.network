@@ -132,7 +132,7 @@ export function CookieBanner() {
     <div
       role="dialog"
       aria-label="Cookie consent"
-      className="fixed bottom-4 left-4 z-50 max-w-sm border border-border bg-background/80 p-4 backdrop-blur-md animate-in fade-in slide-in-from-bottom-4 duration-250 ease-out motion-reduce:animate-none"
+      className="fixed bottom-4 left-4 z-50 max-w-sm border border-border bg-background p-4 animate-in fade-in slide-in-from-bottom-4 duration-250 ease-out motion-reduce:animate-none"
     >
       <div className="flex items-start justify-between gap-3">
         <ConsentText />

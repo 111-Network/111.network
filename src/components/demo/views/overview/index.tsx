@@ -82,7 +82,12 @@ function ChecklistList({ rows }: { rows: readonly OverviewChecklistRow[] }) {
             {r.href && !r.done ? (
               <>
                 {" "}
-                <RouteLink to={r.href} aria-label={`${c.needs.open}: ${r.title}`}>
+                {/* The hit area grows to 44 px through a pseudo-element; the painted link stays text-sized. */}
+                <RouteLink
+                  to={r.href}
+                  aria-label={`${c.needs.open}: ${r.title}`}
+                  className="relative before:absolute before:-inset-x-2 before:-inset-y-3 before:content-['']"
+                >
                   {c.needs.open}
                 </RouteLink>
               </>

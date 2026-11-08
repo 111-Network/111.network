@@ -13,7 +13,9 @@ export function FollowingDevice({ className }: { className?: string }) {
       <span aria-hidden="true"> · </span>
       <a
         href="#layer-1"
-        className="underline decoration-border underline-offset-4 transition-colors duration-200 hover:text-foreground hover:decoration-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
+        // A 44 px tall hit area (plan §7, mobile targets) that does not grow the 10 px line: the
+        // negative vertical margins give the inline-flex box back to the line box.
+        className="inline-flex min-h-11 items-center -my-4 underline decoration-border underline-offset-4 transition-colors duration-200 hover:text-foreground hover:decoration-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-none"
       >
         change<span className="sr-only"> the device you follow</span>
       </a>

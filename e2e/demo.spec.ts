@@ -437,9 +437,8 @@ test.describe("every view through the sidebar", () => {
     await expect(sidebarNav(page).getByRole("list", { name: "Services", exact: true })).toBeVisible()
     await expect(sidebarPanel(page).getByRole("radio", { name: "ADVANCED", exact: true })).toHaveAttribute("aria-checked", "true")
     await expect(sidebarPanel(page).getByText("ADV", { exact: true })).toBeVisible()
-    // Pinned: the switch a deep link makes at store init happens before the persistence effect
-    // subscribes (engine/react.tsx), so the saved mode stays "simple" while a row click would save
-    // "advanced". TODO product: should a service deep link persist "advanced" like a row click does?
+    // Decided (2026-11-08): the switch a deep link makes is for this visit only. A visitor's own
+    // choice (the SIMPLE|ADVANCED control) is what gets saved; a link never overwrites it.
     await expect.poll(() => savedMode(page)).toBe("simple")
   })
 })
@@ -783,8 +782,9 @@ test.describe("one DEMO action per view (reduced motion)", () => {
     await expect(own).toContainText("delivered")
     await expect(own).toContainText(`custody: Workshop hub held a sealed copy until Ada's node collected it. It could not read it.`)
     await expect(box).toHaveValue("")
-    // Ada's reply is the one step that is NOT instant under reduced motion: slices/messages.ts schedules
-    // it at a real MESSAGE_TIMING.replyMs (2.6 s) on the demo scheduler, so this expect gets more room.
+    // Ada's reply is the one step that stays on its timer under reduced motion, by design (a message
+    // from someone else is not an animation; slices/messages.test.ts "the reply still comes later"):
+    // MESSAGE_TIMING.replyMs (2.6 s) on the demo scheduler, so this expect gets more room.
     const reply = demoMain(page).getByText("Got it, thanks! My phone picked it up from the hub.", { exact: true })
     await expect(reply).toBeVisible({ timeout: 15_000 })
     await expect(demoMain(page).locator("li", { hasText: "Got it, thanks!" }).getByText("demo message", { exact: true })).toHaveCount(1)
@@ -1218,7 +1218,7 @@ test.describe("one DEMO action per view (reduced motion)", () => {
     await page.getByRole("button", { name: "DEMO try a bad fix" }).click()
     await expect(demoMain(page).getByText("CLOSED · REJECTED", { exact: true })).toBeVisible()
     await expect(demoMain(page).getByText("fix rejected: nothing leaves the sandbox", { exact: true }).first()).toBeVisible()
-    await expect(demoMain(page).getByText("The messaging stays broken. Nothing was applied, and nothing went upstream.", { exact: true })).toBeVisible()
+    await expect(demoMain(page).getByText("The message store stays broken. Nothing was applied, and nothing went upstream.", { exact: true })).toBeVisible()
     await expect(demoMain(page).getByText("other layers: presence went quiet during every restart", { exact: true })).toBeVisible()
     await expect(page.getByRole("button", { name: "APPROVE ON THIS NODE", exact: true })).toHaveAttribute("aria-disabled", "true")
     await expect(navDom(page).getByText("Messaging: ERROR", { exact: true })).toHaveCount(1)
