@@ -53,12 +53,18 @@ export { expect }
 /**
  * Open the home page and wait until the client has taken over: the nav swaps
  * its server-rendered overlay placeholder (INSTALL at lg and up, MENU below)
- * for the real trigger, which carries aria-controls. That happens only after
+ * for the real trigger, which carries data-hydrated. That happens only after
  * the whole page has hydrated, so clicks and typing reach React from here on.
+ * (Not aria-controls: Radix Dialog sets it on the trigger only while open.)
  */
 export async function openHome(page: Page, path = "/"): Promise<void> {
   await page.goto(path)
-  await expect(page.locator('header button[aria-haspopup="dialog"][aria-controls]')).toHaveCount(1)
+  await expectNavHydrated(page)
+}
+
+/** The nav's real overlay trigger (not the server placeholder) is on the page. */
+export async function expectNavHydrated(page: Page): Promise<void> {
+  await expect(page.locator('header button[aria-haspopup="dialog"][data-hydrated]')).toHaveCount(1)
 }
 
 /** Resolve after the browser has painted two more frames. */

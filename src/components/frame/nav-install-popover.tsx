@@ -32,7 +32,8 @@ export function NavInstallPopover({ className }: { className?: string }) {
 
   return (
     <Popover.Root open={open} onOpenChange={onOpenChange}>
-      <Popover.Trigger ref={triggerRef} className={cn(INSTALL_TRIGGER_CLASS, className)}>
+      {/* data-hydrated: the real trigger has replaced the server placeholder (e2e waits on it). */}
+      <Popover.Trigger ref={triggerRef} data-hydrated="" className={cn(INSTALL_TRIGGER_CLASS, className)}>
         INSTALL
       </Popover.Trigger>
       <Popover.Portal>

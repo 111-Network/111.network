@@ -56,7 +56,8 @@ export function NavMenuSheet({ className }: { className?: string }) {
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Trigger ref={triggerRef} className={cn(MENU_TRIGGER_CLASS, className)}>
+      {/* data-hydrated: the real trigger has replaced the server placeholder (e2e waits on it). */}
+      <Dialog.Trigger ref={triggerRef} data-hydrated="" className={cn(MENU_TRIGGER_CLASS, className)}>
         MENU
       </Dialog.Trigger>
       <Dialog.Portal>
