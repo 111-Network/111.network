@@ -157,13 +157,13 @@ export function Shell({ className = "h-full", mainId: mainIdProp, skipLink, embe
     const wanted = `${title} · ${SHELL_COPY.pageTitle} · ${SITE_NAME}`
     document.title = wanted
     // The page's <title> hydrates after this island and puts the server title back on a deep link,
-    // so re-apply ours whenever its text changes under us while this view is open.
-    const el = document.querySelector("head > title")
-    if (!el) return
+    // so re-apply ours whenever it changes under us while this view is open. Watch all of <head>,
+    // not one <title> node: React may replace the element instead of editing its text, and an
+    // observer on the old node would never fire. Writing the same title again is a no-op here.
     const observer = new MutationObserver(() => {
       if (document.title !== wanted) document.title = wanted
     })
-    observer.observe(el, { childList: true, characterData: true, subtree: true })
+    observer.observe(document.head, { childList: true, characterData: true, subtree: true })
     return () => observer.disconnect()
   }, [urlRouter, title])
 
