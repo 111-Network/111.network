@@ -2,7 +2,7 @@ import type { Locator, Page } from "@playwright/test"
 import { getLayer, LAYERS, type LayerNumber } from "../src/lib/layers"
 import { DEMO_PATH, SITE_URL } from "../src/lib/site"
 import { DEMO_MODE_KEY, demoMain, layoutOf, shellRoot, sidebarNav, waitForView } from "./demo-fixtures"
-import { expect, openHome, test } from "./fixtures"
+import { expect, expectNavHydrated, openHome, test } from "./fixtures"
 
 // Deep links from the home page into the dashboard demo (plan P5 check: "verify every
 // <LayerFooter> link", §6.6 routes, §6.7 CTA band), on a phone (375 px) and a desktop (1280 px).
@@ -195,7 +195,7 @@ test.describe("layer footers: home -> /demo and back", () => {
       // Back: the home page again, at the section the link was in.
       await page.goBack()
       await expect(page).toHaveURL(new RegExp(`^${escapeRegExp(baseURL ?? "")}/(#layer-${n})?$`))
-      await expect(page.locator('header button[aria-haspopup="dialog"][aria-controls]')).toHaveCount(1)
+      await expectNavHydrated(page)
       await expect(section(page, n)).toBeInViewport()
     })
   }
@@ -217,7 +217,7 @@ test.describe("layer footers: home -> /demo and back", () => {
     await expect(demoLogo(page)).toHaveAttribute("href", "/")
     await demoLogo(page).click()
     await expect(page).toHaveURL(`${baseURL}/`)
-    await expect(page.locator('header button[aria-haspopup="dialog"][aria-controls]')).toHaveCount(1)
+    await expectNavHydrated(page)
 
     // Home -> demo again, at a non-service view: a fresh store in SIMPLE, with no Services list.
     await scrollTo(section(page, 0))
