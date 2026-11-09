@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && node scripts/check-copy.mjs",
+    "build:host": "node scripts/build-host.mjs",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint",
@@ -19,7 +20,7 @@
     "check:glyphs": "node scripts/check-glyphs.mjs",
     "check:install": "node scripts/check-install.mjs",
     "e2e": "playwright test",
-    "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm budget && pnpm check:install"
+    "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm budget && pnpm build:host && pnpm check:install"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

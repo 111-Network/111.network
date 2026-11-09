@@ -5,7 +5,9 @@
  *
  * Both lists run over the same inputs:
  *  - built output: the visible text of every prerendered page in
- *    .next/server/app/**\/*.html (text nodes + aria-label / alt / title /
+ *    .next/server/app/**\/*.html (or, on a host that builds with an adapter,
+ *    .next/server/route-cache/APP_*\/<hash>/$/**\/*.html; see next-output.mjs)
+ *    (text nodes + aria-label / alt / title /
  *    content / placeholder / value values; <script> and <style> bodies are
  *    dropped because the RSC payload duplicates the text, JSON-LD is kept),
  *    every text-like prerendered route body (.next/server/app/**\/*.body:
@@ -41,6 +43,7 @@ import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import ts from "typescript"
+import { listPrerendered, prerenderRoots } from "./next-output.mjs"
 import { readSiteConstants } from "./site-constants.mjs"
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url))
@@ -688,19 +691,21 @@ function readJson(file) {
 }
 
 export function loadInputs({ root = ROOT, nextDir = path.join(root, ".next"), srcOnly = false } = {}) {
-  const appDir = path.join(nextDir, "server", "app")
   const pages = []
   const textFiles = []
   if (!srcOnly) {
-    if (!fs.existsSync(appDir)) {
-      throw Object.assign(new Error(`no build output at ${rel(root, appDir)}; run \`next build\` first (or pass --src-only)`), { exitCode: 2 })
+    if (prerenderRoots(nextDir).length === 0) {
+      throw Object.assign(
+        new Error(`no build output at ${rel(root, path.join(nextDir, "server"))} (neither app/ nor route-cache/); run \`next build\` first (or pass --src-only)`),
+        { exitCode: 2 },
+      )
     }
-    for (const file of walk(appDir, (f) => f.endsWith(".html")).sort()) {
-      pages.push({ id: routeFromHtmlPath(path.relative(appDir, file)), file: rel(root, file), html: fs.readFileSync(file, "utf8") })
+    for (const { rel: relPath, file } of listPrerendered(nextDir, ".html")) {
+      pages.push({ id: routeFromHtmlPath(relPath), file: rel(root, file), html: fs.readFileSync(file, "utf8") })
     }
     // Prerendered route handlers and metadata routes: llms.txt, manifest, robots, sitemap.
-    for (const file of walk(appDir, (f) => f.endsWith(".body")).sort()) {
-      const id = routeFromBodyPath(path.relative(appDir, file))
+    for (const { rel: relPath, file } of listPrerendered(nextDir, ".body")) {
+      const id = routeFromBodyPath(relPath)
       if (isTextBody(id, readJson(file.replace(/\.body$/, ".meta")))) {
         textFiles.push({ id, file: rel(root, file), text: fs.readFileSync(file, "utf8") })
       }

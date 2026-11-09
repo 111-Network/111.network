@@ -11,7 +11,7 @@
  * lazy views) are not first-load and are not counted.
  *
  * To add a route, add an entry to BUDGETS: { route, html, budgetKB, pending? }.
- * `html` is the file under .next/server/app. A route whose HTML is missing
+ * `html` is the file under .next/server/app (or the adapter layout, see next-output.mjs). A route whose HTML is missing
  * fails the check (it stopped being prerendered, e.g. it now reads
  * searchParams or cookies), unless the entry is marked `pending: true`
  * (its page has not landed yet); then it is skipped with a note.
@@ -23,6 +23,7 @@ import fs from "node:fs"
 import path from "node:path"
 import zlib from "node:zlib"
 import { fileURLToPath, pathToFileURL } from "node:url"
+import { findPrerendered, prerenderRoots } from "./next-output.mjs"
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 
@@ -69,8 +70,8 @@ export function gzipSize(buffer) {
 const kB = (bytes) => (bytes / 1000).toFixed(1)
 
 export function measureRoute(nextDir, entry) {
-  const htmlFile = path.join(nextDir, "server", "app", entry.html)
-  if (!fs.existsSync(htmlFile)) return entry.pending ? { ...entry, skipped: true } : { ...entry, notPrerendered: true }
+  const htmlFile = findPrerendered(nextDir, entry.html)
+  if (!htmlFile) return entry.pending ? { ...entry, skipped: true } : { ...entry, notPrerendered: true }
   const chunks = firstLoadScripts(fs.readFileSync(htmlFile, "utf8")).map((pathname) => {
     const file = path.join(nextDir, "static", decodeURIComponent(pathname.slice("/_next/static/".length)))
     if (!fs.existsSync(file)) return { pathname, missing: true, gzip: 0, raw: 0 }
@@ -85,7 +86,7 @@ function main() {
   const argv = process.argv.slice(2)
   const i = argv.findIndex((a) => a === "--next-dir" || a.startsWith("--next-dir="))
   const nextDir = i === -1 ? path.join(ROOT, ".next") : path.resolve(argv[i].includes("=") ? argv[i].split("=")[1] : argv[i + 1])
-  if (!fs.existsSync(path.join(nextDir, "server", "app"))) {
+  if (prerenderRoots(nextDir).length === 0) {
     console.error(`check-budget: no build output in ${nextDir}; run \`next build\` first`)
     process.exitCode = 2
     return

@@ -60,7 +60,8 @@ Knowing the shape of the site tells you where a finding can and cannot land.
 - **Install scripts are blocked by default.** pnpm 10 runs no dependency lifecycle script unless it is on the allow-list in `pnpm-workspace.yaml` (`allowBuilds`). Adding a package there is a review item.
 - **Pinned toolchain.** `package.json` pins `packageManager` (pnpm 10.28.0) and `engines.node` (22.x), so the host builds with the same versions the gates ran on. The framework and its lint preset are pinned to exact versions, not ranges.
 - **Dependency updates come as pull requests.** `.github/dependabot.yml` opens grouped weekly PRs; each has to pass the full gate below before merge. GitHub's dependency alerts and security updates should be switched on for this repository (see the owner checklist).
-- **Every change runs the full gate.** `pnpm check` = typecheck, lint, 1500+ unit tests, production build, the copy check (which also scans the built HTML and `public/` text files and enforces the `/demo` import denylist), the first-load JavaScript budget and the install-URL check. `pnpm e2e` drives the real pages in a browser at phone and desktop widths.
+- **Every change runs the full gate.** `pnpm check` = typecheck, lint, 1500+ unit tests, production build, the copy check (which also scans the built HTML and `public/` text files and enforces the `/demo` import denylist), the first-load JavaScript budget, a second production build in the host's output layout (`pnpm build:host`, which reruns the copy check and the budget on it) and the install-URL check. `pnpm e2e` drives the real pages in a browser at phone and desktop widths.
+- **Every pull request is built by the host.** `vercel.json` sets `ignoreCommand` to `exit 1` ("never skip"), so each pull request gets a preview build and a status check before merge, instead of a failure surfacing only on the production build after merge.
 - **Branch flow.** Work lands on `main` through pull requests. Direct pushes to `main` should be blocked (owner checklist).
 - **Secrets never go in the repository.** If a secret is ever needed for the build, it goes in the host's encrypted environment settings, not in code, not in `vercel.json`, not in a committed `.env`.
 
@@ -72,7 +73,7 @@ These are GitHub settings, not code, so they cannot be shipped in a pull request
 - [ ] Settings → Code security → **Dependabot alerts** and **Dependabot security updates**: on.
 - [ ] Settings → Code security → **Secret scanning** and **Push protection**: on.
 - [ ] Settings → Branches → protect `main`: require a pull request, require the host's build check to pass, no force pushes.
-- [ ] Host project: Preview deployments on by default for pull requests, so a change is seen before it reaches production.
+- [x] Host project: every pull request gets a preview build (`vercel.json` `ignoreCommand`; it overrides the project's Ignored Build Step setting).
 
 ## Known gaps
 
